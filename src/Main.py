@@ -44,18 +44,18 @@ class Principal(QtGui.QMainWindow):
 
     def __init__(self):
         super(Principal, self).__init__()
+
         self.acao_abrir = 0
         self.acao_novo = 0
         self.acao_sair = 0
+        self.acao_salvar = 0
+
         self.init_ui()
 
     def init_ui(self):
-        self.criar_acoes()
-
         self.criar_barra_menu()
 
-        container = UI.Centro()
-        self.setCentralWidget(container)
+        self.setCentralWidget(UI.Centro())
 
         self.setGeometry(300, 300, 500, 550)
         self.setWindowTitle('Br.ino ' + versao)
@@ -77,12 +77,19 @@ class Principal(QtGui.QMainWindow):
         acao_abrir.triggered.connect(GerenciadorDeArquivos.abrir)
         self.acao_abrir = acao_abrir
 
+        acao_salvar = QtGui.QAction('&Salvar', self)
+        acao_salvar.setShortcut('Ctrl+S')
+        acao_salvar.triggered.connect(GerenciadorDeArquivos.salvar)
+        self.acao_salvar = acao_salvar
+
     def criar_barra_menu(self):
+        self.criar_acoes()
+
         barra_menu = self.menuBar()
         menu_arquivo = barra_menu.addMenu('&Arquivo')
         menu_arquivo.addAction(self.acao_novo)
         menu_arquivo.addAction(self.acao_abrir)
-
+        menu_arquivo.addAction(self.acao_salvar)
 
 def main():
     app = QtGui.QApplication(sys.argv)
@@ -108,8 +115,8 @@ def main():
                          QMenuBar::item:selected{
                              background: '#101010';
                          }
-                         QTextEdit{
-                             background: '#474747';
+                         QPlainTextEdit{
+                             background: '#252525';
                              border: None;
                              border-radius: 6px;
                          }""")

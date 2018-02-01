@@ -31,9 +31,14 @@ email: mateus.berardo@brino.cc
 
 def novo(nome="semNome"):
     # TODO criar novo arquivo
-    print("Criando arquivo ")
+    print "Criando arquivo "
 
 
 def abrir():
     # TODO abrir arquivo
-    print("Abrindo")
+    print "Abrindo"
+
+
+def salvar():
+    # TODO salvar arquivo
+    print "salvando"

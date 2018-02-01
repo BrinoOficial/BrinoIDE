@@ -45,7 +45,7 @@ class Centro(QtGui.QWidget):
         menu.setStyleSheet("background: '#5cb50d';")
         layout.addWidget(menu, 0, 0)
         layout.setMargin(0)
-        editor = QtGui.QTextEdit(self)
+        editor = QtGui.QPlainTextEdit(self)
         layout.addWidget(editor, 0, 1, 0, 7)
 
         self.show()
