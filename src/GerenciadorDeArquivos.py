@@ -77,10 +77,6 @@ def porta():
     #TODO abrir portas
     print "Abrindo portas"
 
-def lingua():
-    #TODO abrir linguas
-    print "Abrindo portas"
-
 def monitor_serial():
     #TODO abrir serial
     print "Abrindo serial"

@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
 import os
+import sys
 from PyQt4 import QtGui
 
 import GerenciadorDeArquivos
+import GerenciadorDeLinguas
 import UI
-
 
 """
 Br.ino Qt Main
@@ -137,7 +137,7 @@ class Principal(QtGui.QMainWindow):
         self.acao_porta = acao_porta
 
         acao_lingua = QtGui.QAction('Lingua', self)
-        acao_lingua.triggered.connect(GerenciadorDeArquivos.lingua)
+        acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
         self.acao_lingua = acao_lingua
 
         acao_monitor_serial = QtGui.QAction('Monitor serial', self)
