@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 # syntax.py
 """
 The original code is licensed under a modified BSD License
