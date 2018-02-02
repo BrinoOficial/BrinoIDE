@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
 from PyQt4 import QtGui
 
 import GerenciadorDeArquivos
 import UI
+
 
 """
 Br.ino Qt Main
@@ -73,6 +75,7 @@ class Principal(QtGui.QMainWindow):
 
         self.setGeometry(300, 300, 500, 550)
         self.setWindowTitle('Br.ino ' + versao)
+        self.setWindowIcon(QtGui.QIcon(os.path.join('recursos','logo.png')))
         self.show()
 
     def criar_acoes(self):
@@ -101,7 +104,7 @@ class Principal(QtGui.QMainWindow):
         self.acao_salvar = acao_salvar
 
         acao_salvar_como = QtGui.QAction('Salvar como', self)
-        acao_salvar_como.setShortcuts('Ctrl+shift')
+        acao_salvar_como.setShortcuts('Ctrl+B')
         acao_salvar_como.triggered.connect(GerenciadorDeArquivos.salvar_como)
         self.acao_salvar_como = acao_salvar_como
 
