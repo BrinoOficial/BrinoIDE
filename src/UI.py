@@ -1,5 +1,7 @@
 from PyQt4 import QtGui
 
+import DestaqueSintaxe
+
 """
 Br.ino Qt UI
 
@@ -46,6 +48,7 @@ class Centro(QtGui.QWidget):
         layout.addWidget(menu, 0, 0)
         layout.setMargin(0)
         editor = QtGui.QPlainTextEdit(self)
+        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         layout.addWidget(editor, 0, 1, 0, 7)
 
         self.show()
