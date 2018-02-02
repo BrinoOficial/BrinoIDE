@@ -47,10 +47,22 @@ class Principal(QtGui.QMainWindow):
     def __init__(self):
         super(Principal, self).__init__()
 
-        self.acao_abrir = 0
         self.acao_novo = 0
+        self.acao_abrir = 0
+        self.acao_exemplos = 0
         self.acao_sair = 0
         self.acao_salvar = 0
+        self.acao_salvar_como = 0
+        self.acao_comentar_linha = 0
+        self.acao_achar = 0
+        self.acao_achar_e_substituir = 0
+        self.acao_ir_para_linha = 0
+        self.acao_placa = 0
+        self.acao_porta = 0
+        self.acao_lingua = 0
+        self.acao_monitor_serial = 0
+        self.acao_verificar = 0
+        self.acao_verificar_e_carregar = 0
 
         self.init_ui()
 
@@ -64,7 +76,7 @@ class Principal(QtGui.QMainWindow):
         self.show()
 
     def criar_acoes(self):
-        acao_sair = QtGui.QAction('Exit', self)
+        acao_sair = QtGui.QAction('Sair', self)
         acao_sair.setStatusTip('Sair da IDE do Br.ino')
         acao_sair.triggered.connect(self.close)
         self.acao_sair = acao_sair
@@ -79,10 +91,69 @@ class Principal(QtGui.QMainWindow):
         acao_abrir.triggered.connect(GerenciadorDeArquivos.abrir)
         self.acao_abrir = acao_abrir
 
+        acao_exemplos = QtGui.QAction('Exemplos', self)
+        acao_exemplos.triggered.connect(GerenciadorDeArquivos.exemplos)
+        self.acao_exemplos = acao_exemplos
+
         acao_salvar = QtGui.QAction('&Salvar', self)
         acao_salvar.setShortcut('Ctrl+S')
         acao_salvar.triggered.connect(GerenciadorDeArquivos.salvar)
         self.acao_salvar = acao_salvar
+
+        acao_salvar_como = QtGui.QAction('Salvar como', self)
+        acao_salvar_como.setShortcuts('Ctrl+shift')
+        acao_salvar_como.triggered.connect(GerenciadorDeArquivos.salvar_como)
+        self.acao_salvar_como = acao_salvar_como
+
+        acao_comentar_linha = QtGui.QAction('Comentar linha', self)
+        acao_comentar_linha.setShortcuts('Ctrl+/')
+        acao_comentar_linha.triggered.connect(GerenciadorDeArquivos.comentar_linha)
+        self.acao_comentar_linha = acao_comentar_linha
+
+        acao_achar = QtGui.QAction('Achar...', self)
+        acao_achar.setShortcuts('Ctrl+F')
+        acao_achar.triggered.connect(GerenciadorDeArquivos.achar)
+        self.acao_achar = acao_achar
+
+        acao_achar_e_substituir = QtGui.QAction('Achar e substituir', self)
+        acao_achar_e_substituir.setShortcuts('Ctrl+H')
+        acao_achar_e_substituir.triggered.connect(GerenciadorDeArquivos.achar_e_substituir)
+        self.acao_achar_e_substituir = acao_achar_e_substituir
+
+        acao_ir_para_linha = QtGui.QAction('Ir para linha', self)
+        acao_ir_para_linha.setShortcuts('Ctrl+L')
+        acao_ir_para_linha.triggered.connect(GerenciadorDeArquivos.ir_para_linha)
+        self.acao_ir_para_linha = acao_ir_para_linha
+
+        acao_placa = QtGui.QAction('Placa', self)
+        acao_placa.triggered.connect(GerenciadorDeArquivos.placa)
+        self.acao_placa = acao_placa
+
+        acao_porta = QtGui.QAction('Porta', self)
+        acao_porta.triggered.connect(GerenciadorDeArquivos.porta)
+        self.acao_porta = acao_porta
+
+        acao_lingua = QtGui.QAction('Lingua', self)
+        acao_lingua.triggered.connect(GerenciadorDeArquivos.lingua)
+        self.acao_lingua = acao_lingua
+
+        acao_monitor_serial = QtGui.QAction('Monitor serial', self)
+        acao_monitor_serial.setShortcuts('Ctrl+Shift+M')
+        acao_monitor_serial.triggered.connect(GerenciadorDeArquivos.monitor_serial)
+        self.acao_monitor_serial = acao_monitor_serial
+
+        acao_verificar = QtGui.QAction('Verificar', self)
+        acao_verificar.setShortcuts('Ctrl+R')
+        acao_verificar.triggered.connect(GerenciadorDeArquivos.verificar)
+        self.acao_verificar = acao_verificar
+
+        acao_verificar_e_carregar = QtGui.QAction('Verificar e carregar', self)
+        acao_verificar_e_carregar.setShortcuts('Ctrl+U')
+        acao_verificar_e_carregar.triggered.connect(GerenciadorDeArquivos.verificar_e_carregar)
+        self.acao_verificar_e_carregar = acao_verificar_e_carregar
+
+
+
 
     def criar_barra_menu(self):
         self.criar_acoes()
@@ -91,7 +162,26 @@ class Principal(QtGui.QMainWindow):
         menu_arquivo = barra_menu.addMenu('&Arquivo')
         menu_arquivo.addAction(self.acao_novo)
         menu_arquivo.addAction(self.acao_abrir)
+        menu_arquivo.addAction(self.acao_exemplos)
         menu_arquivo.addAction(self.acao_salvar)
+        menu_arquivo.addAction(self.acao_salvar_como)
+
+        menu_editar = barra_menu.addMenu('&Editar')
+        menu_editar.addAction(self.acao_comentar_linha)
+        menu_editar.addAction(self.acao_achar)
+        menu_editar.addAction(self.acao_achar_e_substituir)
+        menu_editar.addAction(self.acao_ir_para_linha)
+
+        menu_ferramentas = barra_menu.addMenu('Ferramentas')
+        menu_ferramentas.addAction(self.acao_placa)
+        menu_ferramentas.addAction(self.acao_porta)
+        menu_ferramentas.addAction(self.acao_lingua)
+        menu_ferramentas.addAction(self.acao_monitor_serial)
+
+        menu_rascunho = barra_menu.addMenu('Rascunho')
+        menu_rascunho.addAction(self.acao_verificar)
+        menu_rascunho.addAction(self.acao_verificar_e_carregar)
+
 
 def main():
     app = QtGui.QApplication(sys.argv)

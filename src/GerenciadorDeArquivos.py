@@ -38,7 +38,56 @@ def abrir():
     # TODO abrir arquivo
     print "Abrindo"
 
+def exemplos():
+    # TODO abrir exemplos
+    print "exemplos"
 
 def salvar():
     # TODO salvar arquivo
     print "salvando"
+
+def salvar_como():
+    # TODO salvar como
+    print "Salvando como"
+
+def comentar_linha():
+    #TODO comentar
+    print "Comentando"
+
+def achar():
+    #TODO achar
+    print "Buscando"
+
+def achar_e_substituir():
+    #TODO achar e substituir
+    print "Substituindo"
+
+def ir_para_linha():
+    #TODO ir para linha
+    print "Indo"
+
+def placa():
+    #TODO abrir placas
+    print "Abrindo placas"
+
+def porta():
+    #TODO abrir portas
+    print "Abrindo portas"
+
+def lingua():
+    #TODO abrir linguas
+    print "Abrindo portas"
+
+def monitor_serial():
+    #TODO abrir serial
+    print "Abrindo serial"
+
+def verificar():
+    #TODO verificar
+    print "Verificando"
+
+def verificar_e_carregar():
+    #TODO verificar e carregar
+    print "Verificando e carregando"
+
+
