@@ -6,7 +6,11 @@ import sys
 from PyQt4 import QtGui
 
 import GerenciadorDeArquivos
+import GerenciadorDeCodigo
+import GerenciadorDeExemplos
 import GerenciadorDeLinguas
+import GerenciadorDeTexto
+import MonitorSerial
 import UI
 
 """
@@ -110,30 +114,30 @@ class Principal(QtGui.QMainWindow):
 
         acao_comentar_linha = QtGui.QAction('Comentar linha', self)
         acao_comentar_linha.setShortcuts('Ctrl+/')
-        acao_comentar_linha.triggered.connect(GerenciadorDeArquivos.comentar_linha)
+        acao_comentar_linha.triggered.connect(GerenciadorDeCodigo.comentar_linha)
         self.acao_comentar_linha = acao_comentar_linha
 
         acao_achar = QtGui.QAction('Achar...', self)
         acao_achar.setShortcuts('Ctrl+F')
-        acao_achar.triggered.connect(GerenciadorDeArquivos.achar)
+        acao_achar.triggered.connect(GerenciadorDeCodigo.achar)
         self.acao_achar = acao_achar
 
         acao_achar_e_substituir = QtGui.QAction('Achar e substituir', self)
         acao_achar_e_substituir.setShortcuts('Ctrl+H')
-        acao_achar_e_substituir.triggered.connect(GerenciadorDeArquivos.achar_e_substituir)
+        acao_achar_e_substituir.triggered.connect(GerenciadorDeCodigo.achar_e_substituir)
         self.acao_achar_e_substituir = acao_achar_e_substituir
 
         acao_ir_para_linha = QtGui.QAction('Ir para linha', self)
         acao_ir_para_linha.setShortcuts('Ctrl+L')
-        acao_ir_para_linha.triggered.connect(GerenciadorDeArquivos.ir_para_linha)
+        acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
         self.acao_ir_para_linha = acao_ir_para_linha
 
         acao_placa = QtGui.QAction('Placa', self)
-        acao_placa.triggered.connect(GerenciadorDeArquivos.placa)
+        acao_placa.triggered.connect(GerenciadorDeCodigo.placa)
         self.acao_placa = acao_placa
 
         acao_porta = QtGui.QAction('Porta', self)
-        acao_porta.triggered.connect(GerenciadorDeArquivos.porta)
+        acao_porta.triggered.connect(GerenciadorDeCodigo.porta)
         self.acao_porta = acao_porta
 
         acao_lingua = QtGui.QAction('Lingua', self)
@@ -142,17 +146,17 @@ class Principal(QtGui.QMainWindow):
 
         acao_monitor_serial = QtGui.QAction('Monitor serial', self)
         acao_monitor_serial.setShortcuts('Ctrl+Shift+M')
-        acao_monitor_serial.triggered.connect(GerenciadorDeArquivos.monitor_serial)
+        acao_monitor_serial.triggered.connect(MonitorSerial.monitor_serial)
         self.acao_monitor_serial = acao_monitor_serial
 
         acao_verificar = QtGui.QAction('Verificar', self)
         acao_verificar.setShortcuts('Ctrl+R')
-        acao_verificar.triggered.connect(GerenciadorDeArquivos.verificar)
+        acao_verificar.triggered.connect(GerenciadorDeCodigo.verificar)
         self.acao_verificar = acao_verificar
 
         acao_verificar_e_carregar = QtGui.QAction('Verificar e carregar', self)
         acao_verificar_e_carregar.setShortcuts('Ctrl+U')
-        acao_verificar_e_carregar.triggered.connect(GerenciadorDeArquivos.verificar_e_carregar)
+        acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
         self.acao_verificar_e_carregar = acao_verificar_e_carregar
 
 

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-Br.ino Qt Gerenciador de Arquivos
+Br.ino Qt Main
 
-Codigo gerenciador de arquivos da IDE Br.ino
+Codigo da janela principal da IDE Br.ino
 em PyQt4 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
@@ -26,33 +26,13 @@ em PyQt4 (python 2.7)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-author: Mateus Berardo
 website: brino.cc
+author: Mateus Berardo
 email: mateus.berardo@brino.cc
+contributor: Victor Rodrigues Pacheco
+email: victor.pacheco@brino.cc
 """
 
-
-def novo(nome="semNome"):
-    # TODO criar novo arquivo
-    print "Criando arquivo "
-
-
-def abrir():
-    # TODO abrir arquivo
-    print "Abrindo"
-
-def exemplos():
-    # TODO abrir exemplos
-    print "exemplos"
-
-def salvar():
-    # TODO salvar arquivo
-    print "salvando"
-
-def salvar_como():
-    # TODO salvar como
-    print "Salvando como"
-
-
-
-
+def monitor_serial():
+    #TODO abrir serial
+    print "Abrindo serial"
