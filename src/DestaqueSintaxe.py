@@ -35,7 +35,10 @@ em PyQt4 (python 2.7)
     <https://www.gnu.org/licenses/>
 
 website: brino.cc
+author: Mateus Berardo
 email: mateus.berardo@brino.cc
+contributor: Victor Rodrigues Pacheco
+email: victor.pacheco@brino.cc
 """
 
 from PyQt4.QtCore import QRegExp

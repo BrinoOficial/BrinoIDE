@@ -1,10 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""
-Br.ino Qt Gerenciador de Linguas
+from PyQt4 import QtGui
 
-Codigo gerenciador de linguas da IDE Br.ino
+import DestaqueSintaxe
+
+"""
+Br.ino Qt UI
+
+Interface base da IDE Br.ino
 em PyQt4 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
@@ -33,7 +37,22 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+class Menu(QtGui.QWidget):
 
-def lingua():
-    # TODO abrir linguas
-    print "Abrindo portas"
+    def __init__(self):
+        super(Menu, self).__init__()
+        self.layout = 0
+
+        self.init_ui()
+
+    def init_ui(self):
+        layout = QtGui.QVBoxLayout(self)
+        self.setStyleSheet("background-color: '#5cb50d';")
+        btn_novo = QtGui.QPushButton("Novo")
+        btn_novo.setStyleSheet("background: '#101010'")
+        btn_abrir = QtGui.QPushButton("Abrir")
+        btn_abrir.setStyleSheet("background: '#101010'")
+        layout.addWidget(btn_novo)
+        layout.addWidget(btn_abrir)
+
+        self.show()

@@ -26,9 +26,11 @@ em PyQt4 (python 2.7)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-author: Mateus Berardo
 website: brino.cc
+author: Mateus Berardo
 email: mateus.berardo@brino.cc
+contributor: Victor Rodrigues Pacheco
+email: victor.pacheco@brino.cc
 """
 
 

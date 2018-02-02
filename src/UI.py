@@ -4,6 +4,7 @@
 from PyQt4 import QtGui
 
 import DestaqueSintaxe
+import Menu
 
 """
 Br.ino Qt UI
@@ -30,9 +31,11 @@ em PyQt4 (python 2.7)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-author: Mateus Berardo
 website: brino.cc
+author: Mateus Berardo
 email: mateus.berardo@brino.cc
+contributor: Victor Rodrigues Pacheco
+email: victor.pacheco@brino.cc
 """
 
 
@@ -48,6 +51,7 @@ class Centro(QtGui.QWidget):
         layout = QtGui.QGridLayout(self)
         menu = QtGui.QWidget(self)
         menu.setStyleSheet("background: '#5cb50d';")
+
         layout.addWidget(menu, 0, 0)
         layout.setMargin(0)
         editor = QtGui.QPlainTextEdit(self)
