@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtGui
-
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QWidget
 import DestaqueSintaxe
 
 """
@@ -37,7 +37,8 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-class Menu(QtGui.QWidget):
+
+class Menu(QWidget):
 
     def __init__(self):
         super(Menu, self).__init__()

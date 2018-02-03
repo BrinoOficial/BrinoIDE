@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtGui
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit)
 
 import DestaqueSintaxe
-import Menu
 
 """
 Br.ino Qt UI
@@ -39,7 +39,7 @@ email: victor.pacheco@brino.cc
 """
 
 
-class Centro(QtGui.QWidget):
+class Centro(QWidget):
 
     def __init__(self):
         super(Centro, self).__init__()
@@ -48,13 +48,13 @@ class Centro(QtGui.QWidget):
         self.init_ui()
 
     def init_ui(self):
-        layout = QtGui.QGridLayout(self)
-        menu = QtGui.QWidget(self)
+        layout = QGridLayout(self)
+        menu = QWidget(self)
         menu.setStyleSheet("background: '#5cb50d';")
 
         layout.addWidget(menu, 0, 0)
-        layout.setMargin(0)
-        editor = QtGui.QPlainTextEdit(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        editor = QPlainTextEdit(self)
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         layout.addWidget(editor, 0, 1, 0, 7)
 
