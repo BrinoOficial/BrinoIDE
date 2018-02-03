@@ -3,7 +3,8 @@
 
 import os
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, qApp
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
+
 from PyQt5.QtGui import QIcon
 
 import GerenciadorDeArquivos
@@ -11,6 +12,7 @@ import GerenciadorDeCodigo
 import GerenciadorDeExemplos
 import GerenciadorDeLinguas
 import GerenciadorDeTexto
+import Menu
 import MonitorSerial
 import UI
 
@@ -85,6 +87,7 @@ class Principal(QMainWindow):
 
     def criar_acoes(self):
         acao_sair = QAction('Sair', self)
+        acao_sair.setShortcut('Ctrl+Q')
         acao_sair.setStatusTip('Sair da IDE do Br.ino')
         acao_sair.triggered.connect(self.close)
         self.acao_sair = acao_sair
@@ -173,6 +176,7 @@ class Principal(QMainWindow):
         menu_exemplos = menu_arquivo.addMenu('Exemplos')
         menu_arquivo.addAction(self.acao_salvar)
         menu_arquivo.addAction(self.acao_salvar_como)
+        menu_arquivo.addAction(self.acao_sair)
 
         menu_editar = barra_menu.addMenu('&Editar')
         menu_editar.addAction(self.acao_comentar_linha)

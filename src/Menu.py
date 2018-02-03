@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QSpacerItem, QSizePolicy
 import DestaqueSintaxe
 
 """
@@ -47,13 +46,17 @@ class Menu(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        layout = QtGui.QVBoxLayout(self)
-        self.setStyleSheet("background-color: '#5cb50d';")
-        btn_novo = QtGui.QPushButton("Novo")
+        container = QWidget(self)
+        layout = QVBoxLayout(container)
+        container.setStyleSheet("background-color: '#5cb50d';")
+        btn_novo = QPushButton("Novo")
         btn_novo.setStyleSheet("background: '#101010'")
-        btn_abrir = QtGui.QPushButton("Abrir")
+        btn_abrir = QPushButton("Abrir")
         btn_abrir.setStyleSheet("background: '#101010'")
+        layout.setContentsMargins(5, 5, 5, 0)
+        espacador_vertical = QSpacerItem(0, 500000000, QSizePolicy.Minimum, QSizePolicy.Expanding)
         layout.addWidget(btn_novo)
         layout.addWidget(btn_abrir)
+        layout.addItem(espacador_vertical)
 
         self.show()
