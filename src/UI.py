@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QSizePolicy)
 
+import Menu
 import DestaqueSintaxe
 
 """
@@ -49,13 +49,15 @@ class Centro(QWidget):
 
     def init_ui(self):
         layout = QGridLayout(self)
-        menu = QWidget(self)
-        menu.setStyleSheet("background: '#5cb50d';")
-
-        layout.addWidget(menu, 0, 0)
+        menu = Menu.Menu()
+        menu.setMaximumWidth(90)
+        layout.addWidget(menu, 0, 0, 1, 0)
+        layout.setSpacing(10)
         layout.setContentsMargins(0, 0, 0, 0)
-        editor = QPlainTextEdit(self)
+        container = QWidget(self)
+        container.setStyleSheet("background:#252525")
+        editor = QPlainTextEdit(container)
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        layout.addWidget(editor, 0, 1, 0, 7)
+        layout.addWidget(container, 0, 1, 0, 7)
 
         self.show()
