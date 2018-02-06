@@ -1,13 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
-
-from BotaoImagem import botaoImagem
-
 """
 Br.ino Qt UI
 
@@ -40,27 +33,20 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import json
+import os
 
-class Menu(QWidget):
 
-    def __init__(self):
-        super(Menu, self).__init__()
-        self.layout = 0
+def get_highlights(tipo):
+    data = json.load(open(os.path.join('src', 'recursos', 'pt-br.json')))
+    palavras = list()
 
-        self.init_ui()
+    for palavra_chave in data['Keywords']:
+        if palavra_chave['highlight-type'] == tipo:
+            palavras.append(palavra_chave['highlight'].encode('utf-8'))
 
-    def init_ui(self):
-        container = QWidget(self)
-        layout = QVBoxLayout(container)
-        container.setStyleSheet("background-color: '#5cb50d';")
-        btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'logo.png')), self)
-        btn_novo.setStyleSheet("background: '#101010'")
-        btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'logo.png')), self)
-        btn_abrir.setStyleSheet("background: '#101010'")
-        layout.setContentsMargins(5, 5, 5, 0)
-        espacador_vertical = QSpacerItem(0, 500000000, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        layout.addWidget(btn_novo)
-        layout.addWidget(btn_abrir)
-        layout.addItem(espacador_vertical)
+    return palavras
 
-        self.show()
+
+if __name__ == '__main__':
+    print(get_highlights('4'))
