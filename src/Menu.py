@@ -4,7 +4,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QPixmap
 from BotaoImagem import botaoImagem
-from PyQt5.QtCore import QSize
 
 import os
 import DestaqueSintaxe
