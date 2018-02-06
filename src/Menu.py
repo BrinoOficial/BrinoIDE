@@ -8,9 +8,6 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 
 from BotaoImagem import botaoImagem
 
-import os
-import DestaqueSintaxe
-
 """
 Br.ino Qt UI
 
