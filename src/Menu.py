@@ -3,9 +3,11 @@
 
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QPixmap
-import DestaqueSintaxe
 from BotaoImagem import botaoImagem
+from PyQt5.QtCore import QSize
+
 import os
+import DestaqueSintaxe
 
 """
 Br.ino Qt UI
@@ -50,16 +52,26 @@ class Menu(QWidget):
 
     def init_ui(self):
         container = QWidget(self)
+        container.setFixedWidth(60)
         layout = QVBoxLayout(container)
         container.setStyleSheet("background-color: '#5cb50d';")
-        btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'logo.png')), self)
-        btn_novo.setStyleSheet("background: '#101010'")
-        btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'logo.png')), self)
-        btn_abrir.setStyleSheet("background: '#101010'")
+
+        btn_compilar = botaoImagem(QPixmap(os.path.join('recursos', 'compilarFoco.png')), self)
+        btn_compilar_e_carregar = botaoImagem(QPixmap(os.path.join('recursos', 'carregarFoco.png')), self)
+        btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'novoArquivoFoco.png')), self)
+        btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'abrirPastaFoco.png')), self)
+        btn_salvar = botaoImagem(QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
+        btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
+        btn_monitor_serial.setFixedSize(50, 50)
+
         layout.setContentsMargins(5, 5, 5, 0)
         espacador_vertical = QSpacerItem(0, 500000000, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        layout.addWidget(btn_compilar)
+        layout.addWidget(btn_compilar_e_carregar)
         layout.addWidget(btn_novo)
         layout.addWidget(btn_abrir)
+        layout.addWidget(btn_salvar)
+        layout.addWidget(btn_monitor_serial)
         layout.addItem(espacador_vertical)
 
         self.show()

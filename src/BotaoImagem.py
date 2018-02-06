@@ -1,5 +1,6 @@
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QAbstractButton
+from PyQt5.QtCore import QSize
 
 """
 Br.ino Qt UI
@@ -26,9 +27,9 @@ em PyQt4 (python 2.7)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
     
-    
+    Codigo fonte retirado de:
     https://stackoverflow.com/questions/44453268/creating-custom-pyqt5-image-button
-    Atrum
+    Autor: Atrum
 
 website: brino.cc
 modificado por: Mateus Berardo
@@ -48,4 +49,4 @@ class botaoImagem(QAbstractButton):
         painter.drawPixmap(event.rect(), self.pixmap)
 
     def sizeHint(self):
-        return self.pixmap.size()
+        return QSize(50, 63)
