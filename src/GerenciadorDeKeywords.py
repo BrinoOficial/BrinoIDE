@@ -38,7 +38,8 @@ import os
 
 
 def get_highlights(tipo):
-    data = json.load(open(os.path.join('src', 'recursos', 'pt-br.json')))
+    print os.listdir('.')
+    data = json.load(open(os.path.join('recursos', 'pt-br.json')))
     palavras = list()
 
     for palavra_chave in data['Keywords']:
