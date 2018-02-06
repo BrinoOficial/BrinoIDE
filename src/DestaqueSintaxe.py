@@ -44,7 +44,7 @@ email: victor.pacheco@brino.cc
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QColor, QTextCharFormat, QFont, QSyntaxHighlighter
 
-''
+import GerenciadorDeKeywords
 
 
 def format_(color, style=''):
@@ -65,7 +65,10 @@ def format_(color, style=''):
 
 # Syntax styles that can be shared by all languages
 STYLES = {
-    'keyword': format_('blue'),
+    'keyword': format_(''),
+    'keyword_2': format_('#60BC0E'),
+    'keyword_3': format_('blue'),
+    'keyword_4': format_('#A6E22E', 'bold'),
     'operator': format_('red'),
     'brace': format_('darkGray'),
     'defclass': format_('black', 'bold'),
@@ -80,33 +83,16 @@ STYLES = {
 class PythonHighlighter(QSyntaxHighlighter):
     """Syntax highlighter for the Python language.
     """
-    # Python keywords
-    keywords = [
-        'and', 'assert', 'break', 'class', 'continue', 'def',
-        'del', 'elif', 'else', 'except', 'exec', 'finally',
-        'for', 'from', 'global', 'if', 'import', 'in',
-        'is', 'lambda', 'not', 'or', 'pass', 'print',
-        'raise', 'return', 'try', 'while', 'yield',
-        'None', 'True', 'False',
-    ]
+    # Br.ino keywords tipo 1
+    keywords_1 = GerenciadorDeKeywords.get_highlights('1')
 
-    # Python operators
-    operators = [
-        '=',
-        # Comparison
-        '==', '!=', '<', '<=', '>', '>=',
-        # Arithmetic
-        '\+', '-', '\*', '/', '//', '\%', '\*\*',
-        # In-place
-        '\+=', '-=', '\*=', '/=', '\%=',
-        # Bitwise
-        '\^', '\|', '\&', '\~', '>>', '<<',
-    ]
+    # Br.ino keywords tipo 2
+    keywords_2 = GerenciadorDeKeywords.get_highlights('2')
 
     # Python braces
-    braces = [
-        '\{', '\}', '\(', '\)', '\[', '\]',
-    ]
+    keywords_3 = GerenciadorDeKeywords.get_highlights('3')
+
+    keywords_4 = GerenciadorDeKeywords.get_highlights('4')
 
     def __init__(self, document):
 
@@ -123,11 +109,13 @@ class PythonHighlighter(QSyntaxHighlighter):
 
         # Keyword, operator, and brace rules
         rules += [(r'\b%s\b' % w, 0, STYLES['keyword'])
-                  for w in PythonHighlighter.keywords]
-        rules += [(r'%s' % o, 0, STYLES['operator'])
-                  for o in PythonHighlighter.operators]
-        rules += [(r'%s' % b, 0, STYLES['brace'])
-                  for b in PythonHighlighter.braces]
+                  for w in PythonHighlighter.keywords_1]
+        rules += [(r'%s' % o, 0, STYLES['keyword_2'])
+                  for o in PythonHighlighter.keywords_2]
+        rules += [(r'%s' % b, 0, STYLES['keyword_3'])
+                  for b in PythonHighlighter.keywords_3]
+        rules += [(r'%s' % b, 0, STYLES['keyword_4'])
+                  for b in PythonHighlighter.keywords_4]
 
         # All other rules
         rules += [
@@ -139,13 +127,8 @@ class PythonHighlighter(QSyntaxHighlighter):
             # Single-quoted string, possibly containing escape sequences
             (r"'[^'\\]*(\\.[^'\\]*)*'", 0, STYLES['string']),
 
-            # 'def' followed by an identifier
-            (r'\bdef\b\s*(\w+)', 1, STYLES['defclass']),
-            # 'class' followed by an identifier
-            (r'\bclass\b\s*(\w+)', 1, STYLES['defclass']),
-
-            # From '#' until a newline
-            (r'#[^\n]*', 0, STYLES['comment']),
+            # From '//' until a newline
+            (r'//[^\n]*', 0, STYLES['comment']),
 
             # Numeric literals
             (r'\b[+-]?[0-9]+[lL]?\b', 0, STYLES['numbers']),
