@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QSizePolicy)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit)
 
-import Menu
 import DestaqueSintaxe
+import Menu
 
 """
 Br.ino Qt UI
@@ -56,6 +56,7 @@ class Centro(QWidget):
         container = QWidget(self)
         container.setStyleSheet("background:#252525")
         editor = QPlainTextEdit(container)
+        editor.insertPlainText("Pino")
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         layout.addWidget(container, 0, 1, 0, 5)
 

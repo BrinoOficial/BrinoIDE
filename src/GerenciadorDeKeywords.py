@@ -38,12 +38,13 @@ import os
 
 
 def get_highlights(tipo):
-    data = json.load(open(os.path.join('src', 'recursos', 'pt-br.json')))
+    data = json.load(open(os.path.join('recursos', 'pt-br.json')))
     palavras = list()
 
     for palavra_chave in data['Keywords']:
         if palavra_chave['highlight-type'] == tipo:
-            palavras.append(palavra_chave['highlight'].encode('utf-8'))
+            uni = str(palavra_chave['highlight'].encode('utf-8'))
+            palavras.append(uni)
 
     return palavras
 
