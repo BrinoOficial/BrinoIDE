@@ -7,10 +7,6 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 
 from BotaoImagem import botaoImagem
-from PyQt5.QtCore import QSize
-
-import os
-import DestaqueSintaxe
 
 """
 Br.ino Qt UI
