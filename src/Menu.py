@@ -1,8 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QSpacerItem, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
+from PyQt5.QtGui import QPixmap
 import DestaqueSintaxe
+from BotaoImagem import botaoImagem
+import os
 
 """
 Br.ino Qt UI
@@ -49,9 +52,9 @@ class Menu(QWidget):
         container = QWidget(self)
         layout = QVBoxLayout(container)
         container.setStyleSheet("background-color: '#5cb50d';")
-        btn_novo = QPushButton("Novo")
+        btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'logo.png')), self)
         btn_novo.setStyleSheet("background: '#101010'")
-        btn_abrir = QPushButton("Abrir")
+        btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'logo.png')), self)
         btn_abrir.setStyleSheet("background: '#101010'")
         layout.setContentsMargins(5, 5, 5, 0)
         espacador_vertical = QSpacerItem(0, 500000000, QSizePolicy.Minimum, QSizePolicy.Expanding)

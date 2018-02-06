@@ -1,16 +1,11 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QSizePolicy)
-
-import Menu
-import DestaqueSintaxe
+from PyQt5.QtGui import QPainter
+from PyQt5.QtWidgets import QAbstractButton
 
 """
 Br.ino Qt UI
 
 Interface base da IDE Br.ino
-em PyQt5 (python 2.7)
+em PyQt4 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
@@ -30,34 +25,27 @@ em PyQt5 (python 2.7)
     Voce deveria ter recebido uma copia da Licenca Publica Geral
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
+    
+    
+    https://stackoverflow.com/questions/44453268/creating-custom-pyqt5-image-button
+    Atrum
 
 website: brino.cc
-author: Mateus Berardo
+modificado por: Mateus Berardo
 email: mateus.berardo@brino.cc
-contributor: Victor Rodrigues Pacheco
+modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
 
-class Centro(QWidget):
+class botaoImagem(QAbstractButton):
+    def __init__(self, pixmap, parent=None):
+        super(botaoImagem, self).__init__(parent)
+        self.pixmap = pixmap
 
-    def __init__(self):
-        super(Centro, self).__init__()
-        self.layout = 0
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.drawPixmap(event.rect(), self.pixmap)
 
-        self.init_ui()
-
-    def init_ui(self):
-        layout = QGridLayout(self)
-        menu = Menu.Menu()
-        menu.setMaximumWidth(90)
-        layout.addWidget(menu, 0, 0)
-        layout.setSpacing(10)
-        layout.setContentsMargins(0, 0, 0, 0)
-        container = QWidget(self)
-        container.setStyleSheet("background:#252525")
-        editor = QPlainTextEdit(container)
-        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        layout.addWidget(container, 0, 1, 0, 7)
-
-        self.show()
+    def sizeHint(self):
+        return self.pixmap.size()
