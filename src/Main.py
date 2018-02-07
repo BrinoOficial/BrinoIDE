@@ -223,6 +223,8 @@ def main():
                              background: '#252525';
                              border: None;
                              border-radius: 6px;
+                             color: '#efefef';
+                             selection-background-color: '#454545';
                          }""")
     sys.exit(app.exec_())
 
