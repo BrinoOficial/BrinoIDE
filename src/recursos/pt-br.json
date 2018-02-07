@@ -120,7 +120,7 @@
       "translate": "ler"
     },
     {
-      "highlight": "Numero ",
+      "highlight": "Numero",
       "arduino": "int ",
       "arg": "false",
       "highlight-type": "1",

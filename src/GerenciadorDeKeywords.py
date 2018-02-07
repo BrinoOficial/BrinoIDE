@@ -43,8 +43,8 @@ def get_highlights(tipo):
 
     for palavra_chave in data['Keywords']:
         if palavra_chave['highlight-type'] == tipo:
-            uni = str(palavra_chave['highlight'].encode('utf-8'))
-            palavras.append(uni)
+            uni = palavra_chave['highlight']
+            palavras.append(uni.encode('utf-8'))
 
     return palavras
 
