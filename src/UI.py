@@ -49,14 +49,24 @@ class Centro(QWidget):
 
     def init_ui(self):
         layout = QGridLayout(self)
+        layout.setRowStretch(0, 7.5)
+        layout.setRowStretch(1, 2.5)
+        layout.setColumnMinimumWidth(0, 60)
         menu = Menu.Menu()
-        layout.addWidget(menu, 0, 0)
-        layout.setSpacing(10)
+        layout.addWidget(menu, 0, 0, 2, 2)
+        layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
-        container = QWidget(self)
-        container.setStyleSheet("background:#252525")
-        editor = QPlainTextEdit(container)
+
+        editor = QPlainTextEdit(self)
+        editor.setStyleSheet("background:#252525")
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        layout.addWidget(container, 0, 1, 0, 5)
+        layout.addWidget(editor, 0, 1, 1, 2)
+
+        log = QPlainTextEdit(self)
+        log.setStyleSheet("background:#000000; margin-bottom: 5px; margin-right: 5px;")
+        log.setDisabled(True)
+        layout.addWidget(log, 1, 1, 1, 2)
+
+
 
         self.show()
