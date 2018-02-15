@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# syntax.py
+
 """
 The original code is licensed under a modified BSD License
 and is available at: https://wiki.python.org/moin/PyQt/Python%20syntax%20highlighting
@@ -41,7 +41,7 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import QRegExp, Qt
 from PyQt5.QtGui import QColor, QTextCharFormat, QFont, QSyntaxHighlighter
 
 import GerenciadorDeKeywords
@@ -65,18 +65,17 @@ def format_(color, style=''):
 
 # Syntax styles that can be shared by all languages
 STYLES = {
-    'keyword': format_(''),
+    'keyword': format_('#D2D200', 'bold'),
     'keyword_2': format_('#60BC0E'),
-    'keyword_3': format_('blue'),
+    'keyword_3': format_('#D2D200'),
     'keyword_4': format_('#A6E22E', 'bold'),
-    'operator': format_('red'),
-    'brace': format_('darkGray'),
+    'brace': format_('lightGray'),
     'defclass': format_('black', 'bold'),
-    'string': format_('magenta'),
+    'string': format_('#E3ED77'),
     'string2': format_('darkMagenta'),
-    'comment': format_('darkGreen', 'italic'),
+    'comment': format_('Gray', 'italic'),
     'self': format_('black', 'italic'),
-    'numbers': format_('brown'),
+    'numbers': format_('#52e3f6'),
 }
 
 
@@ -89,21 +88,16 @@ class PythonHighlighter(QSyntaxHighlighter):
     # Br.ino keywords tipo 2
     keywords_2 = GerenciadorDeKeywords.get_highlights('2')
 
-    # Python braces
+    # Br.ino keywords tipo 3
     keywords_3 = GerenciadorDeKeywords.get_highlights('3')
 
+    # Br.ino keywords tipo 4
     keywords_4 = GerenciadorDeKeywords.get_highlights('4')
 
     def __init__(self, document):
 
         QSyntaxHighlighter.__init__(self, document)
         self.parent = document
-
-        # Multi-line strings (expression, flag, style)
-        # FIXME: The triple-quotes in these two lines will mess up the
-        # syntax highlighting from this point onward
-        self.tri_single = (QRegExp("'''"), 1, STYLES['string2'])
-        self.tri_double = (QRegExp('"""'), 2, STYLES['string2'])
 
         rules = []
 
@@ -140,62 +134,45 @@ class PythonHighlighter(QSyntaxHighlighter):
         self.rules = [(QRegExp(pat), index, fmt)
                       for (pat, index, fmt) in rules]
 
-    def highlightBlock(self, text):
+        formato_funcao = QTextCharFormat()
+        formato_funcao.setFontItalic(True)
+        self.rules.append((QRegExp("\\b[A-Za-z0-9_]+(?=\\()"), 0, formato_funcao))
+
+        self.commentStartExpression = QRegExp("/\\*")
+        self.commentEndExpression = QRegExp("\\*/")
+        self.multiLineCommentFormat = QTextCharFormat()
+        self.multiLineCommentFormat.setForeground(Qt.cyan)
+
+    def highlightBlock(self, texto):
         """Apply syntax highlighting to the given block of text.
         """
         # Do other syntax formatting
         for expression, nth, format_ in self.rules:
-            index = expression.indexIn(text, 0)
+            indice = expression.indexIn(texto, 0)
 
-            while index >= 0:
-                # We actually want the index of the nth match
-                index = expression.pos(nth)
-                length = expression.cap(nth).length()
-                self.setFormat(index, length, format_)
-                index = expression.indexIn(text, index + length)
+            while indice >= 0:
+                # We actually want the indice of the nth match
+                indice = expression.pos(nth)
+                length = expression.matchedLength()
+                self.setFormat(indice, length, format_)
+                indice = expression.indexIn(texto, indice + length)
+
         self.setCurrentBlockState(0)
 
-        # Do multi-line strings
-        in_multiline = self.match_multiline(text, *self.tri_single)
-        if not in_multiline:
-            in_multiline = self.match_multiline(text, *self.tri_double)
+        indice_inicio = 0
 
-    def match_multiline(self, text, delimiter, in_state, style):
-        """Do highlighting of multi-line strings. ``delimiter`` should be a
-        ``QRegExp`` for triple-single-quotes or triple-double-quotes, and
-        ``in_state`` should be a unique integer to represent the corresponding
-        state changes when inside those strings. Returns True if we're still
-        inside a multi-line string when this function is finished.
-        """
-        # If inside triple-single quotes, start at 0
-        if self.previousBlockState() == in_state:
-            start = 0
-            add = 0
-        # Otherwise, look for the delimiter on this line
-        else:
-            start = delimiter.indexIn(text)
-            # Move past this match
-            add = delimiter.matchedLength()
+        if self.previousBlockState() != 1:
+            indice_inicio = self.commentStartExpression.indexIn(texto)
 
-        # As long as there's a delimiter match on this line...
-        while start >= 0:
-            # Look for the ending delimiter
-            end = delimiter.indexIn(text, start + add)
-            # Ending delimiter on this line?
-            if end >= add:
-                length = end - start + add + delimiter.matchedLength()
-                self.setCurrentBlockState(0)
-            # No; multi-line string
+        while indice_inicio >= 0:
+            indice_final = self.commentEndExpression.indexIn(texto, indice_inicio)
+
+            if indice_final == -1:
+                self.setCurrentBlockState(1)
+                comprimento_comentario = len(texto) - indice_inicio
             else:
-                self.setCurrentBlockState(in_state)
-                length = text.length() - start + add
-            # Apply formatting
-            self.setFormat(start, length, style)
-            # Look for the next match
-            start = delimiter.indexIn(text, start + length)
+                comprimento_comentario = indice_final - indice_inicio + self.commentEndExpression.matchedLength()
 
-        # Return True if still inside a multi-line string, False otherwise
-        if self.currentBlockState() == in_state:
-            return True
-        else:
-            return False
+            self.setFormat(indice_inicio, comprimento_comentario,
+                           self.multiLineCommentFormat)
+            indice_inicio = self.commentStartExpression.indexIn(texto, indice_inicio + comprimento_comentario);

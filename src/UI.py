@@ -3,8 +3,8 @@
 
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit)
 
-import Menu
 import DestaqueSintaxe
+import Menu
 
 """
 Br.ino Qt UI

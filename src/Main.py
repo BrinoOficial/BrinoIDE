@@ -3,16 +3,13 @@
 
 import os
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
 
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
-import GerenciadorDeExemplos
 import GerenciadorDeLinguas
-import GerenciadorDeTexto
-import Menu
 import MonitorSerial
 import UI
 
@@ -198,6 +195,8 @@ class Principal(QMainWindow):
 
 
 def main():
+    if os.getcwd().find("src") == -1:
+        os.chdir('src')
     app = QApplication(sys.argv)
     principal = Principal()
     app.setStyleSheet("""QMainWindow {
