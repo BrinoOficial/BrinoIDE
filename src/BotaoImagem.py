@@ -1,6 +1,6 @@
+from PyQt5.QtCore import QSize, QEvent
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QAbstractButton
-from PyQt5.QtCore import QSize
 
 """
 Br.ino Qt UI
@@ -43,6 +43,7 @@ class botaoImagem(QAbstractButton):
     def __init__(self, pixmap, parent=None):
         super(botaoImagem, self).__init__(parent)
         self.pixmap = pixmap
+        self.installEventFilter(self)
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -50,3 +51,10 @@ class botaoImagem(QAbstractButton):
 
     def sizeHint(self):
         return QSize(50, 63)
+
+    def eventFilter(self, object, event):
+        if event.type() == QEvent.HoverMove:
+            print "Hovering"
+            return True
+
+        return False
