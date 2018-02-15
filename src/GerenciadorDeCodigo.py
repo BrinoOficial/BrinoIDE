@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-Br.ino Qt Main
+Br.ino Qt GerenciadorDeCodigo
 
-Codigo da janela principal da IDE Br.ino
-em PyQt4 (python 2.7)
+Codigo do gerenciador de codigo do Br.ino
+em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 

@@ -3,7 +3,7 @@ from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
 
 """
-Br.ino Qt UI
+Br.ino Qt editor de texto
 
 Interface base da IDE Br.ino
 em PyQt5 (python 2.7)

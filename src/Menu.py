@@ -11,10 +11,10 @@ import MonitorSerial
 
 
 """
-Br.ino Qt UI
+Br.ino Qt Menu
 
 Interface base da IDE Br.ino
-em PyQt4 (python 2.7)
+em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 

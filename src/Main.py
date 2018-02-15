@@ -17,7 +17,7 @@ import UI
 Br.ino Qt Main
 
 Codigo da janela principal da IDE Br.ino
-em PyQt4 (python 2.7)
+em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 

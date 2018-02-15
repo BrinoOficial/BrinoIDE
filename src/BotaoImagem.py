@@ -3,10 +3,10 @@ from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QAbstractButton
 
 """
-Br.ino Qt UI
+Br.ino Qt botoes do menu
 
 Interface base da IDE Br.ino
-em PyQt4 (python 2.7)
+em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 

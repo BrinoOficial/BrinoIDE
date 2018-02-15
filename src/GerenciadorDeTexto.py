@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-Br.ino Qt Main
+Br.ino Qt GerenciadorDeTexto
 
-Codigo da janela principal da IDE Br.ino
+Codigo do gerenciador de texto da IDE Br.ino
 em PyQt4 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
@@ -32,4 +32,3 @@ email: mateus.berardo@brino.cc
 contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
-
