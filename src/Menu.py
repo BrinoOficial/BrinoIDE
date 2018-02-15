@@ -50,10 +50,9 @@ class Menu(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        container = QWidget(self)
-        container.setFixedWidth(60)
-        layout = QVBoxLayout(container)
-        container.setStyleSheet("background-color: '#5cb50d';")
+        menu = QWidget(self)
+        layout = QVBoxLayout(menu)
+        menu.setStyleSheet("background-color: '#5cb50d';")
 
         btn_compilar = botaoImagem(QPixmap(os.path.join('recursos', 'compilarFoco.png')), self)
         btn_compilar_e_carregar = botaoImagem(QPixmap(os.path.join('recursos', 'carregarFoco.png')), self)
@@ -63,8 +62,8 @@ class Menu(QWidget):
         btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
         btn_monitor_serial.setFixedSize(50, 50)
 
-        layout.setContentsMargins(5, 5, 5, 0)
-        espacador_vertical = QSpacerItem(0, 500000000, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        layout.setContentsMargins(5, 5, 5, 5)
+        espacador_vertical = QSpacerItem(0, 50000, QSizePolicy.Expanding, QSizePolicy.Expanding)
         layout.addWidget(btn_compilar)
         layout.addWidget(btn_compilar_e_carregar)
         layout.addWidget(btn_novo)

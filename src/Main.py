@@ -80,7 +80,9 @@ class Principal(QMainWindow):
 
         self.setCentralWidget(UI.Centro())
 
-        self.setGeometry(300, 300, 500, 550)
+        self.setGeometry(100, 50, 500, 550)
+        self.setMinimumWidth(500)
+        self.setMinimumHeight(520)
         self.setWindowTitle('Br.ino ' + versao)
         self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
         self.show()
