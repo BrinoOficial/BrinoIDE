@@ -40,21 +40,37 @@ email: victor.pacheco@brino.cc
 
 
 class botaoImagem(QAbstractButton):
-    def __init__(self, pixmap, parent=None):
+    def __init__(self, pixmap, hover_pixmap, parent=None):
         super(botaoImagem, self).__init__(parent)
         self.pixmap = pixmap
+        self.hover_pixmap = hover_pixmap
         self.installEventFilter(self)
+        self.estado_botao = False
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.drawPixmap(event.rect(), self.pixmap)
+        if self.estado_botao == False:
+            painter.drawPixmap(event.rect(), self.pixmap)
+        if self.estado_botao == True:
+            painter.drawPixmap(event.rect(), self.hover_pixmap)
 
     def sizeHint(self):
         return QSize(50, 63)
 
+    def enterEvent(self, QEvent):
+        self.estado_botao = True
+        self.update()
+
+    def leaveEvent(self, QEvent):
+        self.estado_botao = False
+        self.update()
+
     def eventFilter(self, object, event):
-        if event.type() == QEvent.HoverMove:
+        if event.type() == QAbstractButton.enterEvent:
             print "Hovering"
             return True
+        if event.type() == QAbstractButton.leaveEvent:
+            print "UnHovering"
+            pass
 
         return False
