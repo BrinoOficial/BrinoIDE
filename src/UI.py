@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit)
 
 import DestaqueSintaxe
 import Menu
+import EditorDeTexto
 
 """
 Br.ino Qt UI
@@ -57,8 +58,9 @@ class Centro(QWidget):
         layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        editor = QPlainTextEdit(self)
-        editor.setStyleSheet("background:#252525")
+        editor = EditorDeTexto.CodeEditor(self)
+        editor.setStyleSheet("background:#252525;")
+
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         layout.addWidget(editor, 0, 1, 1, 2)
 
@@ -67,6 +69,5 @@ class Centro(QWidget):
         log.setDisabled(True)
         layout.addWidget(log, 1, 1, 1, 2)
 
-
-
         self.show()
+

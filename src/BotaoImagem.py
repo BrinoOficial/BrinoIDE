@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSize, QEvent
+from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QAbstractButton
 
@@ -49,9 +49,9 @@ class botaoImagem(QAbstractButton):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        if self.estado_botao == False:
+        if not self.estado_botao:
             painter.drawPixmap(event.rect(), self.pixmap)
-        if self.estado_botao == True:
+        else:
             painter.drawPixmap(event.rect(), self.hover_pixmap)
 
     def sizeHint(self):

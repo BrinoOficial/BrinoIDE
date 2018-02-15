@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from PyQt5.QtWidgets import QFileDialog
+
 """
 Br.ino Qt Gerenciador de Arquivos
 
@@ -39,8 +41,14 @@ def novo(nome="semNome"):
     print "Criando arquivo "
 
 
-def abrir():
-    # TODO abrir arquivo
+def abrir(parent):
+    opcoes = QFileDialog.Options()
+    opcoes |= QFileDialog.DontUseNativeDialog
+    arquivo, _ = QFileDialog.getOpenFileName(caption="QFileDialog.getOpenFileName()", directory="",
+                                             filter="Rascunhos Br.ino (*.brpp);; Rascunhos Arduino (*.ino)",
+                                             options=opcoes)
+    if arquivo:
+        print arquivo
     print "Abrindo"
 
 def exemplos():

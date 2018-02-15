@@ -7,6 +7,8 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 
 from BotaoImagem import botaoImagem
+import MonitorSerial
+
 
 """
 Br.ino Qt UI
@@ -67,6 +69,7 @@ class Menu(QWidget):
                                  QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
         btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
                                          QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
+        btn_monitor_serial.clicked.connect(MonitorSerial.monitor_serial)
         btn_monitor_serial.setFixedSize(50, 50)
 
         layout.setContentsMargins(5, 5, 5, 5)

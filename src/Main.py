@@ -195,10 +195,9 @@ class Principal(QMainWindow):
 
 
 def main():
-    if os.getcwd().find("src") == -1:
-        os.chdir('src')
     app = QApplication(sys.argv)
     principal = Principal()
+    principal.show()
     app.setStyleSheet("""QMainWindow {
                              background: '#252525';
                          }
@@ -212,20 +211,120 @@ def main():
                              background: '#101010';
                          }
                          QMenuBar {
-                             background: '#252525';
+                            background: '#252525';
                          }
                          QMenuBar::item {
-                             background: '#252525';
+                            background: '#252525';
                          } 
                          QMenuBar::item:selected{
-                             background: '#101010';
+                            background: '#101010';
                          }
                          QPlainTextEdit{
-                             background: '#252525';
-                             border: None;
-                             border-radius: 6px;
-                             color: '#efefef';
-                             selection-background-color: '#454545';
+                            background: '#252525';
+                            border: None;
+                            border-radius: 6px;
+                            color: '#efefef';
+                            selection-background-color: '#454545';
+                         }
+                         QScrollBar:vertical {
+                            width: 10px;
+                            margin: 2px 0 2px 0;
+                          }
+                         QScrollBar::handle:vertical {
+                            min-height: 5px;
+                            background: #5cb50d;
+                            border-radius: 5px;
+                         }
+                         QScrollBar::add-line:vertical {
+                            height: 0px;
+                            subcontrol-position: bottom;
+                            subcontrol-origin: margin;
+                         }
+                         QScrollBar::sub-line:vertical {
+                            height: 0px;
+                            subcontrol-position: top;
+                            subcontrol-origin: margin;
+                         }
+                         QScrollBar:horizontal {
+                            height: 10px;
+                            margin: 0px 2px 0px 2px;
+                          }
+                         QScrollBar::handle:horizontal {
+                            min-width: 5px;
+                            background: #5cb50d;
+                            border-radius: 5px;
+                         }
+                         QScrollBar::add-line:horizontal {
+                            width: 0px;
+                            subcontrol-position: bottom;
+                            subcontrol-origin: margin;
+                         }
+                         QScrollBar::sub-line:horizontal {
+                            width: 0px;
+                            subcontrol-position: top;
+                            subcontrol-origin: margin;
+                         }
+                         QDialog{
+                            background:#252525;
+                            filedialog-listview-icon: url(recursos/listaFoco.png);
+                            filedialog-new-directory-icon: url(recursos/NovaPasta.png);
+                            filedialog-parent-directory-icon: url(recursos/pastaPrincipal.png);
+                            filedialog-detailedview-icon: url(recursos/detalhesFoco.png);
+                            filedialog-contentsview-icon: url(recursos/pasta.png)
+                            
+                         }
+                         QDialog QListView{
+                            background:#101010;
+                            margin:0;
+                            padding:5;        
+                            border-radius:5px;
+                            border-color:#101010;                    
+                         }
+                         QHeaderView{
+                            background-color:#252525;
+                            border-radius:5px;                    
+                         }
+                         QHeaderView::section{
+                            background-color:#252525;
+                            color:#efefef;
+                            border-radius:5px;                    
+                         }
+                         QDialog QTreeView::branch{
+                            background:#101010;
+                            border-color:#101010;                    
+                         }
+                         QDialog QTreeView{
+                            background:#101010;
+                            margin:0;
+                            padding:5;        
+                            border-radius:5px;
+                            border-color:#101010;                    
+                         }
+                         QDialog QLabel{
+                            color:#efefef;
+                         }
+                         QDialog QComboBox{
+                            height:25px;
+                            background:#5cb50d;
+                            border-radius:5px;
+                         }
+                         QDialog QLineEdit{
+                            height:25px;
+                            background:#5cb50d;
+                            border-radius:5px;
+                         }
+                         QDialog QPushButton{
+                            background:#5cb50d;
+                            border-radius:5px;
+                            height:30px;
+                            width:70px;
+                            color:#efefef;
+                         }
+                         QTreeView QScrollBar:vertical{
+                            background:#101010;                            
+                         }
+                         QTreeView QScrollBar:horizontal{
+                            background:#101010;                            
                          }""")
     sys.exit(app.exec_())
 
