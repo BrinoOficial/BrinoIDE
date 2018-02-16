@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton)
+from PyQt5.QtCore import Qt
+
 
 import DestaqueSintaxe
 import Menu
@@ -39,6 +41,7 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+tabs = None
 
 class Centro(QWidget):
 
@@ -58,11 +61,21 @@ class Centro(QWidget):
         layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
 
+        self.tabs = QTabWidget(self)
+        self.tabs.tabCloseRequested.connect(self.remover_aba)
+        self.tabs.setTabsClosable(True)
         editor = EditorDeTexto.CodeEditor(self)
         editor.setStyleSheet("background:#252525;")
+        self.tabs.addTab(editor, "Novo")
+        btn = QPushButton(self)
+
+        self.tabs.setCornerWidget(btn, Qt.TopRightCorner)
+        btn.clicked.connect(self.nova_aba)
+        global tabs
+        tabs = self.tabs
 
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        layout.addWidget(editor, 0, 1, 1, 2)
+        layout.addWidget(self.tabs, 0, 1, 1, 2)
 
         log = QPlainTextEdit(self)
         log.setStyleSheet("background:#000000; margin-bottom: 5px; margin-right: 5px;")
@@ -71,3 +84,14 @@ class Centro(QWidget):
 
         self.show()
 
+    def remover_aba(self, index):
+        widget = self.tabs.widget(index)
+        if widget is not None:
+            widget.deleteLater()
+        self.tabs.removeTab(index)
+
+    def nova_aba(text="Novo"):
+        global tabs
+        editor = EditorDeTexto.CodeEditor(tabs)
+        editor.setStyleSheet("background:#252525;")
+        tabs.addTab(editor, "Novo")

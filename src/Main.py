@@ -168,8 +168,6 @@ class Principal(QMainWindow):
         self.acao_verificar_e_carregar = acao_verificar_e_carregar
 
 
-
-
     def criar_barra_menu(self):
         self.criar_acoes()
 
@@ -227,7 +225,6 @@ def main():
                          QPlainTextEdit{
                             background: '#252525';
                             border: None;
-                            border-radius: 6px;
                             color: '#efefef';
                             selection-background-color: '#454545';
                          }
@@ -346,7 +343,42 @@ def main():
                          }
                          QTreeView QScrollBar:horizontal{
                             background:#101010;                            
-                         }""")
+                         }
+                         QTabBar::tab{
+                            background: #101010;
+                            color: #efefef;
+                            border-right: 1px solid #505050;
+                            padding-right: 5px;
+                            padding-left: 5px;
+                         }
+                         QTabBar::close-button{
+                            image: url(recursos/fechar.png);
+                            padding: 6px;
+                         }
+                         QTabBar::close-button:hover{
+                            image: url(recursos/fecharFoco.png);
+                            padding: 4px;
+                         }
+                         QTabBar::tab:selected{
+                            background:#252525;
+                            border-top: 2px solid #5cb50d;
+                         }
+                         QTabWidget::pane{
+                            background: #101010;
+                         }
+                         QTabWidget QPushButton{
+                            background:#252525;
+                            border:0;
+                            padding:3px;
+                            margin-top: 3px;
+                            image: url(recursos/mais.png);
+                         }
+                         QTabWidget QPushButton:hover{
+                            padding:0;
+                            image: url(recursos/maisFoco.png);
+                         }
+                         
+                         """)
     GerenciadorDeArquivos.novo(False)
     sys.exit(app.exec_())
 
