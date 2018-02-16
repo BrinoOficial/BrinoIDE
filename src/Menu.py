@@ -7,12 +7,14 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 
 from BotaoImagem import botaoImagem
+import MonitorSerial
+import GerenciadorDeArquivos
 
 """
-Br.ino Qt UI
+Br.ino Qt Menu
 
 Interface base da IDE Br.ino
-em PyQt4 (python 2.7)
+em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
@@ -50,21 +52,29 @@ class Menu(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        container = QWidget(self)
-        container.setFixedWidth(60)
-        layout = QVBoxLayout(container)
-        container.setStyleSheet("background-color: '#5cb50d';")
+        menu = QWidget(self)
+        layout = QVBoxLayout(menu)
+        menu.setStyleSheet("background-color: '#5cb50d';")
 
-        btn_compilar = botaoImagem(QPixmap(os.path.join('recursos', 'compilarFoco.png')), self)
-        btn_compilar_e_carregar = botaoImagem(QPixmap(os.path.join('recursos', 'carregarFoco.png')), self)
-        btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'novoArquivoFoco.png')), self)
-        btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'abrirPastaFoco.png')), self)
-        btn_salvar = botaoImagem(QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
-        btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
+        btn_compilar = botaoImagem(QPixmap(os.path.join('recursos', 'compilar.png')),
+                                   QPixmap(os.path.join('recursos', 'compilarFoco.png')), self)
+        btn_compilar_e_carregar = botaoImagem(QPixmap(os.path.join('recursos', 'carregar.png')),
+                                              QPixmap(os.path.join('recursos', 'carregarFoco.png')), self)
+        btn_compilar_e_carregar.setFixedSize(50, 70)
+        btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'novoArquivo.png')),
+                               QPixmap(os.path.join('recursos', 'novoArquivoFoco.png')), self)
+        btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'abrirPasta.png')),
+                                QPixmap(os.path.join('recursos', 'abrirPastaFoco.png')), self)
+        btn_abrir.clicked.connect(GerenciadorDeArquivos.abrir)
+        btn_salvar = botaoImagem(QPixmap(os.path.join('recursos', 'salvar.png')),
+                                 QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
+        btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
+                                         QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
+        btn_monitor_serial.clicked.connect(MonitorSerial.monitor_serial)
         btn_monitor_serial.setFixedSize(50, 50)
 
-        layout.setContentsMargins(5, 5, 5, 0)
-        espacador_vertical = QSpacerItem(0, 500000000, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        layout.setContentsMargins(5, 5, 5, 5)
+        espacador_vertical = QSpacerItem(0, 50000, QSizePolicy.Expanding, QSizePolicy.Expanding)
         layout.addWidget(btn_compilar)
         layout.addWidget(btn_compilar_e_carregar)
         layout.addWidget(btn_novo)

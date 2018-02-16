@@ -1,11 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os, re
+from PyQt5.QtWidgets import QFileDialog, QInputDialog
+import EditorDeTexto
+
 """
 Br.ino Qt Gerenciador de Arquivos
 
 Codigo gerenciador de arquivos da IDE Br.ino
-em PyQt4 (python 2.7)
+em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
@@ -33,23 +37,61 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-
-def novo(nome="semNome"):
-    # TODO criar novo arquivo
-    print "Criando arquivo "
+caminho = ""
+caminho_padrao = ""
 
 
-def abrir():
-    # TODO abrir arquivo
-    print "Abrindo"
+def novo(perguntar=True):
+    global caminho_padrao, caminho
+    if perguntar:
+        text, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
+        if ok and text != "":
+            caminho = os.path.join(caminho_padrao, text, text + ".brpp")
+            EditorDeTexto.set_texto("")
+            print(caminho)
+        elif not ok:
+            return
+        else:
+            print("nome vazio wtf")
+    else:
+        caminho_padrao = os.path.expanduser("~")
+        docu = re.compile("Documen.*")
+        pastas = os.listdir(caminho_padrao)
+        documentos = filter(docu.match, pastas)
+        caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
+    caminho = ""
+
+
+def abrir(parent):
+    dialogo = QFileDialog()
+    dialogo.setWindowTitle("Abrir arquivo")
+    dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
+    dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
+    dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
+    dialogo.setLabelText(QFileDialog.Accept, "Abrir")
+    dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
+    dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
+    dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
+    if dialogo.exec_() == QFileDialog.Accepted:
+        global caminho
+        caminho = dialogo.selectedFiles()[0]
+        with open(caminho) as arquivo:
+            EditorDeTexto.set_texto(arquivo.read())
+
 
 def exemplos():
     # TODO abrir exemplos
     print "exemplos"
 
+
 def salvar():
-    # TODO salvar arquivo
-    print "salvando"
+    global caminho
+    if caminho != "":
+        with open(caminho, "w") as arquivo:
+            arquivo.write(EditorDeTexto.get_texto())
+    else:
+        salvar_como()
+
 
 def salvar_como():
     # TODO salvar como

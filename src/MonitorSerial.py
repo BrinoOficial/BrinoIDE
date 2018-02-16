@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from PyQt5.QtWidgets import QMainWindow, QTextEdit
+
 
 """
-Br.ino Qt Main
+Br.ino Qt monitor serial
 
-Codigo da janela principal da IDE Br.ino
+Codigo do monitor serial da IDE Br.ino
 em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
@@ -34,5 +36,20 @@ email: victor.pacheco@brino.cc
 """
 
 def monitor_serial():
-    #TODO abrir serial
     print "Abrindo serial"
+    monitor_serial = MonitorSerial()
+    monitor_serial.show()
+
+
+class MonitorSerial(QMainWindow):
+    def __init__(self, parent=None):
+        super(MonitorSerial, self).__init__(parent)
+
+        self.init_ui()
+
+    def init_ui(self):
+        textEdit = QTextEdit()
+        self.setCentralWidget(textEdit)
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Quit button')
+        self.show()

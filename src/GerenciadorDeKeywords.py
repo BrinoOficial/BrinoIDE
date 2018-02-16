@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-Br.ino Qt UI
+Br.ino Qt GerenciadorDeKeywords
 
-Interface base da IDE Br.ino
-em PyQt4 (python 2.7)
+Gerenciador das palavras chave da IDE Br.ino
+em PyQt5 (python 2.7)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
@@ -43,8 +43,8 @@ def get_highlights(tipo):
 
     for palavra_chave in data['Keywords']:
         if palavra_chave['highlight-type'] == tipo:
-            uni = str(palavra_chave['highlight'].encode('utf-8'))
-            palavras.append(uni)
+            uni = palavra_chave['highlight']
+            palavras.append(uni.encode('utf-8'))
 
     return palavras
 
