@@ -347,6 +347,7 @@ def main():
                          QTreeView QScrollBar:horizontal{
                             background:#101010;                            
                          }""")
+    GerenciadorDeArquivos.novo(False)
     sys.exit(app.exec_())
 
 

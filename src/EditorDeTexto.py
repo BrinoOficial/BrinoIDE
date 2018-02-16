@@ -66,6 +66,7 @@ email: victor.pacheco@brino.cc
 
 
 class CodeEditor(QPlainTextEdit):
+    instancia = 0
 
     def __init__(self, parent):
         super(CodeEditor, self).__init__(parent)
@@ -74,9 +75,10 @@ class CodeEditor(QPlainTextEdit):
         self.blockCountChanged.connect(self.atualizar_largura_contador)
         self.updateRequest.connect(self.atualizar_area_contador)
         self.cursorPositionChanged.connect(self.marcar_linha_atual)
-
         self.atualizar_largura_contador(0)
         self.marcar_linha_atual()
+        global instancia
+        instancia = self
 
     def atualizar_largura_contador(self, largura):
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
@@ -126,6 +128,16 @@ class CodeEditor(QPlainTextEdit):
             top = bottom
             bottom = top + int(self.blockBoundingRect(bloco).height())
             numero_bloco += 1
+
+
+def set_texto(texto):
+    global instancia
+    instancia.setPlainText(texto)
+
+
+def get_texto():
+    global instancia
+    return instancia.toPlainText()
 
 
 class ContadorDeLinhas(QWidget):

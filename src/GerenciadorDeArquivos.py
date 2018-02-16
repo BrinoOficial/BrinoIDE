@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import QFileDialog
+import os, re
+from PyQt5.QtWidgets import QFileDialog, QInputDialog
+import EditorDeTexto
 
 """
 Br.ino Qt Gerenciador de Arquivos
@@ -35,10 +37,28 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+caminho = ""
+caminho_padrao = ""
 
-def novo(nome="semNome"):
-    # TODO criar novo arquivo
-    print "Criando arquivo "
+
+def novo(perguntar=True):
+    global caminho_padrao, caminho
+    caminho = ""
+    caminho_padrao = os.path.expanduser("~")
+    docu = re.compile("Documen.*")
+    pastas = os.listdir(caminho_padrao)
+    documentos = filter(docu.match, pastas)
+    caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
+    if perguntar:
+        text, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
+        if ok and text != "":
+            caminho = os.path.join(caminho_padrao, text, text + ".brpp")
+            EditorDeTexto.set_texto("")
+            print(caminho)
+        elif not ok:
+            pass
+        else:
+            print("nome vazio wtf")
 
 
 def abrir(parent):
@@ -51,19 +71,26 @@ def abrir(parent):
     dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
     dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
     dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
-
     if dialogo.exec_() == QFileDialog.Accepted:
-        print dialogo.selectedFiles()[0]
+        global caminho
+        caminho = dialogo.selectedFiles()[0]
+        with open(caminho) as arquivo:
+            EditorDeTexto.set_texto(arquivo.read())
 
-    print "Abrindo"
 
 def exemplos():
     # TODO abrir exemplos
     print "exemplos"
 
+
 def salvar():
-    # TODO salvar arquivo
-    print "salvando"
+    global caminho
+    if caminho != "":
+        with open(caminho, "w") as arquivo:
+            arquivo.write(EditorDeTexto.get_texto())
+    else:
+        salvar_como()
+
 
 def salvar_como():
     # TODO salvar como
