@@ -42,13 +42,19 @@ def novo(nome="semNome"):
 
 
 def abrir(parent):
-    opcoes = QFileDialog.Options()
-    opcoes |= QFileDialog.DontUseNativeDialog
-    arquivo, _ = QFileDialog.getOpenFileName(caption="QFileDialog.getOpenFileName()", directory="",
-                                             filter="Rascunhos Br.ino (*.brpp);; Rascunhos Arduino (*.ino)",
-                                             options=opcoes)
-    if arquivo:
-        print arquivo
+    dialogo = QFileDialog()
+    dialogo.setWindowTitle("Abrir arquivo")
+    dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
+    dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
+    dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
+    dialogo.setLabelText(QFileDialog.Accept, "Abrir")
+    dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
+    dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
+    dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
+
+    if dialogo.exec_() == QFileDialog.Accepted:
+        print dialogo.selectedFiles()[0]
+
     print "Abrindo"
 
 def exemplos():

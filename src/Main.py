@@ -19,6 +19,11 @@ Br.ino Qt Main
 Codigo da janela principal da IDE Br.ino
 em PyQt5 (python 2.7)
 
+    setaCima.png, setaBaixo.png, setaDireita.png e setaEsquerda.png 
+    made by Dave Gandy
+    Site: https://www.flaticon.com/authors/dave-gandy
+    is licensed by: http://creativecommons.org/licenses/by/3.0/"
+
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
     Este arquivo e parte da IDE do Br.ino.
@@ -271,7 +276,6 @@ def main():
                             filedialog-parent-directory-icon: url(recursos/pastaPrincipal.png);
                             filedialog-detailedview-icon: url(recursos/detalhesFoco.png);
                             filedialog-contentsview-icon: url(recursos/pasta.png)
-                            
                          }
                          QDialog QListView{
                             background:#101010;
@@ -279,6 +283,12 @@ def main():
                             padding:5;        
                             border-radius:5px;
                             border-color:#101010;                    
+                         }
+                         QListView QScrollBar:vertical{
+                            background:#101010;                            
+                         }
+                         QListView QScrollBar:horizontal{
+                            background:#101010;                            
                          }
                          QHeaderView{
                             background-color:#252525;
@@ -305,12 +315,23 @@ def main():
                          }
                          QDialog QComboBox{
                             height:25px;
-                            background:#5cb50d;
+                            background:#101010;
                             border-radius:5px;
+                         }
+                         QComboBox{
+                            selection-background-color: #5cb50d;
+                         }
+                         QDialog QComboBox::down-arrow{
+                            border: 0;
+                            height: 50px;
+                            image: url(recursos/setaBaixo.png);
+                         }
+                         QComboBox::drop-down{                        
+                            border: 0px;
                          }
                          QDialog QLineEdit{
                             height:25px;
-                            background:#5cb50d;
+                            background:#101010;
                             border-radius:5px;
                          }
                          QDialog QPushButton{

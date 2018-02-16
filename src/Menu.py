@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 
 from BotaoImagem import botaoImagem
 import MonitorSerial
-
+import GerenciadorDeArquivos
 
 """
 Br.ino Qt Menu
@@ -65,6 +65,7 @@ class Menu(QWidget):
                                QPixmap(os.path.join('recursos', 'novoArquivoFoco.png')), self)
         btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'abrirPasta.png')),
                                 QPixmap(os.path.join('recursos', 'abrirPastaFoco.png')), self)
+        btn_abrir.clicked.connect(GerenciadorDeArquivos.abrir)
         btn_salvar = botaoImagem(QPixmap(os.path.join('recursos', 'salvar.png')),
                                  QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
         btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
