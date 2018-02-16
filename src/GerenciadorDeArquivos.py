@@ -43,12 +43,6 @@ caminho_padrao = ""
 
 def novo(perguntar=True):
     global caminho_padrao, caminho
-    caminho = ""
-    caminho_padrao = os.path.expanduser("~")
-    docu = re.compile("Documen.*")
-    pastas = os.listdir(caminho_padrao)
-    documentos = filter(docu.match, pastas)
-    caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
     if perguntar:
         text, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
         if ok and text != "":
@@ -56,9 +50,16 @@ def novo(perguntar=True):
             EditorDeTexto.set_texto("")
             print(caminho)
         elif not ok:
-            pass
+            return
         else:
             print("nome vazio wtf")
+    else:
+        caminho_padrao = os.path.expanduser("~")
+        docu = re.compile("Documen.*")
+        pastas = os.listdir(caminho_padrao)
+        documentos = filter(docu.match, pastas)
+        caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
+    caminho = ""
 
 
 def abrir(parent):
