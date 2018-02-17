@@ -76,16 +76,17 @@ class Principal(QMainWindow):
         self.acao_verificar = 0
         self.acao_verificar_e_carregar = 0
 
+        self.widget_central = UI.Centro()
+
         self.init_ui()
 
     def init_ui(self):
         self.criar_barra_menu()
 
-        self.setCentralWidget(UI.Centro())
+        self.setCentralWidget(self.widget_central)
 
         self.setGeometry(100, 50, 500, 550)
-        self.setMinimumWidth(500)
-        self.setMinimumHeight(520)
+        self.setMinimumSize(500, 520)
         self.setWindowTitle('Br.ino ' + versao)
         self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
         self.show()
@@ -184,7 +185,6 @@ class Principal(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     principal = Principal()
-    principal.show()
     app.setStyleSheet("""QMainWindow {
                              background: '#252525';
                          }

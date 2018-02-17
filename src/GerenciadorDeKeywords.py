@@ -49,14 +49,19 @@ def get_highlights(tipo):
     return palavras
 
 
-def traducao(file_path, pattern, subst):
-    # Create temp file
-    fh, abs_path = mkstemp()
-    with fdopen(caminho, 'w') as new_file:
-        with open(file_path) as old_file:
+def traducao():
+    data = json.load(open(os.path.join('recursos', 'pt-br.json')))
+
+    with open(os.path.join("recursos", "saida.ino"), 'w') as new_file:
+        with open(os.path.join("recursos", "entrada.brpp")) as old_file:
             for line in old_file:
-                new_file.write(line.replace(pattern, subst))
+                line_blank = line.lstrip()
+                if not line_blank.startswith("//"):
+                    for palavra_chave in data['Keywords']:
+                        line = line.replace(palavra_chave['translate'], palavra_chave['arduino'])
+                new_file.write(line)
+
 
 if __name__ == '__main__':
-    print(get_highlights('4'))
-
+    traducao()
+    print(open(os.path.join("recursos", "saida.ino")).read())

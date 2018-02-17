@@ -44,12 +44,10 @@ email: victor.pacheco@brino.cc
 tabs = None
 
 class Centro(QWidget):
-    instance = None
+
     def __init__(self):
         super(Centro, self).__init__()
-        self.layout = 0
-        global instance
-        instance = self
+
         self.init_ui()
 
     def init_ui(self):
@@ -121,5 +119,6 @@ class Centro(QWidget):
             self.tabs.setTabsClosable(True)
         editor = EditorDeTexto.CodeEditor(tabs)
         editor.setStyleSheet("background:#252525;")
+        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         tabs.addTab(editor, "Novo")
 
