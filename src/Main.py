@@ -12,6 +12,7 @@ import GerenciadorDeCodigo
 import GerenciadorDeLinguas
 import MonitorSerial
 import UI
+from UI import Centro
 
 """
 Br.ino Qt Main
@@ -61,7 +62,7 @@ class Principal(QMainWindow):
         self.acao_novo = 0
         self.acao_abrir = 0
         self.acao_exemplos = 0
-        self.acao_sair = 0
+        self.acao_sair = QAction('Sair', self)
         self.acao_salvar = 0
         self.acao_salvar_como = 0
         self.acao_comentar_linha = 0
@@ -90,82 +91,65 @@ class Principal(QMainWindow):
         self.show()
 
     def criar_acoes(self):
-        acao_sair = QAction('Sair', self)
-        acao_sair.setShortcut('Ctrl+Q')
-        acao_sair.setStatusTip('Sair da IDE do Br.ino')
-        acao_sair.triggered.connect(self.close)
-        self.acao_sair = acao_sair
+        self.acao_sair.setShortcut('Ctrl+Q')
+        self.acao_sair.setStatusTip('Sair da IDE do Br.ino')
+        self.acao_sair.triggered.connect(self.close)
 
-        acao_novo = QAction('&Novo', self)
-        acao_novo.setShortcut("Ctrl+N")
-        acao_novo.triggered.connect(GerenciadorDeArquivos.novo)
-        self.acao_novo = acao_novo
+        self.acao_novo = QAction('&Novo', self)
+        self.acao_novo.setShortcut("Ctrl+N")
+        self.acao_novo.triggered.connect(GerenciadorDeArquivos.novo)
 
-        acao_abrir = QAction('Abrir', self)
-        acao_abrir.setShortcut('Ctrl+O')
-        acao_abrir.triggered.connect(GerenciadorDeArquivos.abrir)
-        self.acao_abrir = acao_abrir
+        self.acao_abrir = QAction('Abrir', self)
+        self.acao_abrir.setShortcut('Ctrl+O')
+        self.acao_abrir.triggered.connect(GerenciadorDeArquivos.abrir)
 
-        acao_exemplos = QAction('Exemplos', self)
-        acao_exemplos.triggered.connect(GerenciadorDeArquivos.exemplos)
-        self.acao_exemplos = acao_exemplos
+        self.acao_exemplos = QAction('Exemplos', self)
+        self.acao_exemplos.triggered.connect(GerenciadorDeArquivos.exemplos)
 
-        acao_salvar = QAction('&Salvar', self)
-        acao_salvar.setShortcut('Ctrl+S')
-        acao_salvar.triggered.connect(GerenciadorDeArquivos.salvar)
-        self.acao_salvar = acao_salvar
+        self.acao_salvar = QAction('&Salvar', self)
+        self.acao_salvar.setShortcut('Ctrl+S')
+        self.acao_salvar.triggered.connect(GerenciadorDeArquivos.salvar)
 
-        acao_salvar_como = QAction('Salvar como', self)
-        acao_salvar_como.setShortcut('Ctrl+B')
-        acao_salvar_como.triggered.connect(GerenciadorDeArquivos.salvar_como)
-        self.acao_salvar_como = acao_salvar_como
+        self.acao_salvar_como = QAction('Salvar como', self)
+        self.acao_salvar_como.setShortcut('Ctrl+B')
+        self.acao_salvar_como.triggered.connect(GerenciadorDeArquivos.salvar_como)
 
-        acao_comentar_linha = QAction('Comentar linha', self)
-        acao_comentar_linha.setShortcut('Ctrl+/')
-        acao_comentar_linha.triggered.connect(GerenciadorDeCodigo.comentar_linha)
-        self.acao_comentar_linha = acao_comentar_linha
+        self.acao_comentar_linha = QAction('Comentar linha', self)
+        self.acao_comentar_linha.setShortcut('Ctrl+/')
+        self.acao_comentar_linha.triggered.connect(GerenciadorDeCodigo.comentar_linha)
 
-        acao_achar = QAction('Achar...', self)
-        acao_achar.setShortcut('Ctrl+F')
-        acao_achar.triggered.connect(GerenciadorDeCodigo.achar)
-        self.acao_achar = acao_achar
+        self.acao_achar = QAction('Achar...', self)
+        self.acao_achar.setShortcut('Ctrl+F')
+        self.acao_achar.triggered.connect(GerenciadorDeCodigo.achar)
 
-        acao_achar_e_substituir = QAction('Achar e substituir', self)
-        acao_achar_e_substituir.setShortcut('Ctrl+H')
-        acao_achar_e_substituir.triggered.connect(GerenciadorDeCodigo.achar_e_substituir)
-        self.acao_achar_e_substituir = acao_achar_e_substituir
+        self.acao_achar_e_substituir = QAction('Achar e substituir', self)
+        self.acao_achar_e_substituir.setShortcut('Ctrl+H')
+        self.acao_achar_e_substituir.triggered.connect(GerenciadorDeCodigo.achar_e_substituir)
 
-        acao_ir_para_linha = QAction('Ir para linha', self)
-        acao_ir_para_linha.setShortcut('Ctrl+L')
-        acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
-        self.acao_ir_para_linha = acao_ir_para_linha
+        self.acao_ir_para_linha = QAction('Ir para linha', self)
+        self.acao_ir_para_linha.setShortcut('Ctrl+L')
+        self.acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
 
-        acao_placa = QAction('Placa', self)
-        acao_placa.triggered.connect(GerenciadorDeCodigo.placa)
-        self.acao_placa = acao_placa
+        self.acao_placa = QAction('Placa', self)
+        self.acao_placa.triggered.connect(GerenciadorDeCodigo.placa)
 
-        acao_porta = QAction('Porta', self)
-        acao_porta.triggered.connect(GerenciadorDeCodigo.porta)
-        self.acao_porta = acao_porta
+        self.acao_porta = QAction('Porta', self)
+        self.acao_porta.triggered.connect(GerenciadorDeCodigo.porta)
 
-        acao_lingua = QAction('Lingua', self)
-        acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
-        self.acao_lingua = acao_lingua
+        self.acao_lingua = QAction('Lingua', self)
+        self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
 
-        acao_monitor_serial = QAction('Monitor serial', self)
-        acao_monitor_serial.setShortcut('Ctrl+Shift+M')
-        acao_monitor_serial.triggered.connect(MonitorSerial.monitor_serial)
-        self.acao_monitor_serial = acao_monitor_serial
+        self.acao_monitor_serial = QAction('Monitor serial', self)
+        self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
+        self.acao_monitor_serial.triggered.connect(MonitorSerial.monitor_serial)
 
-        acao_verificar = QAction('Verificar', self)
-        acao_verificar.setShortcut('Ctrl+R')
-        acao_verificar.triggered.connect(GerenciadorDeCodigo.verificar)
-        self.acao_verificar = acao_verificar
+        self.acao_verificar = QAction('Verificar', self)
+        self.acao_verificar.setShortcut('Ctrl+R')
+        self.acao_verificar.triggered.connect(GerenciadorDeCodigo.verificar)
 
-        acao_verificar_e_carregar = QAction('Verificar e carregar', self)
-        acao_verificar_e_carregar.setShortcut('Ctrl+U')
-        acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
-        self.acao_verificar_e_carregar = acao_verificar_e_carregar
+        self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
+        self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
+        self.acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
 
 
     def criar_barra_menu(self):
@@ -379,7 +363,7 @@ def main():
                          }
                          
                          """)
-    GerenciadorDeArquivos.novo(False)
+    GerenciadorDeArquivos.novo(0, False)
     sys.exit(app.exec_())
 
 

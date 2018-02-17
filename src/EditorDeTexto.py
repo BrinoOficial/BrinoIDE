@@ -77,8 +77,6 @@ class CodeEditor(QPlainTextEdit):
         self.cursorPositionChanged.connect(self.marcar_linha_atual)
         self.atualizar_largura_contador(0)
         self.marcar_linha_atual()
-        global instancia
-        instancia = self
 
     def atualizar_largura_contador(self, largura):
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
@@ -130,13 +128,11 @@ class CodeEditor(QPlainTextEdit):
             numero_bloco += 1
 
 
-def set_texto(texto):
-    global instancia
+def set_texto(instancia, texto):
     instancia.setPlainText(texto)
 
 
-def get_texto():
-    global instancia
+def get_texto(instancia):
     return instancia.toPlainText()
 
 

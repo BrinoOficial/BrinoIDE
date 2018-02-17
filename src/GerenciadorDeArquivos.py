@@ -4,6 +4,7 @@
 import os, re
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
 import EditorDeTexto
+import UI
 
 """
 Br.ino Qt Gerenciador de Arquivos
@@ -39,27 +40,6 @@ email: victor.pacheco@brino.cc
 
 caminho = ""
 caminho_padrao = ""
-
-
-def novo(perguntar=True):
-    global caminho_padrao, caminho
-    if perguntar:
-        text, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
-        if ok and text != "":
-            caminho = os.path.join(caminho_padrao, text, text + ".brpp")
-            EditorDeTexto.set_texto("")
-            print(caminho)
-        elif not ok:
-            return
-        else:
-            print("nome vazio wtf")
-    else:
-        caminho_padrao = os.path.expanduser("~")
-        docu = re.compile("Documen.*")
-        pastas = os.listdir(caminho_padrao)
-        documentos = filter(docu.match, pastas)
-        caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
-    caminho = ""
 
 
 def abrir(parent):

@@ -44,11 +44,12 @@ email: victor.pacheco@brino.cc
 tabs = None
 
 class Centro(QWidget):
-
+    instance = None
     def __init__(self):
         super(Centro, self).__init__()
         self.layout = 0
-
+        global instance
+        instance = self
         self.init_ui()
 
     def init_ui(self):
@@ -63,7 +64,7 @@ class Centro(QWidget):
 
         self.tabs = QTabWidget(self)
         self.tabs.tabCloseRequested.connect(self.remover_aba)
-        self.tabs.setTabsClosable(True)
+        self.tabs.setTabsClosable(False)
         editor = EditorDeTexto.CodeEditor(self)
         editor.setStyleSheet("background:#252525;")
         self.tabs.addTab(editor, "Novo")
@@ -85,13 +86,40 @@ class Centro(QWidget):
         self.show()
 
     def remover_aba(self, index):
-        widget = self.tabs.widget(index)
-        if widget is not None:
-            widget.deleteLater()
-        self.tabs.removeTab(index)
+        if self.tabs.count() > 1:
+            widget = self.tabs.widget(index)
+            if widget is not None:
+                widget.deleteLater()
+            self.tabs.removeTab(index)
+        if self.tabs.count() == 1:
+            self.tabs.setTabsClosable(False)
 
-    def nova_aba(text="Novo"):
-        global tabs
+    def novo(arg, perguntar=True):
+        print("novando")
+        print perguntar
+        global caminho_padrao, caminho
+        if perguntar:
+            text, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
+            if ok and text != "":
+                caminho = os.path.join(caminho_padrao, text, text + ".brpp")
+                UI.Centro.nova_aba(UI.Centro.instance, text=text)
+                print(caminho)
+            elif not ok:
+                return
+            else:
+                print("nome vazio wtf")
+        else:
+            caminho_padrao = os.path.expanduser("~")
+            docu = re.compile("Documen.*")
+            pastas = os.listdir(caminho_padrao)
+            documentos = filter(docu.match, pastas)
+            caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
+        caminho = ""
+
+    def nova_aba(self, text="Novo"):
+        if self.tabs.count() == 1:
+            self.tabs.setTabsClosable(True)
         editor = EditorDeTexto.CodeEditor(tabs)
         editor.setStyleSheet("background:#252525;")
         tabs.addTab(editor, "Novo")
+
