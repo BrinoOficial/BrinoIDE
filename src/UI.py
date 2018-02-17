@@ -52,6 +52,7 @@ class Centro(QWidget):
 
         self.init_ui()
 
+    # noinspection PyUnresolvedReferences
     def init_ui(self):
         layout = QGridLayout(self)
         layout.setRowStretch(0, 7.5)
