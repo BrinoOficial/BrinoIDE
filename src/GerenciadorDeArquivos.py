@@ -73,6 +73,9 @@ def salvar():
         salvar_como()
 
 
+def novo(arg, text):
+    pass
+
 def salvar_como():
     # TODO salvar como
     print "Salvando como"

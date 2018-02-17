@@ -43,11 +43,20 @@ def get_highlights(tipo):
 
     for palavra_chave in data['Keywords']:
         if palavra_chave['highlight-type'] == tipo:
-            uni = palavra_chave['highlight']
-            palavras.append(uni.encode('utf-8'))
+            string_unicode = palavra_chave['highlight']
+            palavras.append(string_unicode.encode('utf-8'))
 
     return palavras
 
 
+def traducao(file_path, pattern, subst):
+    # Create temp file
+    fh, abs_path = mkstemp()
+    with fdopen(caminho, 'w') as new_file:
+        with open(file_path) as old_file:
+            for line in old_file:
+                new_file.write(line.replace(pattern, subst))
+
 if __name__ == '__main__':
     print(get_highlights('4'))
+
