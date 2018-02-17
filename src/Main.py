@@ -39,6 +39,7 @@ email: victor.pacheco@brino.cc
 """
 
 import os
+import re
 import sys
 
 from PyQt5.QtGui import QIcon
@@ -51,6 +52,7 @@ import MonitorSerial
 import UI
 
 versao = '3.0.0'
+caminho_padrao = ''
 
 
 class Principal(QMainWindow):
@@ -98,7 +100,7 @@ class Principal(QMainWindow):
         self.acao_sair.triggered.connect(self.close)
 
         self.acao_novo.setShortcut("Ctrl+N")
-        self.acao_novo.triggered.connect(GerenciadorDeArquivos.novo)
+        self.acao_novo.triggered.connect(self.widget_central.nova_aba)
 
         self.acao_abrir.setShortcut('Ctrl+O')
         self.acao_abrir.triggered.connect(GerenciadorDeArquivos.abrir)
@@ -174,12 +176,23 @@ class Principal(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-    principal = Principal()
+
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
-    # GerenciadorDeArquivos.novo(0, False)
+
+    principal = Principal()
+
+    GerenciadorDeArquivos.novo(0, False)
     sys.exit(app.exec_())
+
+
+def get_caminho_padrao():
+    caminho_padrao = os.path.expanduser("~")
+    docu = re.compile("Documen.*")
+    pastas = os.listdir(caminho_padrao)
+    documentos = filter(docu.match, pastas)
+    return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 
 if __name__ == '__main__':

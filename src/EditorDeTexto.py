@@ -1,6 +1,10 @@
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget
+import os
+
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
+from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog
+
+import Main
 
 """
 Br.ino Qt editor de texto
@@ -66,9 +70,8 @@ email: victor.pacheco@brino.cc
 
 
 class CodeEditor(QPlainTextEdit):
-    instancia = 0
 
-    def __init__(self, parent):
+    def __init__(self, parent, ask=True):
         super(CodeEditor, self).__init__(parent)
         self.contador_de_linhas = ContadorDeLinhas(self)
         self.largura_contador = 38
@@ -77,6 +80,18 @@ class CodeEditor(QPlainTextEdit):
         self.cursorPositionChanged.connect(self.marcar_linha_atual)
         self.atualizar_largura_contador(0)
         self.marcar_linha_atual()
+        self.caminho = ""
+        if ask:
+            self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
+            if ok and self.nome != "":
+                self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
+                self.set_texto("")
+            elif not ok:
+                return
+            else:
+                print("nome vazio wtf")
+        else:
+            self.nome = "Novo"
 
     def atualizar_largura_contador(self, largura):
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
@@ -91,16 +106,16 @@ class CodeEditor(QPlainTextEdit):
                 self.atualizar_largura_contador(0)
 
     def marcar_linha_atual(self):
-        extraSelections = list()
+        selecoes_extras = list()
         if not self.isReadOnly():
-            selection = QTextEdit.ExtraSelection()
+            selecao = QTextEdit.ExtraSelection()
             cor_linha = QColor("#505050")
-            selection.format.setBackground(cor_linha)
-            selection.format.setProperty(QTextFormat.FullWidthSelection, True)
-            selection.cursor = self.textCursor()
-            selection.cursor.clearSelection()
-            extraSelections.append(selection)
-        self.setExtraSelections(extraSelections)
+            selecao.format.setBackground(cor_linha)
+            selecao.format.setProperty(QTextFormat.FullWidthSelection, True)
+            selecao.cursor = self.textCursor()
+            selecao.cursor.clearSelection()
+            selecoes_extras.append(selecao)
+        self.setExtraSelections(selecoes_extras)
 
     def resizeEvent(self, QResizeEvent):
         cr = self.contentsRect()
@@ -127,13 +142,17 @@ class CodeEditor(QPlainTextEdit):
             bottom = top + int(self.blockBoundingRect(bloco).height())
             numero_bloco += 1
 
+    def set_texto(self, texto):
+        self.setPlainText(texto)
 
-def set_texto(instancia, texto):
-    instancia.setPlainText(texto)
+    def get_texto(self):
+        return self.toPlainText()
 
+    def get_nome(self):
+        return self.nome
 
-def get_texto(instancia):
-    return instancia.toPlainText()
+    def get_caminho(self):
+        return self.caminho
 
 
 class ContadorDeLinhas(QWidget):

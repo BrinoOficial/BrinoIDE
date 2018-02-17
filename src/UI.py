@@ -47,8 +47,8 @@ class Centro(QWidget):
 
     def __init__(self):
         super(Centro, self).__init__()
-        self.tabs = QTabWidget(self)
-        self.menu = Menu.Menu()
+        self.widget_abas = None
+        self.menu = None
 
         self.init_ui()
 
@@ -60,65 +60,49 @@ class Centro(QWidget):
         layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
 
+        self.menu = Menu.Menu()
         layout.addWidget(self.menu, 0, 0, 2, 2)
 
-        self.tabs.tabCloseRequested.connect(self.remover_aba)
-        self.tabs.setTabsClosable(False)
-        editor = EditorDeTexto.CodeEditor(self)
-        editor.setStyleSheet("background:#252525;")
-        self.tabs.addTab(editor, "Novo")
         btn = QPushButton(self)
-
-        self.tabs.setCornerWidget(btn, Qt.TopRightCorner)
         btn.clicked.connect(self.nova_aba)
-        global tabs
-        tabs = self.tabs
 
-        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        layout.addWidget(self.tabs, 0, 1, 1, 2)
+        self.widget_abas = QTabWidget(self)
+        self.widget_abas.tabCloseRequested.connect(self.remover_aba)
+        self.widget_abas.setTabsClosable(False)
+        self.widget_abas.setCornerWidget(btn, Qt.TopRightCorner)
+        layout.addWidget(self.widget_abas, 0, 1, 1, 2)
+
+        self.nova_aba()
 
         log = QPlainTextEdit(self)
-        log.setStyleSheet("background:#000000; margin-bottom: 5px; margin-right: 5px;")
+        log.setObjectName("log")
+        log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
         log.setDisabled(True)
+
         layout.addWidget(log, 1, 1, 1, 2)
 
         self.show()
 
     def remover_aba(self, index):
-        if self.tabs.count() > 1:
-            widget = self.tabs.widget(index)
+        if self.widget_abas.count() > 1:
+            widget = self.widget_abas.widget(index)
             if widget is not None:
                 widget.deleteLater()
-            self.tabs.removeTab(index)
-        if self.tabs.count() == 1:
-            self.tabs.setTabsClosable(False)
+            self.widget_abas.removeTab(index)
+        if self.widget_abas.count() == 1:
+            self.widget_abas.setTabsClosable(False)
 
-    def novo(arg, perguntar=True):
-        print("novando")
-        print perguntar
-        global caminho_padrao, caminho
-        if perguntar:
-            text, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
-            if ok and text != "":
-                caminho = os.path.join(caminho_padrao, text, text + ".brpp")
-                UI.Centro.nova_aba(UI.Centro.instance, text=text)
-                print(caminho)
-            elif not ok:
-                return
-            else:
-                print("nome vazio wtf")
+    def nova_aba(self):
+        if self.widget_abas.count() == 0:
+            editor = EditorDeTexto.CodeEditor(tabs, False)
         else:
-            caminho_padrao = os.path.expanduser("~")
-            docu = re.compile("Documen.*")
-            pastas = os.listdir(caminho_padrao)
-            documentos = filter(docu.match, pastas)
-            caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
-        caminho = ""
-
-    def nova_aba(self, text="Novo"):
-        if self.tabs.count() == 1:
-            self.tabs.setTabsClosable(True)
-        editor = EditorDeTexto.CodeEditor(tabs)
-        editor.setStyleSheet("background:#252525;")
-        tabs.addTab(editor, "Novo")
-
+            editor = EditorDeTexto.CodeEditor(tabs, True)
+        if self.widget_abas.count() == 1:
+            self.widget_abas.setTabsClosable(True)
+        text = editor.get_nome()
+        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
+        self.widget_abas.addTab(editor, text)
+        if editor.get_nome() == "":
+            self.remover_aba(self.widget_abas.count() - 1)
+        else:
+            self.widget_abas.setCurrentIndex(self.widget_abas.count() - 1)
