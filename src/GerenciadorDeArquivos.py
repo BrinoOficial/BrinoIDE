@@ -1,10 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, re
-from PyQt5.QtWidgets import QFileDialog, QInputDialog
+from PyQt5.QtWidgets import QFileDialog
+
 import EditorDeTexto
-import UI
 
 """
 Br.ino Qt Gerenciador de Arquivos
@@ -63,6 +62,9 @@ def exemplos():
     # TODO abrir exemplos
     print "exemplos"
 
+
+def novo(arg, txt):
+    pass
 
 def salvar():
     global caminho

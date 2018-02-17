@@ -1,13 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton)
 from PyQt5.QtCore import Qt
-
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton)
 
 import DestaqueSintaxe
-import Menu
 import EditorDeTexto
+import Menu
 
 """
 Br.ino Qt UI
@@ -43,13 +42,14 @@ email: victor.pacheco@brino.cc
 
 tabs = None
 
+
 class Centro(QWidget):
-    instance = None
+
     def __init__(self):
         super(Centro, self).__init__()
-        self.layout = 0
-        global instance
-        instance = self
+        self.tabs = QTabWidget(self)
+        self.menu = Menu.Menu()
+
         self.init_ui()
 
     def init_ui(self):
@@ -57,12 +57,11 @@ class Centro(QWidget):
         layout.setRowStretch(0, 7.5)
         layout.setRowStretch(1, 2.5)
         layout.setColumnMinimumWidth(0, 60)
-        menu = Menu.Menu()
-        layout.addWidget(menu, 0, 0, 2, 2)
         layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        self.tabs = QTabWidget(self)
+        layout.addWidget(self.menu, 0, 0, 2, 2)
+
         self.tabs.tabCloseRequested.connect(self.remover_aba)
         self.tabs.setTabsClosable(False)
         editor = EditorDeTexto.CodeEditor(self)
