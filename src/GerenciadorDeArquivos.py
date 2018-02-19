@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, re
+import os
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
 import EditorDeTexto
 import UI

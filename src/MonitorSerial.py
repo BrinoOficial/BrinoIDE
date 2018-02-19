@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from PyQt5.QtWidgets import QMainWindow, QTextEdit
+from PyQt5.QtWidgets import QTextEdit, QWidget, QVBoxLayout
 
 
 """
@@ -41,7 +41,7 @@ def monitor_serial():
     monitor_serial.show()
 
 
-class MonitorSerial(QMainWindow):
+class MonitorSerial(QWidget):
     def __init__(self, parent=None):
         super(MonitorSerial, self).__init__(parent)
 
@@ -49,7 +49,9 @@ class MonitorSerial(QMainWindow):
 
     def init_ui(self):
         textEdit = QTextEdit()
-        self.setCentralWidget(textEdit)
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        layout.addWidget(textEdit)
         self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('Quit button')
         self.show()

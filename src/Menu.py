@@ -51,6 +51,8 @@ class Menu(QWidget):
 
         self.init_ui()
 
+        MonitorSerial.MonitorSerial()
+
     def init_ui(self):
         menu = QWidget(self)
         layout = QVBoxLayout(menu)
