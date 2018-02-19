@@ -52,7 +52,6 @@ import MonitorSerial
 import UI
 
 versao = '3.0.0'
-caminho_padrao = ''
 
 
 class Principal(QMainWindow):
@@ -174,17 +173,8 @@ class Principal(QMainWindow):
         pass
 
 
-
-def main():
-    app = QApplication(sys.argv)
-
-    with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
-        stilo = arquivo_stilo.read()
-        app.setStyleSheet(stilo)
-
-    principal = Principal()
-
-    sys.exit(app.exec_())
+def abrir_serial():
+    monitor.show()
 
 
 def get_caminho_padrao():
@@ -195,5 +185,15 @@ def get_caminho_padrao():
     return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 
+monitor = 0
+
 if __name__ == '__main__':
-    main()
+    global monitor
+    app = QApplication(sys.argv)
+    with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
+        stilo = arquivo_stilo.read()
+        app.setStyleSheet(stilo)
+    principal = Principal()
+    principal.show()
+    monitor = MonitorSerial.monitor_serial()
+    sys.exit(app.exec_())

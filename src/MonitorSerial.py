@@ -38,7 +38,7 @@ email: victor.pacheco@brino.cc
 def monitor_serial():
     print "Abrindo serial"
     monitor_serial = MonitorSerial()
-    monitor_serial.show()
+    return monitor_serial
 
 
 class MonitorSerial(QWidget):
@@ -54,4 +54,3 @@ class MonitorSerial(QWidget):
         layout.addWidget(textEdit)
         self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('Quit button')
-        self.show()
