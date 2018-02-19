@@ -1,3 +1,4 @@
+import ntpath
 import os
 
 from PyQt5.QtCore import QRect, Qt, QSize
@@ -71,7 +72,7 @@ email: victor.pacheco@brino.cc
 
 class CodeEditor(QPlainTextEdit):
 
-    def __init__(self, parent, ask=True):
+    def __init__(self, parent, ask=True, path=""):
         super(CodeEditor, self).__init__(parent)
         self.contador_de_linhas = ContadorDeLinhas(self)
         self.largura_contador = 38
@@ -92,6 +93,13 @@ class CodeEditor(QPlainTextEdit):
                 print("nome vazio wtf")
         else:
             self.nome = "Novo"
+        if path:
+            print(ask, path)
+            self.caminho = path
+            head, tail = ntpath.split(path)
+            self.nome = ntpath.basename(head)
+            with open(self.caminho) as arquivo:
+                self.set_texto(arquivo.read())
 
     def atualizar_largura_contador(self, largura):
         self.setViewportMargins(self.largura_contador, 0, 0, 0)

@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog)
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -40,8 +42,6 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-tabs = None
-
 
 class Centro(QWidget):
 
@@ -76,10 +76,8 @@ class Centro(QWidget):
         self.nova_aba()
 
         log = QPlainTextEdit(self)
-        log.setObjectName("log")
         log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
         log.setDisabled(True)
-
         layout.addWidget(log, 1, 1, 1, 2)
 
         self.show()
@@ -93,17 +91,51 @@ class Centro(QWidget):
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(False)
 
-    def nova_aba(self):
-        if self.widget_abas.count() == 0:
-            editor = EditorDeTexto.CodeEditor(tabs, False)
+    def nova_aba(self, path=""):
+        if self.widget_abas.count() == 0 or path:
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path)
         else:
-            editor = EditorDeTexto.CodeEditor(tabs, True)
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, True, path=path)
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(True)
         text = editor.get_nome()
+        editor.setStyleSheet("background:#252525")
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         self.widget_abas.addTab(editor, text)
         if editor.get_nome() == "":
             self.remover_aba(self.widget_abas.count() - 1)
         else:
             self.widget_abas.setCurrentIndex(self.widget_abas.count() - 1)
+
+    def abrir(self):
+        dialogo = QFileDialog()
+        dialogo.setWindowTitle("Abrir arquivo")
+        dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
+        dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
+        dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
+        dialogo.setLabelText(QFileDialog.Accept, "Abrir")
+        dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
+        dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
+        dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
+        if dialogo.exec_() == QFileDialog.Accepted:
+            caminho = dialogo.selectedFiles()[0]
+            self.nova_aba(caminho)
+
+    def salvar(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        if caminho != "":
+            if not os.path.exists(os.path.dirname(caminho)):
+                try:
+                    os.makedirs(os.path.dirname(caminho))
+                except OSError as exc:  # Guard against race condition
+                    if exc.errno != exc.errno.EEXIST:
+                        raise
+            with open(editor.get_caminho(), "w") as arquivo:
+                arquivo.write(editor.get_texto())
+        else:
+            self.salvar_como()
+
+    def salvar_como(self):
+        # TODO salvar_como
+        pass

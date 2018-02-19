@@ -103,12 +103,12 @@ class Principal(QMainWindow):
         self.acao_novo.triggered.connect(self.widget_central.nova_aba)
 
         self.acao_abrir.setShortcut('Ctrl+O')
-        self.acao_abrir.triggered.connect(GerenciadorDeArquivos.abrir)
+        self.acao_abrir.triggered.connect(self.widget_central.abrir)
 
         self.acao_exemplos.triggered.connect(GerenciadorDeArquivos.exemplos)
 
         self.acao_salvar.setShortcut('Ctrl+S')
-        self.acao_salvar.triggered.connect(GerenciadorDeArquivos.salvar)
+        self.acao_salvar.triggered.connect(self.widget_central.salvar)
 
         self.acao_salvar_como.setShortcut('Ctrl+Shift+S')
         self.acao_salvar_como.triggered.connect(GerenciadorDeArquivos.salvar_como)

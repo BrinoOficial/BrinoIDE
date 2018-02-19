@@ -20,7 +20,6 @@ QMenuBar::item:selected{
    background: '#101010';
 }
 QPlainTextEdit{
-   background: '#252525';
    border: None;
    color: '#efefef';
    selection-background-color: '#454545';
@@ -28,7 +27,7 @@ QPlainTextEdit{
 QScrollBar:vertical {
    width: 10px;
    margin: 2px 0 2px 0;
- }
+}
 QScrollBar::handle:vertical {
    min-height: 5px;
    background: #5cb50d;
