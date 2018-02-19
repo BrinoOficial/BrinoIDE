@@ -1,14 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton)
-from PyQt5.QtCore import Qt
-
-
-import DestaqueSintaxe
-import Menu
-import EditorDeTexto
-
 """
 Br.ino Qt UI
 
@@ -41,84 +33,125 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-tabs = None
+import ntpath
+import os
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog)
+
+import DestaqueSintaxe
+import EditorDeTexto
+import Menu
+from Main import get_caminho_padrao
+
 
 class Centro(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent=None):
         super(Centro, self).__init__()
+        self.widget_abas = None
+        self.menu = None
+        self.parent = parent
 
         self.init_ui()
 
+    # noinspection PyUnresolvedReferences
     def init_ui(self):
         layout = QGridLayout(self)
         layout.setRowStretch(0, 7.5)
         layout.setRowStretch(1, 2.5)
         layout.setColumnMinimumWidth(0, 60)
-        menu = Menu.Menu()
-        layout.addWidget(menu, 0, 0, 2, 2)
         layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        self.tabs = QTabWidget(self)
-        self.tabs.tabCloseRequested.connect(self.remover_aba)
-        self.tabs.setTabsClosable(False)
-        editor = EditorDeTexto.CodeEditor(self)
-        editor.setStyleSheet("background:#252525;")
-        self.tabs.addTab(editor, "Novo")
+        self.menu = Menu.Menu(self)
+        layout.addWidget(self.menu, 0, 0, 2, 2)
+
         btn = QPushButton(self)
-
-        self.tabs.setCornerWidget(btn, Qt.TopRightCorner)
         btn.clicked.connect(self.nova_aba)
-        global tabs
-        tabs = self.tabs
 
-        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        layout.addWidget(self.tabs, 0, 1, 1, 2)
+        self.widget_abas = QTabWidget(self)
+        self.widget_abas.tabCloseRequested.connect(self.remover_aba)
+        self.widget_abas.setTabsClosable(False)
+        self.widget_abas.setCornerWidget(btn, Qt.TopRightCorner)
+        layout.addWidget(self.widget_abas, 0, 1, 1, 2)
+
+        self.nova_aba()
 
         log = QPlainTextEdit(self)
-        log.setStyleSheet("background:#000000; margin-bottom: 5px; margin-right: 5px;")
+        log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
         log.setDisabled(True)
         layout.addWidget(log, 1, 1, 1, 2)
 
         self.show()
 
     def remover_aba(self, index):
-        if self.tabs.count() > 1:
-            widget = self.tabs.widget(index)
+        if self.widget_abas.count() > 1:
+            widget = self.widget_abas.widget(index)
             if widget is not None:
                 widget.deleteLater()
-            self.tabs.removeTab(index)
-        if self.tabs.count() == 1:
-            self.tabs.setTabsClosable(False)
+            self.widget_abas.removeTab(index)
+        if self.widget_abas.count() == 1:
+            self.widget_abas.setTabsClosable(False)
 
-    def novo(arg, perguntar=True):
-        print("novando")
-        print perguntar
-        global caminho_padrao, caminho
-        if perguntar:
-            text, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
-            if ok and text != "":
-                caminho = os.path.join(caminho_padrao, text, text + ".brpp")
-                UI.Centro.nova_aba(UI.Centro.instance, text=text)
-                print(caminho)
-            elif not ok:
-                return
-            else:
-                print("nome vazio wtf")
+    def nova_aba(self, path=""):
+        if self.widget_abas.count() == 0 or path:
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path)
         else:
-            caminho_padrao = os.path.expanduser("~")
-            docu = re.compile("Documen.*")
-            pastas = os.listdir(caminho_padrao)
-            documentos = filter(docu.match, pastas)
-            caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
-        caminho = ""
-
-    def nova_aba(self, text="Novo"):
-        if self.tabs.count() == 1:
-            self.tabs.setTabsClosable(True)
-        editor = EditorDeTexto.CodeEditor(tabs)
-        editor.setStyleSheet("background:#252525;")
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, True, path=path)
+        if self.widget_abas.count() == 1:
+            self.widget_abas.setTabsClosable(True)
+        text = editor.get_nome()
+        editor.setStyleSheet("background:#252525")
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        tabs.addTab(editor, "Novo")
+        self.widget_abas.addTab(editor, text)
+        if editor.get_nome() == "":
+            self.remover_aba(self.widget_abas.count() - 1)
+        else:
+            self.widget_abas.setCurrentIndex(self.widget_abas.count() - 1)
 
+    def abrir(self):
+        dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
+        if dialogo.exec_() == QFileDialog.Accepted:
+            caminho = dialogo.selectedFiles()[0]
+            self.nova_aba(caminho)
+
+    def salvar(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        if caminho != "":
+            if not os.path.exists(os.path.dirname(caminho)):
+                try:
+                    os.makedirs(os.path.dirname(caminho))
+                except OSError as exc:  # Guard against race condition
+                    if exc.errno != exc.errno.EEXIST:
+                        raise
+            with open(editor.get_caminho(), "w") as arquivo:
+                arquivo.write(editor.get_texto())
+        else:
+            self.salvar_como()
+
+    def salvar_como(self):
+        dialogo = self.criar_dialogo_arquivo('Salvar arquivo', 'Salvar')
+        if dialogo.exec_() == QFileDialog.Accepted:
+            caminho = dialogo.selectedFiles()[0]
+            if not ntpath.basename(caminho).__contains__(".brpp"):
+                caminho = os.path.join(caminho, ntpath.basename(caminho) + ".brpp")
+            editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+            self.widget_abas.setTabText(self.widget_abas.currentIndex(), ntpath.basename(caminho).replace(".brpp", ""))
+            editor.set_caminho(caminho)
+            self.salvar()
+
+    @staticmethod
+    def criar_dialogo_arquivo(titulo, acao):
+        dialogo = QFileDialog()
+        dialogo.setWindowTitle(titulo)
+        dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
+        dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
+        dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
+        dialogo.setLabelText(QFileDialog.Accept, acao)
+        dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
+        dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
+        dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
+        dialogo.setDirectory(get_caminho_padrao())
+        return dialogo

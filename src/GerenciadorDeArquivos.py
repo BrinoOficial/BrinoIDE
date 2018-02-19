@@ -1,11 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-from PyQt5.QtWidgets import QFileDialog, QInputDialog
-import EditorDeTexto
-import UI
-
 """
 Br.ino Qt Gerenciador de Arquivos
 
@@ -42,43 +37,11 @@ caminho = ""
 caminho_padrao = ""
 
 
-def abrir(parent):
-    dialogo = QFileDialog()
-    dialogo.setWindowTitle("Abrir arquivo")
-    dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
-    dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
-    dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
-    dialogo.setLabelText(QFileDialog.Accept, "Abrir")
-    dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
-    dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
-    dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
-    if dialogo.exec_() == QFileDialog.Accepted:
-        global caminho
-        caminho = dialogo.selectedFiles()[0]
-        with open(caminho) as arquivo:
-            EditorDeTexto.set_texto(arquivo.read())
-
 
 def exemplos():
     # TODO abrir exemplos
     print "exemplos"
 
-
-def salvar():
-    global caminho
-    if caminho != "":
-        with open(caminho, "w") as arquivo:
-            arquivo.write(EditorDeTexto.get_texto())
-    else:
-        salvar_como()
-
-
-def novo(arg, text):
-    pass
-
-def salvar_como():
-    # TODO salvar como
-    print "Salvando como"
 
 
 
