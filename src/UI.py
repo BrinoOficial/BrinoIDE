@@ -61,7 +61,7 @@ class Centro(QWidget):
         layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        self.menu = Menu.Menu()
+        self.menu = Menu.Menu(self)
         layout.addWidget(self.menu, 0, 0, 2, 2)
 
         btn = QPushButton(self)

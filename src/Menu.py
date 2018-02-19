@@ -44,10 +44,10 @@ email: victor.pacheco@brino.cc
 
 class Menu(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent=None):
         super(Menu, self).__init__()
         self.layout = 0
-
+        self.parent = parent
         self.init_ui()
 
     def init_ui(self):
@@ -62,10 +62,13 @@ class Menu(QWidget):
         btn_compilar_e_carregar.setFixedSize(50, 70)
         btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'novoArquivo.png')),
                                QPixmap(os.path.join('recursos', 'novoArquivoFoco.png')), self)
+        btn_novo.clicked.connect(self.parent.nova_aba)
         btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'abrirPasta.png')),
                                 QPixmap(os.path.join('recursos', 'abrirPastaFoco.png')), self)
+        btn_abrir.clicked.connect(self.parent.abrir)
         btn_salvar = botaoImagem(QPixmap(os.path.join('recursos', 'salvar.png')),
                                  QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
+        btn_salvar.clicked.connect(self.parent.salvar)
         btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
                                          QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
         btn_monitor_serial.clicked.connect(MonitorSerial.monitor_serial)
