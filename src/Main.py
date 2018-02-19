@@ -77,7 +77,7 @@ class Principal(QMainWindow):
         self.acao_verificar = QAction('Verificar', self)
         self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
 
-        self.widget_central = UI.Centro()
+        self.widget_central = UI.Centro(self)
 
         self.init_ui()
 
@@ -172,6 +172,7 @@ class Principal(QMainWindow):
     def adicionar_exemplos(self, menu):
         # TODO ler exemplos e adiciona-los ao menu exemplos
         pass
+
 
 
 def main():

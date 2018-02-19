@@ -47,10 +47,11 @@ from Main import get_caminho_padrao
 
 class Centro(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent=None):
         super(Centro, self).__init__()
         self.widget_abas = None
         self.menu = None
+        self.parent = parent
 
         self.init_ui()
 
@@ -141,7 +142,8 @@ class Centro(QWidget):
             editor.set_caminho(caminho)
             self.salvar()
 
-    def criar_dialogo_arquivo(self, titulo, acao):
+    @staticmethod
+    def criar_dialogo_arquivo(titulo, acao):
         dialogo = QFileDialog()
         dialogo.setWindowTitle(titulo)
         dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")

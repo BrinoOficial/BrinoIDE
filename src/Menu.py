@@ -38,7 +38,6 @@ import os
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 
-import MonitorSerial
 from BotaoImagem import botaoImagem
 
 
@@ -76,7 +75,6 @@ class Menu(QWidget):
 
         btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
                                          QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
-        btn_monitor_serial.clicked.connect(MonitorSerial.monitor_serial)
         btn_monitor_serial.setFixedSize(50, 50)
 
         espacador_vertical = QSpacerItem(0, 50000, QSizePolicy.Expanding, QSizePolicy.Expanding)

@@ -43,10 +43,6 @@ def exemplos():
     print "exemplos"
 
 
-def salvar_como():
-    # TODO salvar como
-    print "Salvando como"
-
 
 
 
