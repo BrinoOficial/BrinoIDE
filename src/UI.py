@@ -1,15 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog)
-
-import DestaqueSintaxe
-import EditorDeTexto
-import Menu
-
 """
 Br.ino Qt UI
 
@@ -41,6 +32,15 @@ email: mateus.berardo@brino.cc
 contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
+
+import os
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog)
+
+import DestaqueSintaxe
+import EditorDeTexto
+import Menu
 
 
 class Centro(QWidget):

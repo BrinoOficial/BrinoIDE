@@ -43,13 +43,6 @@ def exemplos():
     print "exemplos"
 
 
-def novo(arg, txt):
-    pass
-
-def salvar():
-    global caminho
-
-
 def salvar_como():
     # TODO salvar como
     print "Salvando como"

@@ -1,11 +1,4 @@
-import ntpath
-import os
 
-from PyQt5.QtCore import QRect, Qt, QSize
-from PyQt5.QtGui import QColor, QTextFormat, QPainter
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog
-
-import Main
 
 """
 Br.ino Qt editor de texto
@@ -68,6 +61,15 @@ email: mateus.berardo@brino.cc
 modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
+
+import ntpath
+import os
+
+from PyQt5.QtCore import QRect, Qt, QSize
+from PyQt5.QtGui import QColor, QTextFormat, QPainter
+from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog
+
+import Main
 
 
 class CodeEditor(QPlainTextEdit):

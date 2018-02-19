@@ -1,14 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
-
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
-
-import MonitorSerial
-from BotaoImagem import botaoImagem
-
 """
 Br.ino Qt Menu
 
@@ -41,6 +33,14 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import os
+
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
+
+import MonitorSerial
+from BotaoImagem import botaoImagem
+
 
 class Menu(QWidget):
 
@@ -57,25 +57,31 @@ class Menu(QWidget):
 
         btn_compilar = botaoImagem(QPixmap(os.path.join('recursos', 'compilar.png')),
                                    QPixmap(os.path.join('recursos', 'compilarFoco.png')), self)
+
         btn_compilar_e_carregar = botaoImagem(QPixmap(os.path.join('recursos', 'carregar.png')),
                                               QPixmap(os.path.join('recursos', 'carregarFoco.png')), self)
         btn_compilar_e_carregar.setFixedSize(50, 70)
+
         btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'novoArquivo.png')),
                                QPixmap(os.path.join('recursos', 'novoArquivoFoco.png')), self)
         btn_novo.clicked.connect(self.parent.nova_aba)
+
         btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'abrirPasta.png')),
                                 QPixmap(os.path.join('recursos', 'abrirPastaFoco.png')), self)
         btn_abrir.clicked.connect(self.parent.abrir)
+
         btn_salvar = botaoImagem(QPixmap(os.path.join('recursos', 'salvar.png')),
                                  QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
         btn_salvar.clicked.connect(self.parent.salvar)
+
         btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
                                          QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
         btn_monitor_serial.clicked.connect(MonitorSerial.monitor_serial)
         btn_monitor_serial.setFixedSize(50, 50)
 
-        layout.setContentsMargins(5, 5, 5, 5)
         espacador_vertical = QSpacerItem(0, 50000, QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        layout.setContentsMargins(5, 5, 5, 5)
         layout.addWidget(btn_compilar)
         layout.addWidget(btn_compilar_e_carregar)
         layout.addWidget(btn_novo)
