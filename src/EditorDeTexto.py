@@ -164,6 +164,9 @@ class CodeEditor(QPlainTextEdit):
     def get_caminho(self):
         return self.caminho
 
+    def set_caminho(self, caminho):
+        self.caminho = caminho
+
 
 class ContadorDeLinhas(QWidget):
 

@@ -33,6 +33,7 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import ntpath
 import os
 
 from PyQt5.QtCore import Qt
@@ -41,6 +42,7 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, Q
 import DestaqueSintaxe
 import EditorDeTexto
 import Menu
+from Main import get_caminho_padrao
 
 
 class Centro(QWidget):
@@ -108,15 +110,7 @@ class Centro(QWidget):
             self.widget_abas.setCurrentIndex(self.widget_abas.count() - 1)
 
     def abrir(self):
-        dialogo = QFileDialog()
-        dialogo.setWindowTitle("Abrir arquivo")
-        dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
-        dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
-        dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
-        dialogo.setLabelText(QFileDialog.Accept, "Abrir")
-        dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
-        dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
-        dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
+        dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedFiles()[0]
             self.nova_aba(caminho)
@@ -137,5 +131,25 @@ class Centro(QWidget):
             self.salvar_como()
 
     def salvar_como(self):
-        # TODO salvar_como
-        pass
+        dialogo = self.criar_dialogo_arquivo('Salvar arquivo', 'Salvar')
+        if dialogo.exec_() == QFileDialog.Accepted:
+            caminho = dialogo.selectedFiles()[0]
+            if not ntpath.basename(caminho).__contains__(".brpp"):
+                caminho = os.path.join(caminho, ntpath.basename(caminho) + ".brpp")
+            editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+            self.widget_abas.setTabText(self.widget_abas.currentIndex(), ntpath.basename(caminho).replace(".brpp", ""))
+            editor.set_caminho(caminho)
+            self.salvar()
+
+    def criar_dialogo_arquivo(self, titulo, acao):
+        dialogo = QFileDialog()
+        dialogo.setWindowTitle(titulo)
+        dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
+        dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
+        dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
+        dialogo.setLabelText(QFileDialog.Accept, acao)
+        dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
+        dialogo.setNameFilters(["Rascunhos Br.ino (*.brpp)", "Rascunhos Arduino (*.ino)"])
+        dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
+        dialogo.setDirectory(get_caminho_padrao())
+        return dialogo

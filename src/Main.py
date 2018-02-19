@@ -111,7 +111,7 @@ class Principal(QMainWindow):
         self.acao_salvar.triggered.connect(self.widget_central.salvar)
 
         self.acao_salvar_como.setShortcut('Ctrl+Shift+S')
-        self.acao_salvar_como.triggered.connect(GerenciadorDeArquivos.salvar_como)
+        self.acao_salvar_como.triggered.connect(self.widget_central.salvar_como)
 
         self.acao_comentar_linha.setShortcut('Ctrl+/')
         self.acao_comentar_linha.triggered.connect(GerenciadorDeCodigo.comentar_linha)
@@ -183,7 +183,6 @@ def main():
 
     principal = Principal()
 
-    GerenciadorDeArquivos.novo(0, False)
     sys.exit(app.exec_())
 
 
