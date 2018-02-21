@@ -66,9 +66,9 @@ class MonitorSerial(QWidget):
         log_monitor.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
 
         btn_enviar = QPushButton("Enviar")
-        btn_enviar.setObjectName("btn_enviar_name")
-        btn_enviar.setStyleSheet("""#btn_enviar_name{border-radius:2px;color:#252525;background:#5cb50d;margin:2px;}
-                                    #btn_enviar_name:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
+        btn_enviar.setObjectName("btn_enviar_tag")
+        btn_enviar.setStyleSheet("""#btn_enviar_tag{border-radius:2px;color:#252525;background:#5cb50d;margin:2px;}
+                                    #btn_enviar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
 
         rolagem_check = QCheckBox(self)
         rolagem_check.setText("Rolagem-automática")
