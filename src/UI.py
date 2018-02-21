@@ -155,3 +155,6 @@ class Centro(QWidget):
         dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
         dialogo.setDirectory(get_caminho_padrao())
         return dialogo
+
+    def abrir_serial(self):
+        self.parent.abrir_serial()

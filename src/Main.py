@@ -53,6 +53,7 @@ import UI
 
 versao = '3.0.0'
 
+monitor = 3
 
 class Principal(QMainWindow):
 
@@ -132,6 +133,7 @@ class Principal(QMainWindow):
 
         self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
         self.acao_monitor_serial.triggered.connect(MonitorSerial.monitor_serial)
+        self.acao_monitor_serial.triggered.connect(self.abrir_serial)
 
         self.acao_verificar.setShortcut('Ctrl+R')
         self.acao_verificar.triggered.connect(GerenciadorDeCodigo.verificar)
@@ -172,9 +174,8 @@ class Principal(QMainWindow):
         # TODO ler exemplos e adiciona-los ao menu exemplos
         pass
 
-
-def abrir_serial():
-    monitor.show()
+    def abrir_serial(self):
+        monitor.show()
 
 
 def get_caminho_padrao():
@@ -185,15 +186,12 @@ def get_caminho_padrao():
     return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 
-monitor = 0
-
 if __name__ == '__main__':
-    global monitor
     app = QApplication(sys.argv)
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
+    monitor = MonitorSerial.MonitorSerial()
     principal = Principal()
     principal.show()
-    monitor = MonitorSerial.monitor_serial()
     sys.exit(app.exec_())
