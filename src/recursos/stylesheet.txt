@@ -173,4 +173,17 @@ QTabWidget QPushButton:hover{
    padding:0;
    image: url(recursos/maisFoco.png);
 }
+QCheckBox::indicator:unchecked {
+    image: url(recursos/boxUnchecked.png);
+    width: 11px;
+    height: 11px;
+    margin-right: 2px;
+}
+QCheckBox::indicator:checked {
+    image: url(recursos/boxChecked.png);
+    margin: 0;
+    width: 13px;
+    height: 13px;
+}
+
 
