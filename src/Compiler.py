@@ -35,10 +35,33 @@ email: victor.pacheco@brino.cc
 
 import os
 
+import Main
 
-def compilar():
+
+def compilar(caminho, placa, ):
+    pacotes_instalados = os.path.join('.', 'builder', '.arduino15', 'packages')
     cmd = ""
-    cmd += os.path.join('builder', 'arduino-builder')
+    cmd += os.path.join('.', 'builder', 'arduino-builder')
     cmd += " -compile "
-    cmd += " -hardware " + os.path.join('builder', 'hardware')
-    cmd += " -hardware " + os.path.join('builder', '.arduino15', 'packages')
+    cmd = adicionar_hardware_se_existe(cmd, os.path.join('.', 'builder', 'hardware'))
+    cmd = adicionar_hardware_se_existe(cmd, pacotes_instalados)
+    cmd = adicionar_hardware_se_existe(cmd, os.path.join(caminho, 'hardware'))
+    cmd = adicionar_ferramenta_se_existe(cmd, os.path.join('.', 'builder', 'tools-builder'))
+    cmd = adicionar_ferramenta_se_existe(cmd, os.path.join('.', 'builder', 'hardware', 'tools', 'avr'))
+    cmd = adicionar_ferramenta_se_existe(cmd, pacotes_instalados)
+    cmd = adicionar_se_existe(cmd, ' -built-in-libraries ', os.path.join('.', 'builder', 'libraries'))
+    cmd = adicionar_se_existe(cmd, ' -libraries ', os.path.join(Main.get_caminho_padrao(), 'bibliotecas'))
+    cmd = adicionar_se_existe(cmd, ' -fqbn ', )
+
+
+def adicionar_hardware_se_existe(string, arquivo):
+    return adicionar_se_existe(string, " -hardware ", arquivo)
+
+
+def adicionar_ferramenta_se_existe(string, arquivo):
+    return adicionar_se_existe(string, " -tools ", arquivo)
+
+
+def adicionar_se_existe(string, opcao, arquivo):
+    if os.path.exists(arquivo):
+        return string + opcao + arquivo

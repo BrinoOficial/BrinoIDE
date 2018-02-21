@@ -65,6 +65,7 @@ class Centro(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.menu = Menu.Menu(self)
+        self.menu.carregar_hardware(os.path.join('builder', 'hardware'))
         layout.addWidget(self.menu, 0, 0, 2, 2)
 
         btn = QPushButton(self)
