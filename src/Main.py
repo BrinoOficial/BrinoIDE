@@ -43,7 +43,7 @@ import re
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
