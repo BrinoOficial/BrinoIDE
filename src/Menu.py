@@ -52,6 +52,7 @@ class Menu(QWidget):
         self.parent = parent
         self.init_ui()
 
+
     def init_ui(self):
         menu = QWidget(self)
         layout = QVBoxLayout(menu)
@@ -90,7 +91,6 @@ class Menu(QWidget):
         layout.addWidget(btn_salvar)
         layout.addWidget(btn_monitor_serial)
         layout.addItem(espacador_vertical)
-
         self.show()
 
     def carregar_hardware(self, pasta):
@@ -118,3 +118,9 @@ class Menu(QWidget):
         for item in pastas:
             plataforma_alvo = PlataformaAlvo(item, os.path.join(pasta, item), pacote_alvo)
             pacote_alvo.get_plataformas()[item] = plataforma_alvo
+
+    def criar_menu_placas(self):
+        for pacote_alvo in self.pacotes.values():
+            for plataforma_alvo in pacote_alvo.get_lista_plataformas():
+                nome = plataforma_alvo.get_preferencias().get("name")
+                print(nome)

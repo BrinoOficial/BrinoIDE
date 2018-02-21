@@ -7,7 +7,7 @@ class PacoteAlvo:
     def get_plataformas(self):
         return self.plataformas
 
-    def plataformas(self):
+    def get_lista_plataformas(self):
         return self.plataformas.values()
 
     def get(self, plataforma):
