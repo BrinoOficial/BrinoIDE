@@ -37,12 +37,14 @@ import ntpath
 import os
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QAction)
 
 import DestaqueSintaxe
 import EditorDeTexto
 import Menu
 from Main import get_caminho_padrao
+from PacoteAlvo import PacoteAlvo
+from PlataformaAlvo import PlataformaAlvo
 
 
 class Centro(QWidget):
@@ -52,6 +54,7 @@ class Centro(QWidget):
         self.widget_abas = None
         self.menu = None
         self.parent = parent
+        self.pacotes = dict()
 
         self.init_ui()
 
@@ -65,8 +68,8 @@ class Centro(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.menu = Menu.Menu(self)
-        self.menu.carregar_hardware(os.path.join('builder', 'hardware'))
-        self.menu.criar_menu_placas()
+        self.carregar_hardware(os.path.join('builder', 'hardware'))
+        self.criar_menu_placas()
         layout.addWidget(self.menu, 0, 0, 2, 2)
 
         btn = QPushButton(self)
@@ -157,3 +160,39 @@ class Centro(QWidget):
         dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
         dialogo.setDirectory(get_caminho_padrao())
         return dialogo
+
+    def carregar_hardware(self, pasta):
+        if not os.path.isdir(pasta):
+            return
+        lista = [os.path.join(pasta, pasta_) for pasta_ in os.listdir(pasta) if
+                 os.path.isdir(os.path.join(pasta, pasta_))]
+        if len(lista) == 0:
+            return
+        lista = sorted(lista, key=str.lower)
+        lista.remove(os.path.join(pasta, "tools"))
+        for item in lista:
+            nome_item = os.path.basename(item)
+            if nome_item in self.pacotes:
+                pacote_alvo = self.pacotes.get(nome_item)
+            else:
+                pacote_alvo = PacoteAlvo(nome_item)
+                self.pacotes[nome_item] = pacote_alvo
+            self.carregar_pacote_alvo(pacote_alvo, item)
+
+    @staticmethod
+    def carregar_pacote_alvo(pacote_alvo, pasta):
+        pastas = os.listdir(pasta)
+        if len(pastas) == 0:
+            return
+        for item in pastas:
+            plataforma_alvo = PlataformaAlvo(item, os.path.join(pasta, item), pacote_alvo)
+            pacote_alvo.get_plataformas()[item] = plataforma_alvo
+
+    def criar_menu_placas(self):
+        for pacote_alvo in self.pacotes.values():
+            for plataforma_alvo in pacote_alvo.get_lista_plataformas():
+                nome = plataforma_alvo.get_preferencias().get("name")
+                self.parent.menu_placas.addAction(QAction(nome, self))
+                for placa in plataforma_alvo.get_placas().values():
+                    if not placa.get_preferencias().get('hide'):
+                        self.parent.menu_placas.addAction(QAction(placa.get_nome(), self))

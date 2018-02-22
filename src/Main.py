@@ -43,7 +43,7 @@ import re
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
@@ -76,6 +76,8 @@ class Principal(QMainWindow):
         self.acao_monitor_serial = QAction('Monitor serial', self)
         self.acao_verificar = QAction('Verificar', self)
         self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
+        self.menu_placas = QMenu('Placa')
+        self.menu_portas = QMenu('Porta')
 
         self.widget_central = UI.Centro(self)
 
@@ -160,8 +162,8 @@ class Principal(QMainWindow):
         menu_editar.addAction(self.acao_ir_para_linha)
 
         menu_ferramentas = barra_menu.addMenu('Ferramentas')
-        menu_placa = menu_ferramentas.addMenu('Placa')
-        menu_porta = menu_ferramentas.addMenu('Porta')
+        menu_ferramentas.addMenu(self.menu_placas)
+        menu_ferramentas.addMenu(self.menu_portas)
         menu_ferramentas.addAction(self.acao_lingua)
         menu_ferramentas.addAction(self.acao_monitor_serial)
 
