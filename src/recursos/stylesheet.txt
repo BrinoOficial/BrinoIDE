@@ -17,7 +17,7 @@ QMenuBar::item {
    background: '#252525';
 }
 QMenuBar::item:selected{
-   background: '#101010';
+   border-top: 2px solid #5cb50d;
 }
 QPlainTextEdit{
    border: None;
@@ -63,7 +63,8 @@ QScrollBar::sub-line:horizontal {
    subcontrol-origin: margin;
 }
 QDialog{
-   background:#252525;
+   background:#454545;
+   background-clip:#5cb50d;
    filedialog-listview-icon: url(recursos/listaFoco.png);
    filedialog-new-directory-icon: url(recursos/NovaPasta.png);
    filedialog-parent-directory-icon: url(recursos/pastaPrincipal.png);
@@ -141,11 +142,31 @@ QTreeView QScrollBar:horizontal{
    background:#101010;
 }
 QTabBar::tab{
-   background: #101010;
+   background: #252525;
    color: #efefef;
    border-right: 1px solid #505050;
    padding-right: 5px;
    padding-left: 5px;
+}
+QTabBar QToolButton{
+    background: #252525;
+    border: 0;
+}
+QTabBar QToolButton::right-arrow{
+    image: url(recursos/setaDireitaFoco.png);
+    padding: 2px;
+}
+QTabBar QToolButton::left-arrow{
+    image: url(recursos/setaEsquerdaFoco.png);
+    padding: 2px;
+}
+QTabBar QToolButton::right-arrow:hover{
+    image: url(recursos/setaDireita.png);
+    padding: 0;
+}
+QTabBar QToolButton::left-arrow:hover{
+    image: url(recursos/setaEsquerda.png);
+    padding: 0;
 }
 QTabBar::close-button{
    image: url(recursos/fechar.png);

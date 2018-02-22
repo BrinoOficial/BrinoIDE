@@ -43,7 +43,7 @@ import re
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
@@ -145,6 +145,7 @@ class Principal(QMainWindow):
         self.criar_acoes()
 
         barra_menu = self.menuBar()
+        barra_menu.setNativeMenuBar(False)
         menu_arquivo = barra_menu.addMenu('Arquivo')
         menu_arquivo.addAction(self.acao_novo)
         menu_arquivo.addAction(self.acao_abrir)
