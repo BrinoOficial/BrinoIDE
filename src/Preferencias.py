@@ -6,6 +6,7 @@ preferencias = dict()
 
 
 def init():
+    global preferencias
     preferencias = carregar(os.path.join('builder', 'preferences.txt'))
 
 

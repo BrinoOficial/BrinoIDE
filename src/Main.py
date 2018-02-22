@@ -49,6 +49,7 @@ import GerenciadorDeArquivos
 import GerenciadorDeCodigo
 import GerenciadorDeLinguas
 import MonitorSerial
+import Preferencias
 import UI
 
 versao = '3.0.0'
@@ -183,6 +184,7 @@ def main():
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
+    Preferencias.init()
 
     principal = Principal()
 

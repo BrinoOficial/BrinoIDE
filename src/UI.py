@@ -238,6 +238,7 @@ class Centro(QWidget):
         return plataforma_alvo
 
     def compilar(self):
+        self.salvar()
         placa_alvo = self.get_placa_alvo()
         plataforma_alvo = placa_alvo.get_plataforma()
         pacote_alvo = plataforma_alvo.get_pacote()
