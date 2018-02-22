@@ -37,11 +37,14 @@ import ntpath
 import os
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QAction)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
+                             QAction)
 
 import DestaqueSintaxe
 import EditorDeTexto
 import Menu
+import Preferencias
+from Compiler import compilar_arduino_builder
 from Main import get_caminho_padrao
 from PacoteAlvo import PacoteAlvo
 from PlataformaAlvo import PlataformaAlvo
@@ -189,10 +192,55 @@ class Centro(QWidget):
             pacote_alvo.get_plataformas()[item] = plataforma_alvo
 
     def criar_menu_placas(self):
+        placas = QActionGroup(self.parent)
+        placas.setExclusive(True)
         for pacote_alvo in self.pacotes.values():
             for plataforma_alvo in pacote_alvo.get_lista_plataformas():
                 nome = plataforma_alvo.get_preferencias().get("name")
                 self.parent.menu_placas.addAction(QAction(nome, self))
                 for placa in plataforma_alvo.get_placas().values():
                     if not placa.get_preferencias().get('hide'):
-                        self.parent.menu_placas.addAction(QAction(placa.get_nome(), self))
+                        self.parent.menu_placas.addAction(placa.criar_acao(self))
+
+    def on_troca_placa_ou_porta(self):
+        plataforma = self.get_plataforma_alvo()
+        pastas_bibliotecas = list()
+        # if plataforma:
+        #    core = self.get_preferencias_placa()
+        pasta_plataforma = plataforma.get_pasta()
+        pastas_bibliotecas.append(os.path.join(pasta_plataforma, 'libraries'))
+        pastas_bibliotecas.append(os.path.join(get_caminho_padrao(), 'bibliotecas'))
+
+    def get_preferencias_placa(self):
+        placa_alvo = self.get_placa_alvo()
+        if placa_alvo is None:
+            return None
+        nome_placa = placa_alvo.get_id()
+        prefs = placa_alvo.get_preferencias()
+        # TODO lidar com nome extendido
+        # TODO lidar com ferramentas extras
+
+        return prefs
+
+    def get_placa_alvo(self):
+        plataforma_alvo = self.get_plataforma_alvo()
+        if plataforma_alvo:
+            placa = Preferencias.get('board')
+            return plataforma_alvo.get_placa(placa)
+
+    def get_plataforma_alvo(self, pacote=None, plataforma=None):
+        if pacote is None:
+            pacote = Preferencias.get('target_package')
+        if plataforma is None:
+            plataforma = Preferencias.get('target_platform')
+        p = self.pacotes.get(pacote)
+        plataforma_alvo = p.get(plataforma)
+        return plataforma_alvo
+
+    def compilar(self):
+        placa_alvo = self.get_placa_alvo()
+        plataforma_alvo = placa_alvo.get_plataforma()
+        pacote_alvo = plataforma_alvo.get_pacote()
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo)

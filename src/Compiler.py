@@ -38,11 +38,11 @@ import os
 import Main
 
 
-def compilar(caminho, placa, ):
+def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo):
     pacotes_instalados = os.path.join('.', 'builder', '.arduino15', 'packages')
-    cmd = ""
-    cmd += os.path.join('.', 'builder', 'arduino-builder')
-    cmd += " -compile "
+    cmd = os.path.join('.', 'builder', 'arduino-builder')
+    cmd += " -compile"
+    cmd += " -logger=human"
     cmd = adicionar_hardware_se_existe(cmd, os.path.join('.', 'builder', 'hardware'))
     cmd = adicionar_hardware_se_existe(cmd, pacotes_instalados)
     cmd = adicionar_hardware_se_existe(cmd, os.path.join(caminho, 'hardware'))
@@ -51,7 +51,20 @@ def compilar(caminho, placa, ):
     cmd = adicionar_ferramenta_se_existe(cmd, pacotes_instalados)
     cmd = adicionar_se_existe(cmd, ' -built-in-libraries ', os.path.join('.', 'builder', 'libraries'))
     cmd = adicionar_se_existe(cmd, ' -libraries ', os.path.join(Main.get_caminho_padrao(), 'bibliotecas'))
-    cmd = adicionar_se_existe(cmd, ' -fqbn ', )
+    fqbn = pacote_alvo.get_id() + ":" + plataforma_alvo.get_id() + ":" + placa_alvo.get_id()  # +":"+opcoes_da_placa(placa_alvo)
+    cmd += " -fqbn=" + fqbn
+    # TODO vidpid
+    cmd += " -ide-version=10805"
+    cmd += " -build-path " + os.path.join(os.path.dirname(caminho), 'build')
+    # TODO warning level
+    # TODO cache core
+    # TODO mais preferencias
+    cmd += " " + os.path.dirname(caminho)
+    os.system(cmd)
+
+
+def opcoes_da_placa(placa):
+    return ""
 
 
 def adicionar_hardware_se_existe(string, arquivo):
@@ -65,3 +78,4 @@ def adicionar_ferramenta_se_existe(string, arquivo):
 def adicionar_se_existe(string, opcao, arquivo):
     if os.path.exists(arquivo):
         return string + opcao + arquivo
+    return string

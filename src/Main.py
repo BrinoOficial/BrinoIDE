@@ -137,7 +137,7 @@ class Principal(QMainWindow):
         self.acao_monitor_serial.triggered.connect(MonitorSerial.monitor_serial)
 
         self.acao_verificar.setShortcut('Ctrl+R')
-        self.acao_verificar.triggered.connect(GerenciadorDeCodigo.verificar)
+        self.acao_verificar.triggered.connect(self.widget_central.compilar)
 
         self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
         self.acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
