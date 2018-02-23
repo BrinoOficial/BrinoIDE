@@ -31,7 +31,7 @@ class PlacaAlvo:
         return self.plataforma
 
     def criar_acao(self, parent):
-        acao_placa = QAction(self.get_id(), parent)
+        acao_placa = QAction(PlacaAlvo.capitalizar(self.get_id()), parent)
         acao_placa.triggered.connect(functools.partial(self.selecionar_placa, self, parent))
         return acao_placa
 
@@ -47,3 +47,8 @@ class PlacaAlvo:
         Preferencias.set("runtime.platform.path", pasta_plataforma)
         Preferencias.set('runtime.hardware.path', os.path.dirname(pasta_plataforma))
         parent.on_troca_placa_ou_porta()
+
+    @staticmethod
+    def capitalizar(string):
+        retorno = "%s%s" % (string[0].upper(), string[1:])
+        return retorno
