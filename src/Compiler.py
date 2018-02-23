@@ -59,7 +59,7 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     cmd += " -ide-version=10805"
     cmd += " -build-path " + temp
     # TODO warning level
-    # TODO cache core
+    cmd += " -build-cache " + cache
     # TODO mais preferencias
     cmd += " " + os.path.dirname(caminho)
     p = Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE, stdin=PIPE)
