@@ -34,33 +34,39 @@ email: victor.pacheco@brino.cc
 """
 
 import os
+import shlex
+from subprocess import Popen, PIPE
 
 import Main
 
 
-def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo):
-    pacotes_instalados = os.path.join('.', 'builder', '.arduino15', 'packages')
-    cmd = os.path.join('.', 'builder', 'arduino-builder')
+def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, temp, cache):
+    pacotes_instalados = os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages'))
+    cmd = os.path.abspath(os.path.join('.', 'builder', 'arduino-builder'))
     cmd += " -compile"
     cmd += " -logger=human"
-    cmd = adicionar_hardware_se_existe(cmd, os.path.join('.', 'builder', 'hardware'))
+    cmd = adicionar_hardware_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'hardware')))
     cmd = adicionar_hardware_se_existe(cmd, pacotes_instalados)
-    cmd = adicionar_hardware_se_existe(cmd, os.path.join(caminho, 'hardware'))
-    cmd = adicionar_ferramenta_se_existe(cmd, os.path.join('.', 'builder', 'tools-builder'))
-    cmd = adicionar_ferramenta_se_existe(cmd, os.path.join('.', 'builder', 'hardware', 'tools', 'avr'))
+    cmd = adicionar_hardware_se_existe(cmd, os.path.abspath(os.path.join(caminho, 'hardware')))
+    cmd = adicionar_ferramenta_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'tools-builder')))
+    cmd = adicionar_ferramenta_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'hardware', 'tools', 'avr')))
     cmd = adicionar_ferramenta_se_existe(cmd, pacotes_instalados)
-    cmd = adicionar_se_existe(cmd, ' -built-in-libraries ', os.path.join('.', 'builder', 'libraries'))
+    cmd = adicionar_se_existe(cmd, ' -built-in-libraries ', os.path.abspath(os.path.join('.', 'builder', 'libraries')))
     cmd = adicionar_se_existe(cmd, ' -libraries ', os.path.join(Main.get_caminho_padrao(), 'bibliotecas'))
     fqbn = pacote_alvo.get_id() + ":" + plataforma_alvo.get_id() + ":" + placa_alvo.get_id()  # +":"+opcoes_da_placa(placa_alvo)
     cmd += " -fqbn=" + fqbn
     # TODO vidpid
     cmd += " -ide-version=10805"
-    cmd += " -build-path " + os.path.join(os.path.dirname(caminho), 'build')
+    cmd += " -build-path " + temp
     # TODO warning level
     # TODO cache core
     # TODO mais preferencias
     cmd += " " + os.path.dirname(caminho)
-    os.system(cmd)
+    p = Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE, stdin=PIPE)
+    output = p.stdout.read()
+    output += p.stderr.read()
+    return output
+    # os.system(cmd)
 
 
 def opcoes_da_placa(placa):

@@ -35,6 +35,7 @@ email: victor.pacheco@brino.cc
 
 import ntpath
 import os
+from tempfile import mkdtemp
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
@@ -58,7 +59,9 @@ class Centro(QWidget):
         self.menu = None
         self.parent = parent
         self.pacotes = dict()
-
+        self.temp_build = mkdtemp('build')
+        self.temp_cache = mkdtemp('cache')
+        self.log = None
         self.init_ui()
 
     # noinspection PyUnresolvedReferences
@@ -86,10 +89,10 @@ class Centro(QWidget):
 
         self.nova_aba()
 
-        log = QPlainTextEdit(self)
-        log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
-        log.setDisabled(True)
-        layout.addWidget(log, 1, 1, 1, 2)
+        self.log = QPlainTextEdit(self)
+        self.log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
+        self.log.setDisabled(True)
+        layout.addWidget(self.log, 1, 1, 1, 2)
 
         self.show()
 
@@ -239,9 +242,12 @@ class Centro(QWidget):
 
     def compilar(self):
         self.salvar()
+        self.log.clear()
         placa_alvo = self.get_placa_alvo()
         plataforma_alvo = placa_alvo.get_plataforma()
         pacote_alvo = plataforma_alvo.get_pacote()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
-        compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo)
+        resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build,
+                                             self.temp_cache)
+        self.log.insertPlainText(resultado)
