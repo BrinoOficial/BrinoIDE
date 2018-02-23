@@ -74,9 +74,10 @@ class Centro(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.menu = Menu.Menu(self)
-        self.carregar_hardware(os.path.join('builder', 'hardware'))
-        self.criar_menu_placas()
         layout.addWidget(self.menu, 0, 0, 2, 2)
+
+        self.init_pacotes()
+        self.criar_menu_placas()
 
         btn = QPushButton(self)
         btn.clicked.connect(self.nova_aba)
@@ -95,6 +96,13 @@ class Centro(QWidget):
         layout.addWidget(self.log, 1, 1, 1, 2)
 
         self.show()
+
+    def init_pacotes(self):
+        # TODO index contribuido
+        self.carregar_hardware(os.path.join('builder', 'hardware'))
+        # TODO carregar_hardware_contribuido
+        # TODO carregar_hardware_rascunhos
+        # TODO criar preferencias ferramentas
 
     def remover_aba(self, index):
         if self.widget_abas.count() > 1:
