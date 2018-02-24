@@ -7,8 +7,7 @@ Br.ino Qt Main
 Codigo da janela principal da IDE Br.ino
 em PyQt5 (python 2.7)
 
-    setaCima.png, setaBaixo.png, setaDireita.png e setaEsquerda.png 
-    made by Dave Gandy
+    Icones made by Dave Gandy
     Site: https://www.flaticon.com/authors/dave-gandy
     is licensed by: http://creativecommons.org/licenses/by/3.0/"
 
@@ -43,7 +42,7 @@ import re
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu, QStatusBar
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
@@ -54,6 +53,7 @@ import UI
 
 versao = '3.0.0'
 caminho_padrao = ''
+monitor = 3
 
 
 class Principal(QMainWindow):
@@ -93,6 +93,10 @@ class Principal(QMainWindow):
         self.setMinimumSize(500, 520)
         self.setWindowTitle('Br.ino ' + versao)
         self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
+
+        self.barra_de_status = QStatusBar()
+        self.setStatusBar(self.barra_de_status)
+
         self.show()
 
     def criar_acoes(self):
@@ -137,6 +141,7 @@ class Principal(QMainWindow):
 
         self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
         self.acao_monitor_serial.triggered.connect(MonitorSerial.monitor_serial)
+        self.acao_monitor_serial.triggered.connect(self.abrir_serial)
 
         self.acao_verificar.setShortcut('Ctrl+R')
         self.acao_verificar.triggered.connect(self.widget_central.compilar)
@@ -148,6 +153,7 @@ class Principal(QMainWindow):
         self.criar_acoes()
 
         barra_menu = self.menuBar()
+        barra_menu.setNativeMenuBar(False)
         menu_arquivo = barra_menu.addMenu('Arquivo')
         menu_arquivo.addAction(self.acao_novo)
         menu_arquivo.addAction(self.acao_abrir)
@@ -177,19 +183,8 @@ class Principal(QMainWindow):
         # TODO ler exemplos e adiciona-los ao menu exemplos
         pass
 
-
-
-def main():
-    app = QApplication(sys.argv)
-
-    with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
-        stilo = arquivo_stilo.read()
-        app.setStyleSheet(stilo)
-    Preferencias.init()
-
-    principal = Principal()
-
-    sys.exit(app.exec_())
+    def abrir_serial(self):
+        monitor.show()
 
 
 def get_caminho_padrao():
@@ -201,4 +196,12 @@ def get_caminho_padrao():
 
 
 if __name__ == '__main__':
-    main()
+    app = QApplication(sys.argv)
+    with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
+        stilo = arquivo_stilo.read()
+        app.setStyleSheet(stilo)
+    monitor = MonitorSerial.MonitorSerial()
+    Preferencias.init()
+    principal = Principal()
+    principal.show()
+    sys.exit(app.exec_())

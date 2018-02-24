@@ -77,6 +77,7 @@ class CodeEditor(QPlainTextEdit):
     def __init__(self, parent, ask=True, path=""):
         super(CodeEditor, self).__init__(parent)
         self.contador_de_linhas = ContadorDeLinhas(self)
+        self.lineWidth()
         self.largura_contador = 38
         self.blockCountChanged.connect(self.atualizar_largura_contador)
         self.updateRequest.connect(self.atualizar_area_contador)
@@ -173,7 +174,6 @@ class ContadorDeLinhas(QWidget):
     def __init__(self, editor):
         super(ContadorDeLinhas, self).__init__(editor)
         self.editor_de_codigo = editor
-        self.setStyleSheet("border:1px solid red;")
 
     def sizeHint(self):
         return QSize(self.editor_de_codigo.largura_contador, 0)

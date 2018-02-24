@@ -93,7 +93,7 @@ class Centro(QWidget):
 
         self.log = QPlainTextEdit(self)
         self.log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
-        self.log.setDisabled(True)
+        self.log.setReadOnly(True)
         layout.addWidget(self.log, 1, 1, 1, 2)
 
         self.show()
@@ -175,6 +175,9 @@ class Centro(QWidget):
         dialogo.selectNameFilter("Rascunhos Br.ino (*.brpp)")
         dialogo.setDirectory(get_caminho_padrao())
         return dialogo
+
+    def abrir_serial(self):
+        self.parent.abrir_serial()
 
     def carregar_hardware(self, pasta):
         if not os.path.isdir(pasta):
