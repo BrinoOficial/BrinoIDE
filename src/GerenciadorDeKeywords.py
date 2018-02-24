@@ -60,5 +60,6 @@ def traduzir(caminho):
                 linha_sem_espaco = linha.lstrip()
                 if not linha_sem_espaco.startswith("//"):
                     for palavra_chave in data['Keywords']:
-                        linha = re.sub(palavra_chave['translate'], palavra_chave['arduino'], linha)
+                        if linha.__contains__(palavra_chave['highlight']):
+                            linha = re.sub(palavra_chave['translate'], palavra_chave['arduino'], linha)
                 novo_arquivo.write(linha)
