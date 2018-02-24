@@ -100,6 +100,7 @@ class Principal(QMainWindow):
             Define as funcoes de resposta as acoes e conecta elas. Define atalhos de teclado
         """
         self.acao_sair.setShortcut('Ctrl+Q')
+        self.acao_sair.setStatusTip('Sair da IDE do Br.ino')
         self.acao_sair.triggered.connect(self.close)
 
         self.acao_novo.setShortcut("Ctrl+N")

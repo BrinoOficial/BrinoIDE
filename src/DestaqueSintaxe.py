@@ -72,10 +72,9 @@ STYLES = {
     'brace': format_('lightGray'),
     'defclass': format_('black', 'bold'),
     'string': format_('#E3ED77'),
-    'string2': format_('darkMagenta'),
     'comment': format_('Gray', 'italic'),
-    'self': format_('black', 'italic'),
     'numbers': format_('#52e3f6'),
+    'function': format_('#efefef', 'italic')
 }
 
 
@@ -101,6 +100,8 @@ class PythonHighlighter(QSyntaxHighlighter):
 
         rules = []
 
+        rules += [(r'\\b[A-Za-z0-9_]+(?=\\()', 0, STYLES['function'])]
+
         # Keyword, operator, and brace rules
         rules += [(r'\b%s\b' % w, 0, STYLES['keyword'])
                   for w in PythonHighlighter.keywords_1]
@@ -113,8 +114,6 @@ class PythonHighlighter(QSyntaxHighlighter):
 
         # All other rules
         rules += [
-            # 'self'
-            (r'\bself\b', 0, STYLES['self']),
 
             # Double-quoted string, possibly containing escape sequences
             (r'"[^"\\]*(\\.[^"\\]*)*"', 0, STYLES['string']),
@@ -133,10 +132,6 @@ class PythonHighlighter(QSyntaxHighlighter):
         # Build a QRegExp for each pattern
         self.rules = [(QRegExp(pat), index, fmt)
                       for (pat, index, fmt) in rules]
-
-        formato_funcao = QTextCharFormat()
-        formato_funcao.setFontItalic(True)
-        self.rules.append((QRegExp("\\b[A-Za-z0-9_]+(?=\\()"), 0, formato_funcao))
 
         self.commentStartExpression = QRegExp("/\\*")
         self.commentEndExpression = QRegExp("\\*/")
@@ -175,4 +170,4 @@ class PythonHighlighter(QSyntaxHighlighter):
 
             self.setFormat(indice_inicio, comprimento_comentario,
                            self.multiLineCommentFormat)
-            indice_inicio = self.commentStartExpression.indexIn(texto, indice_inicio + comprimento_comentario);
+            indice_inicio = self.commentStartExpression.indexIn(texto, indice_inicio + comprimento_comentario)

@@ -43,11 +43,25 @@ def get_highlights(tipo):
 
     for palavra_chave in data['Keywords']:
         if palavra_chave['highlight-type'] == tipo:
-            uni = palavra_chave['highlight']
-            palavras.append(uni.encode('utf-8'))
+            string_unicode = palavra_chave['highlight']
+            palavras.append(string_unicode.encode('utf-8'))
 
     return palavras
 
 
+def traducao():
+    data = json.load(open(os.path.join('recursos', 'pt-br.json')))
+
+    with open(os.path.join("recursos", "saida.ino"), 'w') as new_file:
+        with open(os.path.join("recursos", "entrada.brpp")) as old_file:
+            for line in old_file:
+                line_blank = line.lstrip()
+                if not line_blank.startswith("//"):
+                    for palavra_chave in data['Keywords']:
+                        line = line.replace(palavra_chave['translate'], palavra_chave['arduino'])
+                new_file.write(line)
+
+
 if __name__ == '__main__':
-    print(get_highlights('4'))
+    traducao()
+    print(open(os.path.join("recursos", "saida.ino")).read())
