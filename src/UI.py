@@ -77,26 +77,29 @@ class Centro(QWidget):
         self.menu = Menu.Menu(self)
         layout.addWidget(self.menu, 0, 0, 2, 2)
 
-        self.init_pacotes()
-        self.criar_menu_placas()
-
         btn = QPushButton(self)
         btn.clicked.connect(self.nova_aba)
 
-        self.widget_abas = QTabWidget(self)
+        self.widget_abas = QTabWidget(self.parent)
         self.widget_abas.tabCloseRequested.connect(self.remover_aba)
         self.widget_abas.setTabsClosable(False)
         self.widget_abas.setCornerWidget(btn, Qt.TopRightCorner)
         layout.addWidget(self.widget_abas, 0, 1, 1, 2)
-
-        self.nova_aba()
 
         self.log = QPlainTextEdit(self)
         self.log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
         self.log.setReadOnly(True)
         layout.addWidget(self.log, 1, 1, 1, 2)
 
+        self.init_pacotes()
+        self.criar_menu_placas()
+
         self.show()
+
+        self.nova_aba()
+        self.nova_aba(os.path.join('.', 'recursos', 'exemplos', 'CodigoMinimo.brpp'), False)
+        self.remover_aba(0)
+
 
     def init_pacotes(self):
         # TODO index contribuido
@@ -114,11 +117,11 @@ class Centro(QWidget):
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(False)
 
-    def nova_aba(self, path=""):
+    def nova_aba(self, path="", salvar_caminho=True):
         if self.widget_abas.count() == 0 or path:
-            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path)
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path, salvar_caminho=salvar_caminho)
         else:
-            editor = EditorDeTexto.CodeEditor(self.widget_abas, True, path=path)
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, True, path=path, salvar_caminho=salvar_caminho)
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(True)
         text = editor.get_nome()

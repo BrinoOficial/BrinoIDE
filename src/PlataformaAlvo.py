@@ -32,7 +32,6 @@ class PlataformaAlvo:
         self.preferencias = MapaUtils.carregar(os.path.join(pasta, 'platform.txt'))
         self.programador = MapaUtils.primeiro_nivel(MapaUtils.carregar(os.path.join(pasta, 'programmers.txt')))
 
-
     def get_preferencias(self):
         return self.preferencias
 

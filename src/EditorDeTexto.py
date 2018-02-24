@@ -74,15 +74,15 @@ import Main
 
 class CodeEditor(QPlainTextEdit):
 
-    def __init__(self, parent, ask=True, path=""):
+    def __init__(self, parent, ask=True, path="", salvar_caminho=True):
         super(CodeEditor, self).__init__(parent)
         self.contador_de_linhas = ContadorDeLinhas(self)
-        self.lineWidth()
         self.largura_contador = 38
         self.blockCountChanged.connect(self.atualizar_largura_contador)
         self.updateRequest.connect(self.atualizar_area_contador)
         self.cursorPositionChanged.connect(self.marcar_linha_atual)
-        self.atualizar_largura_contador(0)
+        self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))
+        self.setViewportMargins(self.largura_contador, 0, 0, 0)
         self.marcar_linha_atual()
         self.caminho = ""
         if ask:
@@ -96,16 +96,19 @@ class CodeEditor(QPlainTextEdit):
                 print("nome vazio wtf")
         else:
             self.nome = "Novo"
-        if path:
-            print(ask, path)
+        if path and salvar_caminho:
             self.caminho = path
             head, tail = ntpath.split(path)
             self.nome = ntpath.basename(head)
             with open(self.caminho) as arquivo:
                 self.set_texto(arquivo.read())
+        elif path:
+            with open(path) as arquivo:
+                self.set_texto(arquivo.read())
+        print self.caminho
 
-    def atualizar_largura_contador(self, largura):
-        self.setViewportMargins(self.largura_contador, 0, 0, 0)
+    def atualizar_largura_contador(self):
+        self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))
 
     def atualizar_area_contador(self, rect, dy):
         if dy != 0:
@@ -128,10 +131,6 @@ class CodeEditor(QPlainTextEdit):
             selecoes_extras.append(selecao)
         self.setExtraSelections(selecoes_extras)
 
-    def resizeEvent(self, QResizeEvent):
-        cr = self.contentsRect()
-        self.contador_de_linhas.setGeometry(QRect(cr.left(), cr.top(), self.largura_contador, cr.height()))
-
     def lineNumberAreaPaintEvent(self, QPaintEvent):
         painter = QPainter(self.contador_de_linhas)
         painter.fillRect(QPaintEvent.rect(), QColor("#252525"))
@@ -140,7 +139,8 @@ class CodeEditor(QPlainTextEdit):
         numero_bloco = bloco.blockNumber()
         top = int(self.blockBoundingGeometry(bloco).translated(self.contentOffset()).top())
         bottom = top + int(self.blockBoundingRect(bloco).height())
-        painter.fillRect(self.contador_de_linhas.width() - 2, top, 1, 9999, QColor("#505050"))
+        painter.fillRect(self.contador_de_linhas.width() - 2, top, 1, self.contador_de_linhas.height(),
+                         QColor("#505050"))
 
         while bloco.isValid() and top <= QPaintEvent.rect().bottom():
             if bloco.isVisible() and bottom >= QPaintEvent.rect().top():

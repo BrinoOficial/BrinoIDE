@@ -79,6 +79,7 @@ class Principal(QMainWindow):
         self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
         self.menu_placas = QMenu('Placa')
         self.menu_portas = QMenu('Porta')
+        self.barra_de_status = QStatusBar()
 
         self.widget_central = UI.Centro(self)
 
@@ -94,7 +95,6 @@ class Principal(QMainWindow):
         self.setWindowTitle('Br.ino ' + versao)
         self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
 
-        self.barra_de_status = QStatusBar()
         self.setStatusBar(self.barra_de_status)
 
         self.show()
@@ -140,11 +140,10 @@ class Principal(QMainWindow):
         self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
 
         self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
-        self.acao_monitor_serial.triggered.connect(MonitorSerial.monitor_serial)
         self.acao_monitor_serial.triggered.connect(self.abrir_serial)
 
         self.acao_verificar.setShortcut('Ctrl+R')
-        self.acao_verificar.triggered.connect(self.widget_central.compilar)
+        # self.acao_verificar.triggered.connect(self.widget_central.compilar)
 
         self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
         self.acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
@@ -188,6 +187,7 @@ class Principal(QMainWindow):
 
 
 def get_caminho_padrao():
+    global caminho_padrao
     caminho_padrao = os.path.expanduser("~")
     docu = re.compile("Documen.*")
     pastas = os.listdir(caminho_padrao)
