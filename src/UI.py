@@ -37,7 +37,7 @@ import ntpath
 import os
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog)
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -80,7 +80,7 @@ class Centro(QWidget):
 
         log = QPlainTextEdit(self)
         log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
-        log.setDisabled(True)
+        log.setReadOnly(True)
         layout.addWidget(log, 1, 1, 1, 2)
 
         self.show()

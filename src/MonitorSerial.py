@@ -62,7 +62,7 @@ class MonitorSerial(QWidget):
         linha_envio.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
 
         log_monitor = QPlainTextEdit(self)
-        log_monitor.setDisabled(True)
+        log_monitor.setReadOnly(True)
         log_monitor.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
 
         btn_enviar = QPushButton("Enviar")

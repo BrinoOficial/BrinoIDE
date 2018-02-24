@@ -7,8 +7,7 @@ Br.ino Qt Main
 Codigo da janela principal da IDE Br.ino
 em PyQt5 (python 2.7)
 
-    setaCima.png, setaBaixo.png, setaDireita.png e setaEsquerda.png 
-    made by Dave Gandy
+    Icones made by Dave Gandy
     Site: https://www.flaticon.com/authors/dave-gandy
     is licensed by: http://creativecommons.org/licenses/by/3.0/"
 
@@ -43,7 +42,7 @@ import re
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QStatusBar
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
@@ -54,6 +53,7 @@ import UI
 versao = '3.0.0'
 
 monitor = 3
+
 
 class Principal(QMainWindow):
 
@@ -90,6 +90,10 @@ class Principal(QMainWindow):
         self.setMinimumSize(500, 520)
         self.setWindowTitle('Br.ino ' + versao)
         self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
+
+        self.barra_de_status = QStatusBar()
+        self.setStatusBar(self.barra_de_status)
+
         self.show()
 
     def criar_acoes(self):
