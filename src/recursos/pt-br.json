@@ -96,14 +96,14 @@
       "arduino": "digitalWrite(",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "escrever("
+      "translate": "escrever\\("
     },
     {
       "highlight": "Digital",
       "arduino": ".attach(",
       "arg": "false",
       "highlight-type": "1",
-      "translate": ".conectar(Digital."
+      "translate": ".conectar\\(Digital."
     },
     {
       "highlight": "lerAnalogico",
@@ -268,21 +268,21 @@
     },
     {
       "highlight": "ligar",
-      "arduino": "digitalWrite($1,HIGH)",
+      "arduino": "digitalWrite(\\1,HIGH)",
       "arg": "d",
       "highlight-type": "3",
       "translate": "[^\\w]ligar\\(\\s*([a-zA-z0-9]+)\\s*\\)"
     },
     {
       "highlight": "desligar",
-      "arduino": "digitalWrite($1,LOW)",
+      "arduino": "digitalWrite(\\1,LOW)",
       "arg": "d",
       "highlight-type": "3",
       "translate": "desligar\\(\\s*([a-zA-z0-9]+)\\s*\\)"
     },
     {
       "highlight": "usar",
-      "arduino": "#include <$1.h>",
+      "arduino": "#include <\\1.h>",
       "arg": "s",
       "highlight-type": "1",
       "translate": "usar\\s*([\\w]+)"
@@ -352,7 +352,7 @@
     },
     {
       "highlight": "conectarInterruptor",
-      "arduino": "attachInterrupt(digitalPinToInterrupt($1),",
+      "arduino": "attachInterrupt(digitalPinToInterrupt(\\1),",
       "arg": "d",
       "highlight-type": "3",
       "translate": "conectarInterruptor\\(\\s*([0-9]+)\\s*,"
@@ -380,7 +380,7 @@
     },
     {
       "highlight": "desconectarInterruptor",
-      "arduino": "detachInterrupt(digitalPinToInterrupt($1))",
+      "arduino": "detachInterrupt(digitalPinToInterrupt(\\1))",
       "arg": "d",
       "highlight-type": "3",
       "translate": "desconectarInterruptor\\(([0-9]{1,2})\\)"

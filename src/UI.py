@@ -46,6 +46,7 @@ import EditorDeTexto
 import Menu
 import Preferencias
 from Compiler import compilar_arduino_builder
+from GerenciadorDeKeywords import traduzir
 from Main import get_caminho_padrao
 from PacoteAlvo import PacoteAlvo
 from PlataformaAlvo import PlataformaAlvo
@@ -256,6 +257,7 @@ class Centro(QWidget):
         pacote_alvo = plataforma_alvo.get_pacote()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        traduzir(caminho)
         resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build,
                                              self.temp_cache)
         self.log.insertPlainText(resultado)
