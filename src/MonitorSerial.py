@@ -1,7 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
-
 
 """
 Br.ino Qt monitor serial
@@ -35,16 +33,23 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import threading
 
-def monitor_serial():
-    print "Abrindo serial"
-    return monitor_serial
+import serial
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
+
+
+def serial_listener(conexao, parent):
+    while 1:
+        while conexao.inWaiting() + 1:
+            parent.log_monitor.insertPlainText(conexao.read().decode())
 
 
 class MonitorSerial(QWidget):
     def __init__(self, parent=None):
         super(MonitorSerial, self).__init__(parent)
-
+        self.linha_envio = QLineEdit(self)
+        self.log_monitor = QPlainTextEdit(self)
         self.init_ui()
 
     def init_ui(self):
@@ -58,12 +63,10 @@ class MonitorSerial(QWidget):
         self.setStyleSheet("background:#252525")
         self.setWindowTitle('Monitor Serial')
 
-        linha_envio = QLineEdit(self)
-        linha_envio.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
+        self.linha_envio.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
 
-        log_monitor = QPlainTextEdit(self)
-        log_monitor.setReadOnly(True)
-        log_monitor.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
+        self.log_monitor.setReadOnly(True)
+        self.log_monitor.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
 
         btn_enviar = QPushButton("Enviar")
         btn_enviar.setObjectName("btn_enviar_tag")
@@ -73,7 +76,15 @@ class MonitorSerial(QWidget):
         rolagem_check = QCheckBox(self)
         rolagem_check.setText("Rolagem-automática")
 
-        layout.addWidget(linha_envio, 0, 0)
-        layout.addWidget(log_monitor, 1, 0, 1, 0)
+        layout.addWidget(self.linha_envio, 0, 0)
+        layout.addWidget(self.log_monitor, 1, 0, 1, 0)
         layout.addWidget(btn_enviar, 0, 1)
         layout.addWidget(rolagem_check, 2, 0)
+
+    def conectar(self, porta, baud=9600):
+        try:
+            conexao = serial.Serial(porta, baud)
+            thread_monitor = threading.Thread(target=serial_listener, args=(conexao, self))
+            thread_monitor.start()
+        except IOError:
+            return False
