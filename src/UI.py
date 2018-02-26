@@ -110,10 +110,13 @@ class Centro(QWidget):
 
     def remover_aba(self, index):
         if self.widget_abas.count() > 1:
-            widget = self.widget_abas.widget(index)
-            if widget is not None:
-                widget.deleteLater()
-            self.widget_abas.removeTab(index)
+            if index is not int:
+                self.widget_abas.removeTab(self.widget_abas.currentIndex())
+            else:
+                widget = self.widget_abas.widget(index)
+                if widget is not None:
+                    widget.deleteLater()
+                self.widget_abas.removeTab(index)
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(False)
 

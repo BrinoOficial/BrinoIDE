@@ -3,7 +3,6 @@
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
 from PyQt5.QtCore import Qt
 
-
 """
 Br.ino Qt monitor serial
 
