@@ -36,20 +36,21 @@ email: victor.pacheco@brino.cc
 import threading
 
 import serial
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
 
 
-def serial_listener(conexao, parent):
-    while 1:
-        while conexao.inWaiting() + 1:
-            parent.log_monitor.insertPlainText(conexao.read().decode())
-
-
 class MonitorSerial(QWidget):
+    _sinal_recebido_ = pyqtSignal(str)
+
+
     def __init__(self, parent=None):
         super(MonitorSerial, self).__init__(parent)
         self.linha_envio = QLineEdit(self)
         self.log_monitor = QPlainTextEdit(self)
+        self.conexao = None
+        self.parar = True
+        self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
         self.init_ui()
 
     def init_ui(self):
@@ -67,6 +68,7 @@ class MonitorSerial(QWidget):
 
         self.log_monitor.setReadOnly(True)
         self.log_monitor.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
+        self._sinal_recebido_.connect(self.inserir_texto)
 
         btn_enviar = QPushButton("Enviar")
         btn_enviar.setObjectName("btn_enviar_tag")
@@ -83,8 +85,33 @@ class MonitorSerial(QWidget):
 
     def conectar(self, porta, baud=9600):
         try:
-            conexao = serial.Serial(porta, baud)
-            thread_monitor = threading.Thread(target=serial_listener, args=(conexao, self))
-            thread_monitor.start()
+            self.conexao = serial.Serial('/dev/ttyACM0', baud)
+            self.parar = False
+            self.thread_monitor.start()
+            return True
         except IOError:
             return False
+
+    def inserir_texto(self, texto):
+        self.log_monitor.insertPlainText(texto)
+
+    def desconectar(self):
+        self.parar = True
+        self.thread_monitor.join()
+        self.conexao.close()
+
+    def enviar(self, data):
+        self.conexao.write(data)
+
+    def serial_listener(self, nome, parar):
+        while not parar():
+            while self.conexao.inWaiting() + 1 and not parar():
+                if parar():
+                    break
+                self._sinal_recebido_.emit(self.conexao.read().decode())
+            if parar():
+                break
+
+    def closeEvent(self, event):
+        self.desconectar()
+        event.accept()
