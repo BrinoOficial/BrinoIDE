@@ -131,17 +131,13 @@ class Principal(QMainWindow):
         self.acao_comentar_linha.triggered.connect(self.widget_central.comentar_linha)
 
         self.acao_achar.setShortcut('Ctrl+F')
-        self.acao_achar.triggered.connect(GerenciadorDeCodigo.achar)
+        self.acao_achar.triggered.connect(self.widget_central.achar)
 
         self.acao_achar_e_substituir.setShortcut('Ctrl+H')
-        self.acao_achar_e_substituir.triggered.connect(GerenciadorDeCodigo.achar_e_substituir)
+        self.acao_achar_e_substituir.triggered.connect(self.widget_central.achar_e_substituir)
 
         self.acao_ir_para_linha.setShortcut('Ctrl+L')
         self.acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
-
-        self.acao_placa.triggered.connect(GerenciadorDeCodigo.placa)
-
-        self.acao_porta.triggered.connect(GerenciadorDeCodigo.porta)
 
         self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
 
@@ -149,10 +145,10 @@ class Principal(QMainWindow):
         self.acao_monitor_serial.triggered.connect(self.abrir_serial)
 
         self.acao_verificar.setShortcut('Ctrl+R')
-        # self.acao_verificar.triggered.connect(self.widget_central.compilar)
+        self.acao_verificar.triggered.connect(self.widget_central.compilar)
 
         self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
-        self.acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
+        # self.acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
 
     def criar_barra_menu(self):
         self.criar_acoes()

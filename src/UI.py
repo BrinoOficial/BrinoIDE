@@ -39,7 +39,7 @@ from tempfile import mkdtemp
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
-                             QAction)
+                             QAction, QInputDialog)
 from PyQt5.QtGui import QTextCursor
 
 import DestaqueSintaxe
@@ -169,22 +169,53 @@ class Centro(QWidget):
             editor.set_caminho(caminho)
             self.salvar()
 
+    def selecionar_texto(self, cursor, texto, indice_inicial, len):
+        conteudo = self.widget_abas.widget(self.widget_abas.currentIndex()).toPlainText()
+        indice_comeco = conteudo.find(texto, indice_inicial)
+        cursor.setPosition(indice_comeco, QTextCursor.MoveAnchor)
+        cursor.setPosition(indice_comeco + len, QTextCursor.KeepAnchor)
+        return cursor
+
+
     def comentar_linha(self):
-        print "Comentando"
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
-        linha = editor.textCursor().blockNumber()
-        cursor = QTextCursor(editor.document().findBlockByLineNumber(linha))
+        cursor_atual = editor.textCursor()
+        posicao = cursor_atual.position()
+        linha = cursor_atual.blockNumber()
+        bloco_atual = editor.document().findBlockByLineNumber(linha)
+        cursor = QTextCursor(bloco_atual)
         editor.setTextCursor(cursor)
-        texto = editor.document().findBlockByLineNumber(linha).text()
+        texto = bloco_atual.text()
         if texto.strip().startswith("//"):
-            indice_comeco = cursor.position() + texto.find('/')
-            print indice_comeco
-            cursor.setPosition(indice_comeco, QTextCursor.MoveAnchor)
-            cursor.setPosition(indice_comeco + 2, QTextCursor.KeepAnchor)
+            cursor = self.selecionar_texto(cursor, '/', cursor.position(), 2)
             cursor.removeSelectedText()
+            cursor.setPosition(posicao - 2)
             editor.setTextCursor(cursor)
         else:
             editor.insertPlainText('//')
+            cursor.setPosition(posicao + 2)
+            editor.setTextCursor(cursor)
+
+    def achar(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
+        if ok and texto != "":
+            cursor = editor.textCursor()
+            cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
+            editor.setTextCursor(cursor)
+        return
+
+    def achar_e_substituir(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        subs = "haaaa"
+        texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
+        if ok and texto != "":
+            cursor = editor.textCursor()
+            cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
+            cursor.removeSelectedText()
+            editor.setTextCursor(cursor)
+            editor.insertPlainText(subs)
+        return
 
 
     @staticmethod
