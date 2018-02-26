@@ -43,13 +43,13 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPu
 class MonitorSerial(QWidget):
     _sinal_recebido_ = pyqtSignal(str)
 
-
     def __init__(self, parent=None):
         super(MonitorSerial, self).__init__(parent)
         self.linha_envio = QLineEdit(self)
         self.log_monitor = QPlainTextEdit(self)
         self.conexao = None
         self.parar = True
+        self.last = ''
         self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
         self.init_ui()
 
@@ -93,11 +93,13 @@ class MonitorSerial(QWidget):
             return False
 
     def inserir_texto(self, texto):
-        self.log_monitor.insertPlainText(texto)
+        if not texto == '\n':
+            self.log_monitor.insertPlainText(texto)
 
     def desconectar(self):
         self.parar = True
         self.thread_monitor.join()
+        self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
         self.conexao.close()
 
     def enviar(self, data):
@@ -108,7 +110,8 @@ class MonitorSerial(QWidget):
             while self.conexao.inWaiting() + 1 and not parar():
                 if parar():
                     break
-                self._sinal_recebido_.emit(self.conexao.read().decode())
+                string = self.conexao.read()
+                self._sinal_recebido_.emit(string)
             if parar():
                 break
 
