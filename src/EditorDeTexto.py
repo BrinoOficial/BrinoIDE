@@ -168,7 +168,6 @@ class CodeEditor(QPlainTextEdit):
     def set_caminho(self, caminho):
         self.caminho = caminho
 
-
 class ContadorDeLinhas(QWidget):
 
     def __init__(self, editor):

@@ -41,10 +41,6 @@ def porta():
     #TODO abrir portas
     print "Abrindo portas"
 
-def comentar_linha():
-    #TODO comentar
-    print "Comentando"
-
 def achar():
     #TODO achar
     print "Buscando"

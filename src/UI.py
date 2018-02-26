@@ -40,6 +40,7 @@ from tempfile import mkdtemp
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
                              QAction)
+from PyQt5.QtGui import QTextCursor
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -167,6 +168,16 @@ class Centro(QWidget):
             self.widget_abas.setTabText(self.widget_abas.currentIndex(), ntpath.basename(caminho).replace(".brpp", ""))
             editor.set_caminho(caminho)
             self.salvar()
+
+    def comentar_linha(self):
+        # TODO comentar
+        print "Comentando"
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        linha = editor.textCursor().blockNumber() + 1
+        cursor = QTextCursor(editor.document().findBlockByLineNumber(linha - 1))
+        editor.setTextCursor(cursor)
+        editor.insertPlainText('//')
+        print linha
 
     @staticmethod
     def criar_dialogo_arquivo(titulo, acao):

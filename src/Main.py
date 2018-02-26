@@ -128,7 +128,7 @@ class Principal(QMainWindow):
         self.acao_salvar_como.triggered.connect(self.widget_central.salvar_como)
 
         self.acao_comentar_linha.setShortcut('Ctrl+/')
-        self.acao_comentar_linha.triggered.connect(GerenciadorDeCodigo.comentar_linha)
+        self.acao_comentar_linha.triggered.connect(self.widget_central.comentar_linha)
 
         self.acao_achar.setShortcut('Ctrl+F')
         self.acao_achar.triggered.connect(GerenciadorDeCodigo.achar)
