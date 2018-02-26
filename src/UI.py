@@ -170,14 +170,17 @@ class Centro(QWidget):
             self.salvar()
 
     def comentar_linha(self):
-        # TODO comentar
         print "Comentando"
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         linha = editor.textCursor().blockNumber() + 1
         cursor = QTextCursor(editor.document().findBlockByLineNumber(linha - 1))
         editor.setTextCursor(cursor)
-        editor.insertPlainText('//')
-        print linha
+        editor = QPlainTextEdit()
+        if editor.document().findBlockByLineNumber(linha - 1).text().strip().startsWith("//"):
+            pass
+        else:
+            editor.insertPlainText('//')
+
 
     @staticmethod
     def criar_dialogo_arquivo(titulo, acao):
