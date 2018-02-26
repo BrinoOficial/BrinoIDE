@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
+from PyQt5.QtCore import Qt
 
 
 """
@@ -46,6 +47,10 @@ class MonitorSerial(QWidget):
         super(MonitorSerial, self).__init__(parent)
 
         self.init_ui()
+
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_Escape:
+            self.close()
 
     def init_ui(self):
         self.setGeometry(650, 50, 400, 500)

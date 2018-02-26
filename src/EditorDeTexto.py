@@ -117,7 +117,7 @@ class CodeEditor(QPlainTextEdit):
             self.contador_de_linhas.update(0, rect.y(), self.contador_de_linhas.width(), rect.height())
 
             if rect.contains(self.viewport().rect()):
-                self.atualizar_largura_contador(0)
+                self.atualizar_largura_contador()
 
     def marcar_linha_atual(self):
         selecoes_extras = list()
