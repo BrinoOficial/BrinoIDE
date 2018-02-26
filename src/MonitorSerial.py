@@ -112,8 +112,7 @@ class MonitorSerial(QWidget):
             while self.conexao.inWaiting() and not parar():
                 if parar():
                     break
-                string = self.conexao.read()
-                self._sinal_recebido_.emit(string)
+                self._sinal_recebido_.emit(self.conexao.read())
             if parar():
                 break
 
