@@ -74,6 +74,7 @@ class MonitorSerial(QWidget):
         btn_enviar.setObjectName("btn_enviar_tag")
         btn_enviar.setStyleSheet("""#btn_enviar_tag{border-radius:2px;color:#252525;background:#5cb50d;margin:2px;}
                                     #btn_enviar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
+        btn_enviar.clicked.connect(self.enviar)
 
         rolagem_check = QCheckBox(self)
         rolagem_check.setText("Rolagem-automática")
@@ -102,12 +103,13 @@ class MonitorSerial(QWidget):
         self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
         self.conexao.close()
 
-    def enviar(self, data):
-        self.conexao.write(data)
+    def enviar(self):
+        self.conexao.write(self.linha_envio.text().encode('utf-8'))
+        self.linha_envio.setText("")
 
     def serial_listener(self, nome, parar):
         while not parar():
-            while self.conexao.inWaiting() + 1 and not parar():
+            while self.conexao.inWaiting() and not parar():
                 if parar():
                     break
                 string = self.conexao.read()
