@@ -1,8 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
-from PyQt5.QtCore import Qt
-
 
 """
 Br.ino Qt monitor serial
@@ -36,16 +33,25 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import threading
 
-def monitor_serial():
-    print "Abrindo serial"
-    return monitor_serial
+import serial
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
+from PyQt5.QtCore import Qt
 
 
 class MonitorSerial(QWidget):
+    _sinal_recebido_ = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super(MonitorSerial, self).__init__(parent)
-
+        self.linha_envio = QLineEdit(self)
+        self.log_monitor = QPlainTextEdit(self)
+        self.conexao = None
+        self.parar = True
+        self.last = ''
+        self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
         self.init_ui()
 
     def keyPressEvent(self, e):
@@ -63,22 +69,58 @@ class MonitorSerial(QWidget):
         self.setStyleSheet("background:#252525")
         self.setWindowTitle('Monitor Serial')
 
-        linha_envio = QLineEdit(self)
-        linha_envio.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
+        self.linha_envio.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
 
-        log_monitor = QPlainTextEdit(self)
-        log_monitor.setReadOnly(True)
-        log_monitor.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
+        self.log_monitor.setReadOnly(True)
+        self.log_monitor.setStyleSheet("border-radius:3px;background:#101010;margin-bottom:2px;margin-right:2px;")
+        self._sinal_recebido_.connect(self.inserir_texto)
 
         btn_enviar = QPushButton("Enviar")
         btn_enviar.setObjectName("btn_enviar_tag")
         btn_enviar.setStyleSheet("""#btn_enviar_tag{border-radius:2px;color:#252525;background:#5cb50d;margin:2px;}
                                     #btn_enviar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
+        btn_enviar.clicked.connect(self.enviar)
 
         rolagem_check = QCheckBox(self)
         rolagem_check.setText("Rolagem-automática")
 
-        layout.addWidget(linha_envio, 0, 0)
-        layout.addWidget(log_monitor, 1, 0, 1, 0)
+        layout.addWidget(self.linha_envio, 0, 0)
+        layout.addWidget(self.log_monitor, 1, 0, 1, 0)
         layout.addWidget(btn_enviar, 0, 1)
         layout.addWidget(rolagem_check, 2, 0)
+
+    def conectar(self, porta, baud=9600):
+        try:
+            self.conexao = serial.Serial('/dev/ttyACM0', baud)
+            self.parar = False
+            self.thread_monitor.start()
+            return True
+        except IOError:
+            return False
+
+    def inserir_texto(self, texto):
+        if not texto == '\n':
+            self.log_monitor.insertPlainText(texto)
+
+    def desconectar(self):
+        self.parar = True
+        self.thread_monitor.join()
+        self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
+        self.conexao.close()
+
+    def enviar(self):
+        self.conexao.write(self.linha_envio.text().encode('utf-8'))
+        self.linha_envio.setText("")
+
+    def serial_listener(self, nome, parar):
+        while not parar():
+            while self.conexao.inWaiting() and not parar():
+                if parar():
+                    break
+                self._sinal_recebido_.emit(self.conexao.read())
+            if parar():
+                break
+
+    def closeEvent(self, event):
+        self.desconectar()
+        event.accept()

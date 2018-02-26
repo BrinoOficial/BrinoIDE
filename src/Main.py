@@ -42,7 +42,7 @@ import re
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu, QStatusBar
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
@@ -183,7 +183,12 @@ class Principal(QMainWindow):
         pass
 
     def abrir_serial(self):
-        monitor.show()
+        if monitor.conectar(Preferencias.get("serial.port")):
+            monitor.show()
+        else:
+            alerta = QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
+                                 QMessageBox.NoButton, self)
+            alerta.show()
 
 
 def get_caminho_padrao():
