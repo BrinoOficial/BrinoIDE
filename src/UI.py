@@ -172,12 +172,17 @@ class Centro(QWidget):
     def comentar_linha(self):
         print "Comentando"
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
-        linha = editor.textCursor().blockNumber() + 1
-        cursor = QTextCursor(editor.document().findBlockByLineNumber(linha - 1))
+        linha = editor.textCursor().blockNumber()
+        cursor = QTextCursor(editor.document().findBlockByLineNumber(linha))
         editor.setTextCursor(cursor)
-        editor = QPlainTextEdit()
-        if editor.document().findBlockByLineNumber(linha - 1).text().strip().startsWith("//"):
-            pass
+        texto = editor.document().findBlockByLineNumber(linha).text()
+        if texto.strip().startswith("//"):
+            indice_comeco = cursor.position() + texto.find('/')
+            print indice_comeco
+            cursor.setPosition(indice_comeco, QTextCursor.MoveAnchor)
+            cursor.setPosition(indice_comeco + 2, QTextCursor.KeepAnchor)
+            cursor.removeSelectedText()
+            editor.setTextCursor(cursor)
         else:
             editor.insertPlainText('//')
 
