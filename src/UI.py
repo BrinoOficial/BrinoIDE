@@ -48,6 +48,7 @@ import Preferencias
 import Uploader
 from Compiler import compilar_arduino_builder
 from GerenciadorDeKeywords import traduzir
+from IndexadorContribuicao import IndexadorContribuicao
 from Main import get_caminho_padrao
 from PacoteAlvo import PacoteAlvo
 from PlataformaAlvo import PlataformaAlvo
@@ -103,8 +104,10 @@ class Centro(QWidget):
 
 
     def init_pacotes(self):
+        pasta_hardware = os.path.join('builder', 'hardware')
+        indexer = IndexadorContribuicao(os.path.join('builder'), pasta_hardware)
         # TODO index contribuido
-        self.carregar_hardware(os.path.join('builder', 'hardware'))
+        self.carregar_hardware(pasta_hardware)
         # TODO carregar_hardware_contribuido
         # TODO carregar_hardware_rascunhos
         # TODO criar preferencias ferramentas

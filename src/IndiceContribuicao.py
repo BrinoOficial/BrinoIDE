@@ -7,3 +7,6 @@ class IndiceContribuicao():
 
     def get_plataformas(self):
         pass
+
+    def get_pacotes(self):
+        pass
