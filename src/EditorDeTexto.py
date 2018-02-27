@@ -67,7 +67,7 @@ import os
 
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog
+from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QPushButton
 
 import Main
 
@@ -168,6 +168,7 @@ class CodeEditor(QPlainTextEdit):
     def set_caminho(self, caminho):
         self.caminho = caminho
 
+
 class ContadorDeLinhas(QWidget):
 
     def __init__(self, editor):
@@ -179,3 +180,18 @@ class ContadorDeLinhas(QWidget):
 
     def paintEvent(self, event):
         self.editor_de_codigo.lineNumberAreaPaintEvent(event)
+
+
++
+
+
+class Achar(QWidget):
+    def __init__(self, editor):
+        super(Achar, self).__init__(editor)
+        self.editor_de_codigo = editor
+
+    def init_ui(self):
+        btn_buscar = QPushButton("Buscar")
+
+    def sizeHint(self):
+        return QSize(0, 20)
