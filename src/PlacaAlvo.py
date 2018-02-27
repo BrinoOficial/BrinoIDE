@@ -12,10 +12,11 @@ class PlacaAlvo:
         self.plataforma = parent
         self.id_ = nome
         self.prefs = prefs
+        self.menu_opcoes = dict()
 
         menus = MapaUtils.primeiro_nivel(prefs).get('menu')
         if menus:
-            menu_opcoes = MapaUtils.primeiro_nivel(menus)
+            self.menu_opcoes = MapaUtils.primeiro_nivel(menus)
         if not 'build.board' in self.prefs.keys():
             placa = parent.get_id() + "_" + nome
             placa = placa.upper()
@@ -52,3 +53,18 @@ class PlacaAlvo:
     def capitalizar(string):
         retorno = "%s%s" % (string[0].upper(), string[1:])
         return retorno
+
+    def get_ids_menus(self):
+        return self.menu_opcoes.keys()
+
+    def tem_menu(self, id):
+        return id in self.menu_opcoes.keys()
+
+    def get_preferencias_menu(self, id_menu, id_selecao):
+        return MapaUtils.sub_tree(self.menu_opcoes.get(id_menu), id_selecao)
+
+    def get_label_menu(self, id_menu, id_selecao):
+        return self.get_labels_menu(id_menu).get(id_selecao)
+
+    def get_labels_menu(self, id_menu):
+        return MapaUtils.dicionario_superior(self.menu_opcoes.get(id_menu))

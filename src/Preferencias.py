@@ -16,3 +16,15 @@ def set(preferencia, valor):
 
 def get(preferencia):
     return preferencias.get(preferencia)
+
+
+def get_int(preferencia):
+    return int(get(preferencia))
+
+
+def get_float(preferencia):
+    return float(get(preferencia))
+
+
+def get_mapa():
+    return preferencias

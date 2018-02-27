@@ -51,3 +51,6 @@ class PlataformaAlvo:
         if nome in self.placas.keys():
             return self.placas.get(nome)
         return self.placa_padrao
+
+    def get_ferramenta(self, tool):
+        return MapaUtils.sub_tree(MapaUtils.sub_tree(self.get_preferencias(), "tools"), tool)

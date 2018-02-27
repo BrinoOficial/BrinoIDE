@@ -36,9 +36,9 @@ email: victor.pacheco@brino.cc
 import threading
 
 import serial
+from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
-from PyQt5.QtCore import Qt
 
 
 class MonitorSerial(QWidget):

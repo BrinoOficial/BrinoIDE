@@ -45,6 +45,7 @@ import DestaqueSintaxe
 import EditorDeTexto
 import Menu
 import Preferencias
+import Uploader
 from Compiler import compilar_arduino_builder
 from GerenciadorDeKeywords import traduzir
 from Main import get_caminho_padrao
@@ -233,11 +234,29 @@ class Centro(QWidget):
         placa_alvo = self.get_placa_alvo()
         if placa_alvo is None:
             return None
-        nome_placa = placa_alvo.get_id()
+        id_placa = placa_alvo.get_id()
         prefs = placa_alvo.get_preferencias()
-        # TODO lidar com nome extendido
-        # TODO lidar com ferramentas extras
-
+        nome_extendido = prefs.get("name")
+        for id_menu in placa_alvo.get_ids_menus():
+            if not placa_alvo.tem_menu(id_menu):
+                continue
+            entrada = Preferencias.get("custom_" + id_menu)
+            if entrada is not None and entrada.startswith(id_placa):
+                id_selecao = entrada[len(id_placa) + 1:]
+                prefs.update(placa_alvo.get_preferencias_menu(id_menu, id_selecao))
+                nome_extendido += ", " + placa_alvo.get_label_menu(id_menu, id_selecao)
+        prefs['name'] = nome_extendido
+        ferramentas = list()
+        # TODO platafroma contribuida
+        core = prefs.get("build.core")
+        if core is not None and core.__contains__(":"):
+            separado = core.split(":")
+            referenciada = self.get_plataforma_atual_do_pacote(separado[0])
+            if referenciada is not None:
+                # TODO plataforma contribuida
+                pass
+        prefix = "runtime.tools."
+        # TODO ferramenta contribuida
         return prefs
 
     def get_placa_alvo(self):
@@ -255,6 +274,9 @@ class Centro(QWidget):
         plataforma_alvo = p.get(plataforma)
         return plataforma_alvo
 
+    def get_plataforma_atual_do_pacote(self, pacote):
+        return self.get_plataforma_alvo(pacote, Preferencias.get("target_platform"))
+
     def compilar(self):
         self.salvar()
         self.log.clear()
@@ -267,3 +289,14 @@ class Centro(QWidget):
         resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build,
                                              self.temp_cache)
         self.log.insertPlainText(resultado)
+
+    def upload(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        caminho_temp = self.temp_build
+        uploader = None
+        if uploader is None:
+            uploader = Uploader.get_uploader_por_preferencias()
+            uploader = Uploader.UploaderSerial(False)
+        sucesso = False
+        sucesso = uploader.upload_usando_preferencias(self, caminho, caminho_temp)

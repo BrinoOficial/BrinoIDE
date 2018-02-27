@@ -146,7 +146,7 @@ class Principal(QMainWindow):
         # self.acao_verificar.triggered.connect(self.widget_central.compilar)
 
         self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
-        self.acao_verificar_e_carregar.triggered.connect(GerenciadorDeCodigo.verificar_e_carregar)
+        self.acao_verificar_e_carregar.triggered.connect(self.widget_central.upload)
 
     def criar_barra_menu(self):
         self.criar_acoes()
