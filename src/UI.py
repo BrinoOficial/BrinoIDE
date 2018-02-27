@@ -146,6 +146,7 @@ class Centro(QWidget):
     def salvar(self):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        editor.salvo = True
         if caminho != "":
             if not os.path.exists(os.path.dirname(caminho)):
                 try:
