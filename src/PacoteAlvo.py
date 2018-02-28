@@ -18,3 +18,6 @@ class PacoteAlvo:
 
     def get_id(self):
         return self.id_
+
+    def adicionar_plataforma(self, plataforma):
+        self.plataformas[plataforma.get_id()] = plataforma

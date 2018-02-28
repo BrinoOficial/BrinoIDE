@@ -26,3 +26,12 @@ class PacoteContribuido:
 
     def get_ferramenta_por_nome(self, nome):
         return self.ferramentas[nome]
+
+    def achar_plataforma(self, arquitetura, versao):
+        for plataforma in self.get_plataformas():
+            if plataforma.get_arquitetura() == arquitetura and versao == plataforma.get_versao():
+                return plataforma
+
+    def achar_ferramenta(self, nome, versao):
+        if self.get_ferramenta_por_nome(nome).get_versao() == versao:
+            return self.get_ferramenta_por_nome(nome)

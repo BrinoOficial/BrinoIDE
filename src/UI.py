@@ -105,8 +105,10 @@ class Centro(QWidget):
 
     def init_pacotes(self):
         pasta_hardware = os.path.join('builder', 'hardware')
-        indexer = IndexadorContribuicao(os.path.join('builder'), pasta_hardware)
-        # TODO index contribuido
+        self.indexer = IndexadorContribuicao(os.path.join('builder'), pasta_hardware)
+        self.indexer.parse_index()
+        self.indexer.sincronizar_com_arquivos()
+        self.carregar_hardware_contribuido(self.indexer)
         self.carregar_hardware(pasta_hardware)
         # TODO carregar_hardware_contribuido
         # TODO carregar_hardware_rascunhos
@@ -204,6 +206,11 @@ class Centro(QWidget):
                 self.pacotes[nome_item] = pacote_alvo
             self.carregar_pacote_alvo(pacote_alvo, item)
 
+    def carregar_hardware_contribuido(self, indexer):
+        for pacote in indexer.criar_pacotes_alvo():
+            if self.pacotes.get(pacote.get_id(), False):
+                self.pacotes[pacote.get_id().encode('utf-8'), pacote]
+
     @staticmethod
     def carregar_pacote_alvo(pacote_alvo, pasta):
         pastas = os.listdir(pasta)
@@ -250,16 +257,24 @@ class Centro(QWidget):
                 nome_extendido += ", " + placa_alvo.get_label_menu(id_menu, id_selecao)
         prefs['name'] = nome_extendido
         ferramentas = list()
-        # TODO platafroma contribuida
+        plataforma = self.indexer.get_plataforma_contribuida(self.get_plataforma_alvo())
+        if plataforma is not None:
+            ferramentas.extend(plataforma.get_ferramentas_resolvidas())
+
         core = prefs.get("build.core")
         if core is not None and core.__contains__(":"):
             separado = core.split(":")
             referenciada = self.get_plataforma_atual_do_pacote(separado[0])
             if referenciada is not None:
-                # TODO plataforma contribuida
-                pass
+                plat_referenciada = self.indexer.get_plataforma_contribuida(referenciada)
+                ferramentas.extend(plat_referenciada.get_ferramentas_resolvidas())
         prefix = "runtime.tools."
-        # TODO ferramenta contribuida
+        for tool in ferramentas:
+            pasta = tool.get_pasta_instalada()
+            caminho = os.path.abspath(pasta)
+            prefs[prefix + tool.get_nome() + ".path"] = caminho
+            Preferencias.set(prefix + tool.get_nome() + ".path", caminho)
+            Preferencias.set(prefix + tool.get_nome() + "-" + tool.get_versao() + ".path", caminho)
         return prefs
 
     def get_placa_alvo(self):

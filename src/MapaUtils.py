@@ -34,7 +34,7 @@ def sub_tree(dictio, parent, sublevels=-1):
     parent_len = len(parent)
     for key in dictio.keys():
         if key.startswith(parent):
-            nova_chave = key.substring(parent_len)
+            nova_chave = key[parent_len:]
             key_sub_levels = len(nova_chave.split("\\."))
             if sublevels == -1 or key_sub_levels == sublevels:
                 res[nova_chave] = dictio.get(key)
