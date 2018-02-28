@@ -1,4 +1,6 @@
+import json
 import os
+
 
 class IndexadorContribuicao():
     def __init__(self, pasta_prefs, pasta_hardware):
@@ -9,8 +11,12 @@ class IndexadorContribuicao():
         self.index = None
         pass
 
-    def parse_index(self):
-        self.merge_contribuicoes(os.path.join(self.pasta_hardware, "package_index_bundled.json"))
+    def parse_index(self, path=None):
+        if path is not None:
+            data = json.load(open(path))
+            IndiceContribuicao(data)
+        else:
+            self.merge_contribuicoes(os.path.join(self.pasta_hardware, "package_index_bundled.json"))
 
     def merge_contribuicoes(self, path):
         if not os.path.exists(path):
