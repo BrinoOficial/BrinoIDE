@@ -123,7 +123,6 @@ class CodeEditor(QPlainTextEdit):
 
     def set_salvo(self):
         self.salvo = False
-        print self.salvo
 
     def marcar_linha_atual(self):
         selecoes_extras = list()
