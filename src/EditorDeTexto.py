@@ -187,7 +187,6 @@ class ContadorDeLinhas(QWidget):
         self.editor_de_codigo.lineNumberAreaPaintEvent(event)
 
 
-
 class Achar(QWidget):
     def __init__(self, editor):
         super(Achar, self).__init__(editor)
@@ -214,7 +213,6 @@ class Achar(QWidget):
         self.horizontalGroupBox.setLayout(layout)
 
         self.show()
-
 
     def sizeHint(self):
         return QSize(0, 20)

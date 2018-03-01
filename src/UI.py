@@ -185,7 +185,6 @@ class Centro(QWidget):
         cursor.setPosition(indice_comeco + len, QTextCursor.KeepAnchor)
         return cursor
 
-
     def comentar_linha(self):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         cursor_atual = editor.textCursor()
