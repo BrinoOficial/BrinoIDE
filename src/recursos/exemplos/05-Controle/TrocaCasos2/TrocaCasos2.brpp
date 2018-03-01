@@ -1,0 +1,51 @@
+/*
+    TrocaCasos2 - switch com o monitor serial. Demonstra o uso do swich, um valor e comparado com casos possiveis, caso nao se encaixe em nenhum ele executa a opcao padrao.
+    Esse codigo recebe dados pela serial, se for 'a', 'b', 'c', 'd' ou 'e' ele liga um led em especifico. Caso seja qualquer outro valor os LEDs serao apagados.
+
+    O circuito
+    - Cinco LEDs conectados da porta 2 a 6 e ao GND
+
+    Codigo original para o Arduino:
+    http://www.arduino.cc/en/Tutorial/SwitchCase2
+*/
+
+Configuracao() {
+    // Inicia a comunicacao serial
+    USB.conectar(9600);
+    // Configura as portas dos LEDs como saidas
+    para (Numero essaPorta = 2; essaPorta < 7; essaPorta++) {
+        Pino.definirModo(essaPorta, Saida);
+    }
+    USB.enviarln("Ligue e desligue os LEDs!\nEnvie alguma letra e veja o resultado\n\n");
+}
+
+Principal() {
+    // Le se existem dados disponiveis na serial
+    se (USB.disponivel() > 0) {
+        Numero entrada = USB.ler();
+        // Faz coisas diferentes para cada valor recebido
+        switch (entrada) {
+            case 'a':
+                Pino.ligar(2);
+                 break;
+            case 'b':
+                Pino.ligar(3);
+                break;
+            case 'c':
+                Pino.ligar(4);
+                break;
+            case 'd':
+                Pino.ligar(5);
+                break;
+            case 'e':
+                Pino.ligar(6);
+                break;
+            // Se o valor nao se encaixou em nenhum dos casos anteriores, essa parte e executada
+            default:
+                // Desliga todos os LEDs
+                para (Numero essaPorta = 2; essaPorta < 7; essaPorta++) {
+                    Pino.desligar(essaPorta);
+                }
+        }
+    }
+}

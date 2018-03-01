@@ -1,0 +1,37 @@
+/*
+    Substring - Um exemplo ensinando a usar a funcao substring() que encontra uma Palavra dentro de outra
+
+    O circuito: Nenhum hardware alem de seu arduino sera nescessario
+
+    Exemplo original do Arduino:
+    http://www.arduino.cc/en/Tutorial/StringSubstring
+*/
+
+Configuracao() {
+    // Inicia a comunicacao com o computador
+    USB.conectar(9600);
+    enquanto (!USB) {
+        ; // Espera a porta estar conectada
+    }
+    // Envia um titulo
+    USB.enviarln("Palavra - substring():\n");
+}
+
+Principal() {
+    // Declara uma Palavra
+    Palavra fraseUm = "Tipo de arquivo: text/html";
+    USB.enviarln(fraseUm);
+
+    // substring(indice) procura comecando de um indice de posicao ate o final da Palavra
+    se (fraseUm.substring(22) == "html") {
+        USB.enviarln("E um arquivo HTML");
+    }
+    
+    // Tambem pode ser definido o indice do fim da procura
+    se (fraseUm.substring(17, 21) == "text") {
+         USB.enviarln("E um arquivo baseado em texto");
+    }
+
+    // Para o codigo
+    enquanto (Verdadeiro);
+}

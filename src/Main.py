@@ -42,7 +42,7 @@ import re
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
 
 import GerenciadorDeArquivos
 import GerenciadorDeCodigo
@@ -84,10 +84,14 @@ class Principal(QMainWindow):
 
         self.widget_central = UI.Centro(self)
 
+        self.criar_barra_menu()
+
         self.init_ui()
 
     def init_ui(self):
-        self.criar_barra_menu()
+        self.setStatusBar(self.barra_de_status)
+        self.placa_porta_label = QLabel(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
+        self.barra_de_status.addPermanentWidget(self.placa_porta_label)
 
         self.setCentralWidget(self.widget_central)
 
@@ -95,8 +99,6 @@ class Principal(QMainWindow):
         self.setMinimumSize(500, 520)
         self.setWindowTitle('Br.ino ' + versao)
         self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
-
-        self.setStatusBar(self.barra_de_status)
 
         self.show()
 
@@ -110,45 +112,58 @@ class Principal(QMainWindow):
         self.acao_sair.triggered.connect(monitor.close)
 
         self.acao_fechar_aba.setShortcut('Ctrl+W')
-        self.acao_sair.setStatusTip('Fechar aba atual')
+        self.acao_fechar_aba.setStatusTip('Fechar aba atual')
         self.acao_fechar_aba.triggered.connect(self.widget_central.remover_aba)
 
         self.acao_novo.setShortcut("Ctrl+N")
         self.acao_novo.triggered.connect(self.widget_central.nova_aba)
+        self.acao_novo.setStatusTip("Criar novo arquivo")
 
         self.acao_abrir.setShortcut('Ctrl+O')
         self.acao_abrir.triggered.connect(self.widget_central.abrir)
+        self.acao_abrir.setStatusTip("Abrir arquivo")
 
         self.acao_exemplos.triggered.connect(GerenciadorDeArquivos.exemplos)
+        self.acao_exemplos.setStatusTip("Exemplos")
 
         self.acao_salvar.setShortcut('Ctrl+S')
         self.acao_salvar.triggered.connect(self.widget_central.salvar)
+        self.acao_salvar.setStatusTip("Salvar arquivo")
 
         self.acao_salvar_como.setShortcut('Ctrl+Shift+S')
         self.acao_salvar_como.triggered.connect(self.widget_central.salvar_como)
+        self.acao_salvar_como.setStatusTip("Salvar arquivo como")
 
         self.acao_comentar_linha.setShortcut('Ctrl+/')
         self.acao_comentar_linha.triggered.connect(self.widget_central.comentar_linha)
+        self.acao_comentar_linha.setStatusTip("Comentar linha")
 
         self.acao_achar.setShortcut('Ctrl+F')
         self.acao_achar.triggered.connect(self.widget_central.achar)
+        self.acao_achar.setStatusTip("Achar...")
 
         self.acao_achar_e_substituir.setShortcut('Ctrl+H')
         self.acao_achar_e_substituir.triggered.connect(self.widget_central.achar_e_substituir)
+        self.acao_achar_e_substituir.setStatusTip("Achar e substituir...")
 
         self.acao_ir_para_linha.setShortcut('Ctrl+L')
         self.acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
+        self.acao_ir_para_linha.setStatusTip("Ir para linha...")
 
         self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
+        self.acao_lingua.setStatusTip("Opções de língua")
 
         self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
         self.acao_monitor_serial.triggered.connect(self.abrir_serial)
+        self.acao_monitor_serial.setStatusTip("Abrir monitor serial")
 
         self.acao_verificar.setShortcut('Ctrl+R')
         self.acao_verificar.triggered.connect(self.widget_central.compilar)
+        self.acao_verificar.setStatusTip("Verificar código")
 
         self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
         self.acao_verificar_e_carregar.triggered.connect(self.widget_central.upload)
+        self.acao_verificar_e_carregar.setStatusTip("Verificar e carregar código")
 
     def criar_barra_menu(self):
         self.criar_acoes()

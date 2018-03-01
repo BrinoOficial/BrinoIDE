@@ -68,7 +68,7 @@ import os
 
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QMessageBox
 
 import Main
 
@@ -85,6 +85,7 @@ class CodeEditor(QPlainTextEdit):
         self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
         self.marcar_linha_atual()
+        self.achar = Achar(self)
         self.caminho = ""
         self.textChanged.connect(functools.partial(self.set_salvo, False))
         if ask:
@@ -158,6 +159,13 @@ class CodeEditor(QPlainTextEdit):
             bottom = top + int(self.blockBoundingRect(bloco).height())
             numero_bloco += 1
 
+    def AcharEventoDePintura(self, QPaintEvent):
+        painter = QPainter(self.achar)
+        painter.fillRect(QPaintEvent.rect(), QColor("#252525"))
+
+        top = int(self.top())
+        painter.fillRect(0, top, self.width(), 2, QColor("#505050"))
+
     def set_texto(self, texto):
         self.setPlainText(texto)
 
@@ -192,27 +200,11 @@ class Achar(QWidget):
         super(Achar, self).__init__(editor)
         self.editor_de_codigo = editor
 
-    def init_ui(self):
-        self.horizontalGroupBox = QGroupBox("What is your favorite color?")
-        layout = QHBoxLayout()
-
-        buttonBlue = QPushButton('Blue', self)
-        buttonBlue.clicked.connect(self.on_click)
-        layout.addWidget(buttonBlue)
-
-        buttonRed = QPushButton('Red', self)
-        buttonRed.clicked.connect(self.on_click)
-        layout.addWidget(buttonRed)
-
-        buttonGreen = QPushButton('Green', self)
-        buttonGreen.clicked.connect(self.on_click)
-        layout.addWidget(buttonGreen)
-
-        layout.addWidget(ButtonBlue)
-
-        self.horizontalGroupBox.setLayout(layout)
-
-        self.show()
+    def initUI(self):
+        pass
 
     def sizeHint(self):
         return QSize(0, 20)
+
+    def paintEvent(self, QPaintEvent):
+        self.editor_de_codigo.AcharEventoDePintura(QPaintEvent)

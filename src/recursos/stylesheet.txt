@@ -210,6 +210,12 @@ QCheckBox::indicator:checked {
 }
 QStatusBar {
     background: #252525;
-    color: efefef;
+    color: #656565;
 }
-
+QLabel {
+    border: 0;
+    color: #efefef;
+}
+QStatusBar::item {
+    border: 0;
+}

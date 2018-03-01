@@ -1,0 +1,54 @@
+/*
+    BarraGrafica - Controla uma serie de LEDs com base na leitura de um sensor analogico. 
+  This is a simple way to make a bar graph display. Though this graph uses 10
+  LEDs, you can use any number by changing the LED count and the pins in the
+  array.
+
+  This method can be used to control any series of digital outputs that depends
+  on an analog input.
+
+    O circuito:
+    - Sensor analogico (como por exemplo um potenciometro) conectado a porta analogica 0
+    - LEDs conectados do pino 2 ate ao 11 e ao GND
+
+    Exemplo original do Arduino:
+    http://www.arduino.cc/en/Tutorial/BarGraph
+*/
+
+// Constantes
+// Porta em que o sensor esta conectado
+Constante Numero SENSOR = A0;
+// Quantidade de LEDs na barra
+Constante Numero numeroDeLEDs = 10;
+
+// Portas em que os LEDs da barra estao conectados
+Numero portasLEDs[] = {
+    2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+};
+
+
+Configuracao() {
+    // Configura todos os LEDs como saidas
+    para (Numero esseLED = 0; esseLED < numeroDeLEDs; esseLED++) {
+        Pino.definirModo(portasLEDs[esseLED], Saida);
+    }
+}
+
+Principal() {
+    // Le o sensor
+    Numero leitura = Pino.lerAnalogico(SENSOR);
+    // Mapeia a leitura para dentro do numero de LEDs
+    Numero nivel = proporcionar(leitura, 0, 1023, 0, numeroDeLEDs);
+
+    // Loop para interagir com todos os LEDs
+    para (Numero esseLED = 0; esseLED < numeroDeLEDs; esseLED++) {
+        // Se o LED estiver abaixo do nivel ele deve acender
+        se (esseLED < nivel) {
+            Pino.ligar(portasLEDs[esseLED]);
+        }
+        // Desliga os demais LEDs
+        senao {
+            Pino.desligar(portasLEDs[esseLED]);
+        }
+    }
+}

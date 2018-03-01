@@ -142,6 +142,7 @@ class PythonHighlighter(QSyntaxHighlighter):
         """Apply syntax highlighting to the given block of text.
         """
         # Do other syntax formatting
+
         for expression, nth, format_ in self.rules:
             indice = expression.indexIn(texto, 0)
 

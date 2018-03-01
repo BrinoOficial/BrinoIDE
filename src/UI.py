@@ -84,8 +84,10 @@ class Centro(QWidget):
         self.menu = Menu.Menu(self)
         layout.addWidget(self.menu, 0, 0, 2, 2)
 
+        # Botao para criar nova aba
         btn = QPushButton(self)
         btn.clicked.connect(self.nova_aba)
+        btn.setStatusTip("Abrir nova aba")
 
         self.widget_abas = QTabWidget(self.parent)
         self.widget_abas.tabCloseRequested.connect(self.remover_aba)
@@ -96,6 +98,7 @@ class Centro(QWidget):
         self.log = QPlainTextEdit(self)
         self.log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
         self.log.setReadOnly(True)
+        self.log.setStatusTip("Log")
         layout.addWidget(self.log, 1, 1, 1, 2)
 
         self.init_pacotes()
@@ -298,6 +301,9 @@ class Centro(QWidget):
                 self.parent.menu_portas.addAction(porta_acao)
                 if n_portas == 1:
                     Preferencias.set('serial.port', porta)
+        else:
+            # TODO mensagem padrao sem portas
+            pass
 
     def on_troca_placa_ou_porta(self):
         plataforma = self.get_plataforma_alvo()
