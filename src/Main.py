@@ -143,7 +143,7 @@ class Principal(QMainWindow):
         self.acao_monitor_serial.triggered.connect(self.abrir_serial)
 
         self.acao_verificar.setShortcut('Ctrl+R')
-        # self.acao_verificar.triggered.connect(self.widget_central.compilar)
+        self.acao_verificar.triggered.connect(self.widget_central.compilar)
 
         self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
         self.acao_verificar_e_carregar.triggered.connect(self.widget_central.upload)
@@ -169,6 +169,7 @@ class Principal(QMainWindow):
         menu_editar.addAction(self.acao_ir_para_linha)
 
         menu_ferramentas = barra_menu.addMenu('Ferramentas')
+        menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
         menu_ferramentas.addMenu(self.menu_placas)
         menu_ferramentas.addMenu(self.menu_portas)
         menu_ferramentas.addAction(self.acao_lingua)

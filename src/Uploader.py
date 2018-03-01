@@ -1,3 +1,5 @@
+from subprocess import Popen, PIPE
+
 import Preferencias
 
 
@@ -30,24 +32,46 @@ class UploaderSerial():
         plataforma_alvo = parent.get_plataforma_alvo()
         prefs = Preferencias.get_mapa()
         preferencias_placa = parent.get_preferencias_placa()
-        print preferencias_placa
         if preferencias_placa is not None:
             prefs.update(preferencias_placa)
+        print("preparando ferramentas...")
         tool = prefs["upload.tool"]
         if tool.__contains__(":"):
             separado = tool.split(":", 2)
             plataforma_alvo = parent.get_plataforma_alvo_do_pacote(separado[0])
             tool = separado[1]
         prefs.update(plataforma_alvo.get_ferramenta(tool))
-        # TODO upload com programador
+        # TODO upload com programador]
         if self.nao_existe_porta:
             prefs["build.path"] = caminho_temp
             prefs["build.project_name"] = nome
+            prefs['upload.verbose'] = prefs.get("upload.params.quiet")
             # TODO upload verify
             resultado = False
             padrao = prefs.get("upload.pattern")
             cmd = formatar_e_dividir(padrao, prefs, True)
-            print cmd
+            # TODO executar comando e retornar
+        t = prefs.get("upload.use_1200bps_touch", None)
+        fazer_toque = t is not None and t
+        t = prefs.get("upload.wait_for_upload_port", None)
+        esperar_porta_upload = t is not None and t
+        porta_selecionada = prefs.get("serial.port", None)
+        if porta_selecionada is None:
+            pass
+            # TODO erro e retornar
+        if fazer_toque:
+            pass
+            # TODO
+        prefs['build.path'] = caminho_temp
+        prefs['build.project_name'] = nome
+        prefs['upload.verbose'] = prefs.get("upload.params.quiet")
+        # TODO verbose, verify upload
+        padrao = prefs["upload.pattern"]
+        cmd = formatar_e_dividir(padrao, prefs, True)
+        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE)
+        output = p.stdout.read()
+        output += p.stderr.read()
+        print output
 
 
 def formatar_e_dividir(src, dictio, recursivo):
@@ -81,7 +105,7 @@ def separacao_quotes(src, quote_chars, arg_vazios):
                 first = s[0:1]
             if first is None or not quote_chars.__contains__(first):
                 if not len(s.strip()) == 0 or arg_vazios:
-                    res.append(s)
+                    res.append(s.encode("utf-8"))
                 continue
             char_escapador = first
             s = s[1:]
@@ -91,7 +115,7 @@ def separacao_quotes(src, quote_chars, arg_vazios):
             continue
         arg_escapado += s[0:len(s) - 1]
         if not len(arg_escapado.strip()) == 0 or arg_vazios:
-            res.append(arg_escapado)
+            res.append(arg_escapado.encode('utf-8'))
             char_escapador = None
     if char_escapador is not None:
         print("Erro")

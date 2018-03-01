@@ -14,9 +14,10 @@ def carregar(arquivo):
 def primeiro_nivel(dicio):
     opcoes = dict()
     for chave in dicio.keys():
-
         if chave.__contains__('.'):
             pai, filho = chave.split('.', 1)
+            if opcoes.get(pai, None) is None:
+                opcoes[pai] = dict()
             opcoes[pai][filho] = dicio[chave]
     return opcoes
 

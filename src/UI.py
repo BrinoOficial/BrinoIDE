@@ -33,10 +33,14 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import functools
+import glob
 import ntpath
 import os
+import sys
 from tempfile import mkdtemp
 
+import serial
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
                              QAction)
@@ -98,9 +102,8 @@ class Centro(QWidget):
 
         self.show()
 
-        self.nova_aba()
         self.nova_aba(os.path.join('.', 'recursos', 'exemplos', 'CodigoMinimo.brpp'), False)
-        self.remover_aba(0)
+
 
 
     def init_pacotes(self):
@@ -208,7 +211,7 @@ class Centro(QWidget):
     def carregar_hardware_contribuido(self, indexer):
         for pacote in indexer.criar_pacotes_alvo():
             if self.pacotes.get(pacote.get_id(), False):
-                self.pacotes[pacote.get_id().encode('utf-8'), pacote]
+                self.pacotes[pacote.get_id().encode('utf-8')] = pacote
 
     @staticmethod
     def carregar_pacote_alvo(pacote_alvo, pasta):
@@ -230,11 +233,21 @@ class Centro(QWidget):
                     if not placa.get_preferencias().get('hide'):
                         self.parent.menu_placas.addAction(placa.criar_acao(self))
 
+    def criar_menu_portas(self):
+        for acao in self.parent.menu_portas.actions():
+            self.parent.menu_portas.removeAction(acao)
+        portas = QActionGroup(self.parent)
+        portas.setExclusive(True)
+        if len(self.serial_ports()) > 0:
+            for porta in self.serial_ports():
+                porta_acao = Porta.criar_acao(porta, self)
+                self.parent.menu_portas.addAction(porta_acao)
+
     def on_troca_placa_ou_porta(self):
         plataforma = self.get_plataforma_alvo()
         pastas_bibliotecas = list()
         # if plataforma:
-        #    core = self.get_preferencias_placa()
+        #    core = self.get_preferencias_placa().get('build.core')
         pasta_plataforma = plataforma.get_pasta()
         pastas_bibliotecas.append(os.path.join(pasta_plataforma, 'libraries'))
         pastas_bibliotecas.append(os.path.join(get_caminho_padrao(), 'bibliotecas'))
@@ -308,6 +321,7 @@ class Centro(QWidget):
         self.log.insertPlainText(resultado)
 
     def upload(self):
+        self.compilar()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
         caminho_temp = self.temp_build
@@ -316,4 +330,48 @@ class Centro(QWidget):
             uploader = Uploader.get_uploader_por_preferencias()
             uploader = Uploader.UploaderSerial(False)
         sucesso = False
-        sucesso = uploader.upload_usando_preferencias(self, caminho, caminho_temp)
+        nome = os.path.basename(caminho).replace("brpp", "ino")
+        print nome
+        sucesso = uploader.upload_usando_preferencias(self, caminho_temp, os.path.basename(nome))
+
+    @staticmethod
+    def serial_ports():
+        """ Lists serial port names
+
+            :raises EnvironmentError:
+                On unsupported or unknown platforms
+            :returns:
+                A list of the serial ports available on the system
+        """
+        if sys.platform.startswith('win'):
+            ports = ['COM%s' % (i + 1) for i in range(256)]
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            # this excludes your current terminal "/dev/tty"
+            ports = glob.glob('/dev/tty[A-Za-z]*')
+        elif sys.platform.startswith('darwin'):
+            ports = glob.glob('/dev/tty.*')
+        else:
+            raise EnvironmentError('Unsupported platform')
+
+        result = []
+        for port in ports:
+            try:
+                s = serial.Serial(port)
+                s.close()
+                result.append(port)
+            except (OSError, serial.SerialException):
+                pass
+        return result
+
+
+class Porta:
+
+    @staticmethod
+    def criar_acao(porta, parent):
+        acao_porta = QAction(porta, parent)
+        acao_porta.triggered.connect(functools.partial(Porta.selecionar_porta, porta))
+        return acao_porta
+
+    @staticmethod
+    def selecionar_porta(porta):
+        Preferencias.set('serial.port', porta)
