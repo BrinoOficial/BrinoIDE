@@ -159,6 +159,8 @@ class Centro(QWidget):
     def salvar(self):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        if caminho == 0:
+            return
         editor.set_salvo(True)
         if caminho != "":
             if not os.path.exists(os.path.dirname(caminho)):
@@ -379,6 +381,8 @@ class Centro(QWidget):
         pacote_alvo = plataforma_alvo.get_pacote()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        if caminho == 0:
+            return
         traduzir(caminho)
         resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build,
                                              self.temp_cache)
@@ -388,6 +392,8 @@ class Centro(QWidget):
         self.compilar()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        if caminho == 0:
+            return
         caminho_temp = self.temp_build
         uploader = None
         if uploader is None:
