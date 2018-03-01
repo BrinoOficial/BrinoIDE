@@ -42,9 +42,9 @@ from tempfile import mkdtemp
 
 import serial
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
                              QAction, QInputDialog)
-from PyQt5.QtGui import QTextCursor
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -154,7 +154,7 @@ class Centro(QWidget):
     def salvar(self):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
-        editor.salvo = True
+        editor.set_salvo(True)
         if caminho != "":
             if not os.path.exists(os.path.dirname(caminho)):
                 try:

@@ -194,6 +194,22 @@ class Principal(QMainWindow):
                                  QMessageBox.NoButton, self)
             alerta.show()
 
+    def closeEvent(self, QCloseEvent):
+        for num_arquivo in range(self.widget_central.widget_abas.count()):
+            arquivo = self.widget_central.widget_abas.widget(0)
+            self.widget_central.widget_abas.setCurrentIndex(0)
+            if not arquivo.salvo:
+                print "Vou perguntar se deve salvar"
+                ret = QMessageBox(QMessageBox.Warning, "Salvar", "Gostaria de salvar este código antes de sair?",
+                                  QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel, self)
+                ret = ret.exec_()
+                if ret == QMessageBox.Cancel:
+                    QCloseEvent.ignore()
+                elif ret == QMessageBox.Save:
+                    self.widget_central.salvar()
+            self.widget_central.remover_aba(0)
+        QCloseEvent.accept()
+
 
 def get_caminho_padrao():
     global caminho_padrao

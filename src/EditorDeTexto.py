@@ -62,6 +62,7 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import functools
 import ntpath
 import os
 
@@ -85,8 +86,8 @@ class CodeEditor(QPlainTextEdit):
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
         self.marcar_linha_atual()
         self.caminho = ""
-        self.salvo = False
-        self.textChanged.connect(self.set_salvo)
+        self.salvo = True
+        self.textChanged.connect(functools.partial(self.set_salvo, False))
         if ask:
             self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
             if ok and self.nome != "":
@@ -121,8 +122,8 @@ class CodeEditor(QPlainTextEdit):
             if rect.contains(self.viewport().rect()):
                 self.atualizar_largura_contador()
 
-    def set_salvo(self):
-        self.salvo = False
+    def set_salvo(self, estado):
+        self.salvo = estado
 
     def marcar_linha_atual(self):
         selecoes_extras = list()
