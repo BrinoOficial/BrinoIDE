@@ -51,6 +51,7 @@ import EditorDeTexto
 import Menu
 import Preferencias
 import Uploader
+from BoasVindas import BoasVindas
 from Compiler import compilar_arduino_builder
 from GerenciadorDeKeywords import traduzir
 from IndexadorContribuicao import IndexadorContribuicao
@@ -91,6 +92,7 @@ class Centro(QWidget):
         self.widget_abas.tabCloseRequested.connect(self.remover_aba)
         self.widget_abas.setTabsClosable(False)
         self.widget_abas.setCornerWidget(btn, Qt.TopRightCorner)
+        self.widget_abas.setStyleSheet("background:#252525;")
         layout.addWidget(self.widget_abas, 0, 1, 1, 2)
 
         self.log = QPlainTextEdit(self)
@@ -101,7 +103,7 @@ class Centro(QWidget):
         self.init_pacotes()
         self.criar_menu_placas()
 
-        self.nova_aba(os.path.join('.', 'recursos', 'exemplos', 'CodigoMinimo.brpp'), False)
+        self.widget_abas.addTab(BoasVindas(self), "Bem-Vindo")
         self.show()
 
 
