@@ -84,6 +84,7 @@ class CodeEditor(QPlainTextEdit):
         self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
         self.marcar_linha_atual()
+        self.achar = Achar(self)
         self.caminho = ""
         self.salvo = False
         self.textChanged.connect(self.set_salvo)
@@ -108,6 +109,7 @@ class CodeEditor(QPlainTextEdit):
             with open(path) as arquivo:
                 self.set_texto(arquivo.read())
         print self.caminho
+        self.achar.show()
 
     def atualizar_largura_contador(self):
         self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))
@@ -158,6 +160,13 @@ class CodeEditor(QPlainTextEdit):
             bottom = top + int(self.blockBoundingRect(bloco).height())
             numero_bloco += 1
 
+    def AcharEventoDePintura(self, QPaintEvent):
+        painter = QPainter(self.achar)
+        painter.fillRect(QPaintEvent.rect(), QColor("#252525"))
+
+        top = int(self.top())
+        painter.fillRect(0, top, self.width(), 2, QColor("#505050"))
+
     def set_texto(self, texto):
         self.setPlainText(texto)
 
@@ -192,27 +201,22 @@ class Achar(QWidget):
         super(Achar, self).__init__(editor)
         self.editor_de_codigo = editor
 
-    def init_ui(self):
-        self.horizontalGroupBox = QGroupBox("What is your favorite color?")
-        layout = QHBoxLayout()
+    def initUI(self):
+        lbl1 = QLabel('Zetcode', self)
+        lbl1.move(15, 10)
 
-        buttonBlue = QPushButton('Blue', self)
-        buttonBlue.clicked.connect(self.on_click)
-        layout.addWidget(buttonBlue)
+        lbl2 = QLabel('tutorials', self)
+        lbl2.move(35, 40)
 
-        buttonRed = QPushButton('Red', self)
-        buttonRed.clicked.connect(self.on_click)
-        layout.addWidget(buttonRed)
+        lbl3 = QLabel('for programmers', self)
+        lbl3.move(55, 70)
 
-        buttonGreen = QPushButton('Green', self)
-        buttonGreen.clicked.connect(self.on_click)
-        layout.addWidget(buttonGreen)
-
-        layout.addWidget(ButtonBlue)
-
-        self.horizontalGroupBox.setLayout(layout)
-
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Absolute')
         self.show()
 
     def sizeHint(self):
         return QSize(0, 20)
+
+    def paintEvent(self, QPaintEvent):
+        self.editor_de_codigo.AcharEventoDePintura(QPaintEvent)
