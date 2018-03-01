@@ -12,9 +12,11 @@ QMenu::item:selected{
 }
 QMenuBar {
    background: '#252525';
+   color: #efefef;
 }
 QMenuBar::item {
    background: '#252525';
+   color: #efefef;
 }
 QMenuBar::item:selected{
    border-top: 2px solid #5cb50d;

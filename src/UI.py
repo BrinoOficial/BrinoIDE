@@ -43,7 +43,8 @@ from tempfile import mkdtemp
 import serial
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
-                             QAction)
+                             QAction, QInputDialog)
+from PyQt5.QtGui import QTextCursor
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -118,10 +119,13 @@ class Centro(QWidget):
 
     def remover_aba(self, index):
         if self.widget_abas.count() > 1:
-            widget = self.widget_abas.widget(index)
-            if widget is not None:
-                widget.deleteLater()
-            self.widget_abas.removeTab(index)
+            if index is not int:
+                self.widget_abas.removeTab(self.widget_abas.currentIndex())
+            else:
+                widget = self.widget_abas.widget(index)
+                if widget is not None:
+                    widget.deleteLater()
+                self.widget_abas.removeTab(index)
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(False)
 
@@ -150,6 +154,7 @@ class Centro(QWidget):
     def salvar(self):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        editor.salvo = True
         if caminho != "":
             if not os.path.exists(os.path.dirname(caminho)):
                 try:
@@ -172,6 +177,55 @@ class Centro(QWidget):
             self.widget_abas.setTabText(self.widget_abas.currentIndex(), ntpath.basename(caminho).replace(".brpp", ""))
             editor.set_caminho(caminho)
             self.salvar()
+
+    def selecionar_texto(self, cursor, texto, indice_inicial, len):
+        conteudo = self.widget_abas.widget(self.widget_abas.currentIndex()).toPlainText()
+        indice_comeco = conteudo.find(texto, indice_inicial)
+        cursor.setPosition(indice_comeco, QTextCursor.MoveAnchor)
+        cursor.setPosition(indice_comeco + len, QTextCursor.KeepAnchor)
+        return cursor
+
+
+    def comentar_linha(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        cursor_atual = editor.textCursor()
+        posicao = cursor_atual.position()
+        linha = cursor_atual.blockNumber()
+        bloco_atual = editor.document().findBlockByLineNumber(linha)
+        cursor = QTextCursor(bloco_atual)
+        editor.setTextCursor(cursor)
+        texto = bloco_atual.text()
+        if texto.strip().startswith("//"):
+            cursor = self.selecionar_texto(cursor, '/', cursor.position(), 2)
+            cursor.removeSelectedText()
+            cursor.setPosition(posicao - 2)
+            editor.setTextCursor(cursor)
+        else:
+            editor.insertPlainText('//')
+            cursor.setPosition(posicao + 2)
+            editor.setTextCursor(cursor)
+
+    def achar(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
+        if ok and texto != "":
+            cursor = editor.textCursor()
+            cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
+            editor.setTextCursor(cursor)
+        return
+
+    def achar_e_substituir(self):
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        subs = "haaaa"
+        texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
+        if ok and texto != "":
+            cursor = editor.textCursor()
+            cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
+            cursor.removeSelectedText()
+            editor.setTextCursor(cursor)
+            editor.insertPlainText(subs)
+        return
+
 
     @staticmethod
     def criar_dialogo_arquivo(titulo, acao):
@@ -247,7 +301,7 @@ class Centro(QWidget):
         plataforma = self.get_plataforma_alvo()
         pastas_bibliotecas = list()
         # if plataforma:
-        #    core = self.get_preferencias_placa().get('build.core')
+        #    core = self.get_preferencias_placa()
         pasta_plataforma = plataforma.get_pasta()
         pastas_bibliotecas.append(os.path.join(pasta_plataforma, 'libraries'))
         pastas_bibliotecas.append(os.path.join(get_caminho_padrao(), 'bibliotecas'))

@@ -33,17 +33,9 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-def placa():
-    #TODO abrir placas
-    print "Abrindo placas"
-
 def porta():
     #TODO abrir portas
     print "Abrindo portas"
-
-def comentar_linha():
-    #TODO comentar
-    print "Comentando"
 
 def achar():
     #TODO achar
@@ -57,11 +49,4 @@ def ir_para_linha():
     #TODO ir para linha
     print "Indo"
 
-def verificar():
-    #TODO verificar
-    print "Verificando"
-
-def verificar_e_carregar():
-    #TODO verificar e carregar
-    print "Verificando e carregando"
 

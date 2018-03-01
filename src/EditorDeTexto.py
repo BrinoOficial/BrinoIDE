@@ -67,7 +67,7 @@ import os
 
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog
+from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QPushButton, QMessageBox
 
 import Main
 
@@ -85,6 +85,8 @@ class CodeEditor(QPlainTextEdit):
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
         self.marcar_linha_atual()
         self.caminho = ""
+        self.salvo = False
+        self.textChanged.connect(self.set_salvo)
         if ask:
             self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
             if ok and self.nome != "":
@@ -93,7 +95,7 @@ class CodeEditor(QPlainTextEdit):
             elif not ok:
                 return
             else:
-                print("nome vazio wtf")
+                QMessageBox().warning(None, 'Erro', "Favor insira um nome", QMessageBox.Ok)
         else:
             self.nome = "Novo"
         if path and salvar_caminho:
@@ -118,6 +120,9 @@ class CodeEditor(QPlainTextEdit):
 
             if rect.contains(self.viewport().rect()):
                 self.atualizar_largura_contador()
+
+    def set_salvo(self):
+        self.salvo = False
 
     def marcar_linha_atual(self):
         selecoes_extras = list()
@@ -180,3 +185,36 @@ class ContadorDeLinhas(QWidget):
 
     def paintEvent(self, event):
         self.editor_de_codigo.lineNumberAreaPaintEvent(event)
+
+
+
+class Achar(QWidget):
+    def __init__(self, editor):
+        super(Achar, self).__init__(editor)
+        self.editor_de_codigo = editor
+
+    def init_ui(self):
+        self.horizontalGroupBox = QGroupBox("What is your favorite color?")
+        layout = QHBoxLayout()
+
+        buttonBlue = QPushButton('Blue', self)
+        buttonBlue.clicked.connect(self.on_click)
+        layout.addWidget(buttonBlue)
+
+        buttonRed = QPushButton('Red', self)
+        buttonRed.clicked.connect(self.on_click)
+        layout.addWidget(buttonRed)
+
+        buttonGreen = QPushButton('Green', self)
+        buttonGreen.clicked.connect(self.on_click)
+        layout.addWidget(buttonGreen)
+
+        layout.addWidget(ButtonBlue)
+
+        self.horizontalGroupBox.setLayout(layout)
+
+        self.show()
+
+
+    def sizeHint(self):
+        return QSize(0, 20)

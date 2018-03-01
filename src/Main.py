@@ -65,6 +65,7 @@ class Principal(QMainWindow):
         self.acao_abrir = QAction('Abrir', self)
         self.acao_exemplos = QAction('Exemplos', self)
         self.acao_sair = QAction('Sair', self)
+        self.acao_fechar_aba = QAction('Fechar aba', self)
         self.acao_salvar = QAction('&Salvar', self)
         self.acao_salvar_como = QAction('Salvar como', self)
         self.acao_comentar_linha = QAction('Comentar linha', self)
@@ -106,6 +107,11 @@ class Principal(QMainWindow):
         self.acao_sair.setShortcut('Ctrl+Q')
         self.acao_sair.setStatusTip('Sair da IDE do Br.ino')
         self.acao_sair.triggered.connect(self.close)
+        self.acao_sair.triggered.connect(monitor.close)
+
+        self.acao_fechar_aba.setShortcut('Ctrl+W')
+        self.acao_sair.setStatusTip('Fechar aba atual')
+        self.acao_fechar_aba.triggered.connect(self.widget_central.remover_aba)
 
         self.acao_novo.setShortcut("Ctrl+N")
         self.acao_novo.triggered.connect(self.widget_central.nova_aba)
@@ -122,20 +128,16 @@ class Principal(QMainWindow):
         self.acao_salvar_como.triggered.connect(self.widget_central.salvar_como)
 
         self.acao_comentar_linha.setShortcut('Ctrl+/')
-        self.acao_comentar_linha.triggered.connect(GerenciadorDeCodigo.comentar_linha)
+        self.acao_comentar_linha.triggered.connect(self.widget_central.comentar_linha)
 
         self.acao_achar.setShortcut('Ctrl+F')
-        self.acao_achar.triggered.connect(GerenciadorDeCodigo.achar)
+        self.acao_achar.triggered.connect(self.widget_central.achar)
 
         self.acao_achar_e_substituir.setShortcut('Ctrl+H')
-        self.acao_achar_e_substituir.triggered.connect(GerenciadorDeCodigo.achar_e_substituir)
+        self.acao_achar_e_substituir.triggered.connect(self.widget_central.achar_e_substituir)
 
         self.acao_ir_para_linha.setShortcut('Ctrl+L')
         self.acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
-
-        self.acao_placa.triggered.connect(GerenciadorDeCodigo.placa)
-
-        self.acao_porta.triggered.connect(GerenciadorDeCodigo.porta)
 
         self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
 
@@ -160,6 +162,7 @@ class Principal(QMainWindow):
         self.adicionar_exemplos(menu_exemplos)
         menu_arquivo.addAction(self.acao_salvar)
         menu_arquivo.addAction(self.acao_salvar_como)
+        menu_arquivo.addAction(self.acao_fechar_aba)
         menu_arquivo.addAction(self.acao_sair)
 
         menu_editar = barra_menu.addMenu('Editar')
