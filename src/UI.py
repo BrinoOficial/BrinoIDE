@@ -84,8 +84,10 @@ class Centro(QWidget):
         self.menu = Menu.Menu(self)
         layout.addWidget(self.menu, 0, 0, 2, 2)
 
+        # Botao para criar nova aba
         btn = QPushButton(self)
         btn.clicked.connect(self.nova_aba)
+        btn.setStatusTip("Abrir nova aba")
 
         self.widget_abas = QTabWidget(self.parent)
         self.widget_abas.tabCloseRequested.connect(self.remover_aba)
@@ -96,6 +98,7 @@ class Centro(QWidget):
         self.log = QPlainTextEdit(self)
         self.log.setStyleSheet("border-radius:5px;background:#101010;margin-bottom:5px;margin-right:5px;")
         self.log.setReadOnly(True)
+        self.log.setStatusTip("Log")
         layout.addWidget(self.log, 1, 1, 1, 2)
 
         self.init_pacotes()
@@ -138,12 +141,12 @@ class Centro(QWidget):
             self.widget_abas.setTabsClosable(True)
         text = editor.get_nome()
         editor.setStyleSheet("background:#252525")
-        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         self.widget_abas.addTab(editor, text)
         if editor.get_nome() == "":
             self.remover_aba(self.widget_abas.count() - 1)
         else:
             self.widget_abas.setCurrentIndex(self.widget_abas.count() - 1)
+        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
 
     def abrir(self):
         dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")

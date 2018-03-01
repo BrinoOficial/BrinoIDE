@@ -67,7 +67,7 @@ import os
 
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QMessageBox
 
 import Main
 
