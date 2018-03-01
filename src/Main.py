@@ -205,9 +205,8 @@ class Principal(QMainWindow):
         if monitor.conectar(Preferencias.get("serial.port")):
             monitor.show()
         else:
-            alerta = QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
-                                 QMessageBox.NoButton, self)
-            alerta.show()
+            QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
+                        QMessageBox.NoButton, self).show()
 
     def closeEvent(self, QCloseEvent):
         num_examinar = 0

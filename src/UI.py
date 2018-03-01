@@ -44,7 +44,7 @@ import serial
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
-                             QAction, QInputDialog)
+                             QAction, QInputDialog, QMessageBox)
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -154,7 +154,11 @@ class Centro(QWidget):
         dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedFiles()[0]
-            self.nova_aba(caminho)
+            # Testa se o arquivo existe
+            if os.path.exists(caminho):
+                self.nova_aba(caminho)
+            else:
+                QMessageBox(QMessageBox.Warning, "Erro", "O arquivo não existe", QMessageBox.NoButton, self).show()
 
     def salvar(self):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
