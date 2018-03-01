@@ -291,10 +291,13 @@ class Centro(QWidget):
             self.parent.menu_portas.removeAction(acao)
         portas = QActionGroup(self.parent)
         portas.setExclusive(True)
-        if len(self.serial_ports()) > 0:
+        n_portas = len(self.serial_ports())
+        if n_portas > 0:
             for porta in self.serial_ports():
                 porta_acao = Porta.criar_acao(porta, self)
                 self.parent.menu_portas.addAction(porta_acao)
+                if n_portas == 1:
+                    Preferencias.set('serial.port', porta)
 
     def on_troca_placa_ou_porta(self):
         plataforma = self.get_plataforma_alvo()
