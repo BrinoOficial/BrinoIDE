@@ -44,7 +44,7 @@ import serial
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
-                             QAction, QInputDialog, QMenu)
+                             QAction, QInputDialog)
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -151,11 +151,17 @@ class Centro(QWidget):
             self.widget_abas.setCurrentIndex(self.widget_abas.count() - 1)
         editor.set_salvo(True)
 
-    def abrir(self):
-        dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
-        if dialogo.exec_() == QFileDialog.Accepted:
-            caminho = dialogo.selectedFiles()[0]
+    def abrir(self, caminho=None):
+        if caminho is None:
+            salvar_caminho = True
+            dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
+            if dialogo.exec_() == QFileDialog.Accepted:
+                caminho = dialogo.selectedFiles()[0]
             self.nova_aba(caminho)
+        else:
+            self.nova_aba(caminho)
+            widget = self.widget_abas.widget(self.widget_abas.currentIndex())
+            widget.caminho = ""
 
     def salvar(self):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
@@ -312,16 +318,16 @@ class Centro(QWidget):
 
     def criar_menu_exemplos(self):
         caminho_exemplos = os.path.join('recursos', 'exemplos')
-        for pasta_exemplo in [x for x in os.listdir(caminho_exemplos) if
-                              os.path.isdir(os.path.join(caminho_exemplos, x))]:
-            print pasta_exemplo
-            menu = QMenu(pasta_exemplo)
+        pastas_exemplo = [x for x in os.listdir(caminho_exemplos) if os.path.isdir(os.path.join(caminho_exemplos, x))]
+        pastas_exemplo.sort()
+        for pasta_exemplo in pastas_exemplo:
+            menu = self.parent.menu_exemplos.addMenu(pasta_exemplo)
             for exemplo in os.listdir(os.path.join(caminho_exemplos, pasta_exemplo)):
                 exemplo_acao = QAction(exemplo, self)
-                caminho_exemplo = os.path.join(caminho_exemplos, pasta_exemplo, exemplo)
+                caminho_exemplo = os.path.join(caminho_exemplos, pasta_exemplo, exemplo, exemplo + ".brpp")
                 menu.addAction(exemplo_acao)
-                exemplo_acao.triggered.connect(functools.partial(self.nova_aba, caminho_exemplo))
-            self.parent.menu_exemplos.addMenu(menu)
+                exemplo_acao.triggered.connect(functools.partial(self.abrir, caminho_exemplo))
+        print self.parent.menu_exemplos
 
     def on_troca_placa_ou_porta(self):
         plataforma = self.get_plataforma_alvo()

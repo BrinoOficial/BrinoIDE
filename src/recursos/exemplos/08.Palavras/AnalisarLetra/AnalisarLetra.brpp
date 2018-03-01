@@ -41,7 +41,7 @@ Principal() {
             USB.enviarln("E ASCII");
         }
         se (isWhitespace(essaLetra)) {
-            USB.enviarln("E um espaço");
+            USB.enviarln("E um espaco");
         }
         se (isControl(essaLetra)) {
             USB.enviarln("E a caractere de controle");
