@@ -208,6 +208,7 @@ class Principal(QMainWindow):
                 ret = ret.exec_()
                 if ret == 1:
                     QCloseEvent.ignore()
+                    return
                 elif ret == 2:
                     self.widget_central.salvar()
             self.widget_central.remover_aba(0)

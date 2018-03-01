@@ -101,9 +101,9 @@ class Centro(QWidget):
         self.init_pacotes()
         self.criar_menu_placas()
 
+        self.nova_aba(os.path.join('.', 'recursos', 'exemplos', 'CodigoMinimo.brpp'), False)
         self.show()
 
-        self.nova_aba(os.path.join('.', 'recursos', 'exemplos', 'CodigoMinimo.brpp'), False)
 
     def init_pacotes(self):
         pasta_hardware = os.path.join('builder', 'hardware')
