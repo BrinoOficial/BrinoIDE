@@ -30,6 +30,7 @@ class UploaderSerial():
         plataforma_alvo = parent.get_plataforma_alvo()
         prefs = Preferencias.get_mapa()
         preferencias_placa = parent.get_preferencias_placa()
+        print preferencias_placa
         if preferencias_placa is not None:
             prefs.update(preferencias_placa)
         tool = prefs["upload.tool"]

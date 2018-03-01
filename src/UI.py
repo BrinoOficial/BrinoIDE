@@ -110,7 +110,6 @@ class Centro(QWidget):
         self.indexer.sincronizar_com_arquivos()
         self.carregar_hardware_contribuido(self.indexer)
         self.carregar_hardware(pasta_hardware)
-        # TODO carregar_hardware_contribuido
         # TODO carregar_hardware_rascunhos
         # TODO criar preferencias ferramentas
 
@@ -272,7 +271,7 @@ class Centro(QWidget):
         for tool in ferramentas:
             pasta = tool.get_pasta_instalada()
             caminho = os.path.abspath(pasta)
-            prefs[prefix + tool.get_nome() + ".path"] = caminho
+            prefs[(prefix + tool.get_nome() + ".path").encode('utf-8')] = caminho
             Preferencias.set(prefix + tool.get_nome() + ".path", caminho)
             Preferencias.set(prefix + tool.get_nome() + "-" + tool.get_versao() + ".path", caminho)
         return prefs

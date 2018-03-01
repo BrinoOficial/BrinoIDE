@@ -18,6 +18,7 @@ class PlataformaAlvo:
             print "no boards.txt"
         pref_placas = MapaUtils.carregar(arquivo_placas)
         preferencias_placas = MapaUtils.primeiro_nivel(pref_placas)
+        print preferencias_placas
         menu = preferencias_placas['menu']
         if len(menu) > 0:
             menus = MapaUtils.dicionario_superior(menu)

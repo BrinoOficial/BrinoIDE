@@ -6,16 +6,17 @@ def carregar(arquivo):
                 continue
             else:
                 valores = linha.split("=")
-                prefs[valores[0].strip()] = valores[1].strip()
+                adicionar = {valores[0].strip(): valores[1].strip()}
+                prefs.update(adicionar)
     return prefs
 
 
 def primeiro_nivel(dicio):
     opcoes = dict()
     for chave in dicio.keys():
+
         if chave.__contains__('.'):
             pai, filho = chave.split('.', 1)
-            opcoes[pai] = dict()
             opcoes[pai][filho] = dicio[chave]
     return opcoes
 
