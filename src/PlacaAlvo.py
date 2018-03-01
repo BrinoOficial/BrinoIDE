@@ -47,6 +47,7 @@ class PlacaAlvo:
         Preferencias.set("runtime.platform.path", pasta_plataforma)
         Preferencias.set('runtime.hardware.path', os.path.dirname(pasta_plataforma))
         parent.on_troca_placa_ou_porta()
+        parent.parent.placa_porta_label.setText(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
 
     @staticmethod
     def capitalizar(string):

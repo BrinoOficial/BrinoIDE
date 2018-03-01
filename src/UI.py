@@ -442,9 +442,10 @@ class Porta:
     @staticmethod
     def criar_acao(porta, parent):
         acao_porta = QAction(porta, parent)
-        acao_porta.triggered.connect(functools.partial(Porta.selecionar_porta, porta))
+        acao_porta.triggered.connect(functools.partial(Porta.selecionar_porta, porta, parent))
         return acao_porta
 
     @staticmethod
-    def selecionar_porta(porta):
+    def selecionar_porta(porta, parent_):
         Preferencias.set('serial.port', porta)
+        parent_.parent.placa_porta_label.setText(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))

@@ -92,7 +92,8 @@ class CodeEditor(QPlainTextEdit):
             self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
             if ok and self.nome != "":
                 self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
-                self.set_texto("")
+                with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
+                    self.set_texto(arquivo.read())
             elif not ok:
                 return
             else:
