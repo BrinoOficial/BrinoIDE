@@ -1,0 +1,45 @@
+/*
+    Vetor - Demonstra o uso de um vetor para armazenar as portas onde uma serie de LEDs estao conectados. Eles irao piscar na sequencia fornecida e depois na ordem contraria. Os pinos podem estar em qualquer ordem dentro do vetor
+
+    O circuito:
+    - LEDs conectados da porta digital 2 ate a porta digital 7 e o GND
+
+    Exemplo original do Arduino:
+    http://www.arduino.cc/en/Tutorial/Array
+*/
+
+// Tempo pelo qual cada LED deve ficar acesso
+Numero tempo = 100;
+// Vetor com as portas em que os LEDs estao conectados
+Numero pinosLEDS[] = {
+    2, 7, 4, 6, 5, 3
+};
+// Numero de LEDs que estao sendo usados (o comprimento do vetor)
+Numero numeroDePinos = 6;
+
+Configuracao() {
+    // O vetor possui seus itens numerados de 0 ate numeroDePinos - 1. Usaremos um para() para inicializar as portas
+    para (Numero essePino = 0; essePino < numeroDePinos; essePino++) {
+        Pino.definirModo(pinosLEDS[essePino], Saida);
+    }
+}
+
+Principal() {
+    // Pisca os LEDs na ordem crescente
+    para (Numero essePino = 0; essePino < numeroDePinos; essePino++) {
+        // Liga o LED
+        Pino.ligar(pinosLEDS[essePino]);
+        esperar(tempo);
+        // Desliga o LED
+       Pino.desligar(pinosLEDS[essePino]);
+    }
+
+    // Pisca os LEDs na ordem contraria
+    para (Numero essePino = numeroDePinos - 1; essePino >= 0; essePino--) {
+        // Liga o LED
+        Pino.ligar(pinosLEDS[essePino]);
+        esperar(tempo);
+        // Desliga o LED
+        Pino.desligar(pinosLEDS[essePino]);
+    }
+}
