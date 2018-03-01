@@ -86,7 +86,6 @@ class CodeEditor(QPlainTextEdit):
         self.setViewportMargins(self.largura_contador, 0, 0, 0)
         self.marcar_linha_atual()
         self.caminho = ""
-        self.salvo = True
         self.textChanged.connect(functools.partial(self.set_salvo, False))
         if ask:
             self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
@@ -108,7 +107,7 @@ class CodeEditor(QPlainTextEdit):
         elif path:
             with open(path) as arquivo:
                 self.set_texto(arquivo.read())
-        print self.caminho
+        self.salvo = True
 
     def atualizar_largura_contador(self):
         self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))

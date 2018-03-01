@@ -30,6 +30,4 @@ class IndiceContribuicao:
         return self.pacotes
 
     def get_pacote(self, nome):
-        print "Nome:", nome
-        print self.get_pacotes_dicio().get(nome)
         return self.get_pacotes_dicio().get(nome)

@@ -199,13 +199,16 @@ class Principal(QMainWindow):
             arquivo = self.widget_central.widget_abas.widget(0)
             self.widget_central.widget_abas.setCurrentIndex(0)
             if not arquivo.salvo:
-                print "Vou perguntar se deve salvar"
-                ret = QMessageBox(QMessageBox.Warning, "Salvar", "Gostaria de salvar este código antes de sair?",
-                                  QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel, self)
+                ret = QMessageBox(self)
+                ret.setText("Gostaria de salvar este código antes de sair?")
+                ret.setIcon(QMessageBox.Question)
+                ret.addButton("Não Salvar", QMessageBox.NoRole)
+                ret.addButton("Cancelar", QMessageBox.RejectRole)
+                ret.addButton("Salvar", QMessageBox.AcceptRole)
                 ret = ret.exec_()
-                if ret == QMessageBox.Cancel:
+                if ret == 1:
                     QCloseEvent.ignore()
-                elif ret == QMessageBox.Save:
+                elif ret == 2:
                     self.widget_central.salvar()
             self.widget_central.remover_aba(0)
         QCloseEvent.accept()

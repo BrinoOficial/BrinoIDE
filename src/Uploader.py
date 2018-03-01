@@ -34,7 +34,6 @@ class UploaderSerial():
         preferencias_placa = parent.get_preferencias_placa()
         if preferencias_placa is not None:
             prefs.update(preferencias_placa)
-        print("preparando ferramentas...")
         tool = prefs["upload.tool"]
         if tool.__contains__(":"):
             separado = tool.split(":", 2)
@@ -71,7 +70,10 @@ class UploaderSerial():
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE)
         output = p.stdout.read()
         output += p.stderr.read()
-        print output
+        if not output:
+            parent.log.insertPlainText("Carregado!")
+        else:
+            parent.log.insertPlainText(output)
 
 
 def formatar_e_dividir(src, dictio, recursivo):

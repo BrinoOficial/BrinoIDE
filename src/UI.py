@@ -105,8 +105,6 @@ class Centro(QWidget):
 
         self.nova_aba(os.path.join('.', 'recursos', 'exemplos', 'CodigoMinimo.brpp'), False)
 
-
-
     def init_pacotes(self):
         pasta_hardware = os.path.join('builder', 'hardware')
         self.indexer = IndexadorContribuicao(os.path.join('builder'), pasta_hardware)
@@ -139,11 +137,13 @@ class Centro(QWidget):
         text = editor.get_nome()
         editor.setStyleSheet("background:#252525")
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
-        self.widget_abas.addTab(editor, text)
+        if editor.get_nome():
+            self.widget_abas.addTab(editor, text)
         if editor.get_nome() == "":
             self.remover_aba(self.widget_abas.count() - 1)
         else:
             self.widget_abas.setCurrentIndex(self.widget_abas.count() - 1)
+        editor.set_salvo(True)
 
     def abrir(self):
         dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
@@ -384,7 +384,6 @@ class Centro(QWidget):
             uploader = Uploader.UploaderSerial(False)
         sucesso = False
         nome = os.path.basename(caminho).replace("brpp", "ino")
-        print nome
         sucesso = uploader.upload_usando_preferencias(self, caminho_temp, os.path.basename(nome))
 
     @staticmethod

@@ -44,7 +44,6 @@ class PlacaAlvo:
         Preferencias.set("target_platform", plataforma_alvo.get_id())
         Preferencias.set("board", arg.get_id())
         pasta_plataforma = os.path.abspath(os.path.join('.', plataforma_alvo.get_pasta()))
-        print(pasta_plataforma)
         Preferencias.set("runtime.platform.path", pasta_plataforma)
         Preferencias.set('runtime.hardware.path', os.path.dirname(pasta_plataforma))
         parent.on_troca_placa_ou_porta()
