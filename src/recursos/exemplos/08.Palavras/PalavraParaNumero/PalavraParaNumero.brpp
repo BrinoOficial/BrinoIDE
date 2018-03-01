@@ -1,0 +1,43 @@
+/*
+    PalavraParaNumero - Converte uma palavra em um valor numerico. Faz a leitura pela porta USB ate o ponto final '.' e mostra o valor numerico correspondente
+  
+    O circuito: Nenhum hardware alem de seu arduino sera nescessario
+
+    Exemplo original do Arduino:
+    http://www.arduino.cc/en/Tutorial/StringToInt
+*/
+
+// Palavra para armazenar a entrada
+Palavra palavraEntrada = "";
+
+Configuracao() {
+    // Inicia a comunicacao serial
+    USB.conectar(9600);
+    enquanto (!USB) {
+        ; // Espera a porta estar conectada
+    }
+
+    // Envia um titulo
+    USB.enviarln("Converte palavra em numero \n\n Obs.: coloque um ponto final ao terminar!\n\n");
+    USB.enviarln();
+}
+
+Principal() {
+    // Le a porta USB
+    enquanto (USB.disponivel() > 0) {
+        Numero letraEntrada = USB.ler();
+        se (isDigit(letraEntrada)) {
+            // Converte a entrada para Letra e adiciona ela a Palavra
+            palavraEntrada += (char)letraEntrada;
+        }
+        // Mostra o resultado quando pegar um '.'
+        se (letraEntrada == '.') {
+            USB.enviar("Valor:");
+            USB.enviarln(palavraEntrada.toInt());
+            USB.enviar("Recebi a palavra: ");
+            USB.enviarln(palavraEntrada);
+            // Limpa a entrada para a proxima execucao
+            palavraEntrada = "";
+        }
+    }
+}

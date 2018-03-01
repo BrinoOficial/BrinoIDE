@@ -1,0 +1,52 @@
+/*
+    Suavizar - Executa uma serie de leituras analogicas e mostra a media delas no monitor serial. As medidas tambem sao mantidas em um vetor.
+
+    O circuito:
+    - Sensor analogico (como por exemplo um potenciometro) conectado a porta analogica 0
+  
+    Exemplo original do Arduino:
+    http://www.arduino.cc/en/Tutorial/Smoothing
+*/
+
+// Defini o numero de medidas que devem ser feitas. Quanto maior esse numero mais estavel deve ser a saida
+Constante Numero numeroDeMedidas = 10;
+
+Numero leituras[numeroDeMedidas];
+Numero indiceLeitura = 0;
+Numero total = 0;
+Numero media = 0;
+
+Numero pinoEntrada = A0;
+
+Configuracao() {
+    // Inicializa a comunicacao serial
+    USB.conectar(9600);
+    // Inicializa as medidas em 0
+    para (Numero esssaLeitura = 0; esssaLeitura < numeroDeMedidas; esssaLeitura++) {
+        leituras[esssaLeitura] = 0;
+    }
+}
+
+Principal() {
+    // Subtrai a ultima medida
+    total = total - leituras[indiceLeitura];
+    // Faz a leitura do sensor
+    leituras[indiceLeitura] = Pino.lerAnalogico(pinoEntrada);
+    // Soma a leitura ao total
+    total = total + leituras[indiceLeitura];
+    // Passa pra proxima posicao do vetor
+    indiceLeitura = indiceLeitura + 1;
+
+    // Quando atingimos o final do vetor
+    se (indiceLeitura >= numeroDeMedidas) {
+    // Recomeca o indice
+        indiceLeitura = 0;
+    }
+
+    // Calcular a media
+    media = total / numeroDeMedidas;
+    // Manda o resultado para o monitor serial
+    USB.enviarln(media);
+    // Esperar entre as medidas para estabiliza-las
+    esperar(1);
+}

@@ -44,7 +44,7 @@ import serial
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
-                             QAction, QInputDialog)
+                             QAction, QInputDialog, QMenu)
 
 import DestaqueSintaxe
 import EditorDeTexto
@@ -105,6 +105,7 @@ class Centro(QWidget):
 
         self.init_pacotes()
         self.criar_menu_placas()
+        self.criar_menu_exemplos()
 
         self.widget_abas.addTab(BoasVindas(self), "Bem-Vindo")
         self.show()
@@ -310,7 +311,17 @@ class Centro(QWidget):
             pass
 
     def criar_menu_exemplos(self):
-        pass
+        caminho_exemplos = os.path.join('recursos', 'exemplos')
+        for pasta_exemplo in [x for x in os.listdir(caminho_exemplos) if
+                              os.path.isdir(os.path.join(caminho_exemplos, x))]:
+            print pasta_exemplo
+            menu = QMenu(pasta_exemplo)
+            for exemplo in os.listdir(os.path.join(caminho_exemplos, pasta_exemplo)):
+                exemplo_acao = QAction(exemplo, self)
+                caminho_exemplo = os.path.join(caminho_exemplos, pasta_exemplo, exemplo)
+                menu.addAction(exemplo_acao)
+                exemplo_acao.triggered.connect(functools.partial(self.nova_aba, caminho_exemplo))
+            self.parent.menu_exemplos.addMenu(menu)
 
     def on_troca_placa_ou_porta(self):
         plataforma = self.get_plataforma_alvo()

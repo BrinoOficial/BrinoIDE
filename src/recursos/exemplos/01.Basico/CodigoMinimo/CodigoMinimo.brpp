@@ -1,0 +1,11 @@
+/*
+    Codigo Minimo-Possui apenas as funcoes obrigatorias do Br.ino    
+ */
+
+Configuracao() {
+// Coloque o seu codigo de configuracao aqui(lido apenas uma vez)
+}
+
+Principal() {
+// Coloque o seu codigo principal aqui(lido repetidamente)
+}

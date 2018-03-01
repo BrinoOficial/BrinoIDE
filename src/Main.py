@@ -79,6 +79,7 @@ class Principal(QMainWindow):
         self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
         self.menu_placas = QMenu('Placa')
         self.menu_portas = QMenu('Porta')
+        self.menu_exemplos = QMenu('Exemplos')
         self.barra_de_status = QStatusBar()
 
         self.widget_central = UI.Centro(self)
@@ -121,9 +122,6 @@ class Principal(QMainWindow):
         self.acao_abrir.setShortcut('Ctrl+O')
         self.acao_abrir.triggered.connect(self.widget_central.abrir)
         self.acao_abrir.setStatusTip("Abrir arquivo")
-
-        self.acao_exemplos.triggered.connect(self.widget_central.criar_menu_exemplos)
-        self.acao_exemplos.setStatusTip("Exemplos")
 
         self.acao_salvar.setShortcut('Ctrl+S')
         self.acao_salvar.triggered.connect(self.widget_central.salvar)
@@ -172,8 +170,7 @@ class Principal(QMainWindow):
         menu_arquivo = barra_menu.addMenu('Arquivo')
         menu_arquivo.addAction(self.acao_novo)
         menu_arquivo.addAction(self.acao_abrir)
-        menu_exemplos = menu_arquivo.addMenu('Exemplos')
-        self.adicionar_exemplos(menu_exemplos)
+        menu_arquivo.addMenu(self.menu_exemplos)
         menu_arquivo.addAction(self.acao_salvar)
         menu_arquivo.addAction(self.acao_salvar_como)
         menu_arquivo.addAction(self.acao_fechar_aba)
@@ -195,10 +192,6 @@ class Principal(QMainWindow):
         menu_rascunho = barra_menu.addMenu('Rascunho')
         menu_rascunho.addAction(self.acao_verificar)
         menu_rascunho.addAction(self.acao_verificar_e_carregar)
-
-    def adicionar_exemplos(self, menu):
-        # TODO ler exemplos e adiciona-los ao menu exemplos
-        pass
 
     def abrir_serial(self):
         if monitor.conectar(Preferencias.get("serial.port")):
