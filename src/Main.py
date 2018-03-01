@@ -44,7 +44,6 @@ import sys
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
 
-import GerenciadorDeArquivos
 import GerenciadorDeCodigo
 import GerenciadorDeLinguas
 import MonitorSerial
@@ -123,7 +122,7 @@ class Principal(QMainWindow):
         self.acao_abrir.triggered.connect(self.widget_central.abrir)
         self.acao_abrir.setStatusTip("Abrir arquivo")
 
-        self.acao_exemplos.triggered.connect(GerenciadorDeArquivos.exemplos)
+        self.acao_exemplos.triggered.connect(self.widget_central.criar_menu_exemplos)
         self.acao_exemplos.setStatusTip("Exemplos")
 
         self.acao_salvar.setShortcut('Ctrl+S')

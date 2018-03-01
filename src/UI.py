@@ -309,6 +309,9 @@ class Centro(QWidget):
             # TODO mensagem padrao sem portas
             pass
 
+    def criar_menu_exemplos(self):
+        pass
+
     def on_troca_placa_ou_porta(self):
         plataforma = self.get_plataforma_alvo()
         pastas_bibliotecas = list()
