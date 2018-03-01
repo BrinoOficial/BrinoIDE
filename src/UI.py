@@ -97,9 +97,7 @@ class Centro(QWidget):
 
         self.show()
 
-        self.nova_aba()
         self.nova_aba(os.path.join('.', 'recursos', 'exemplos', 'CodigoMinimo.brpp'), False)
-        self.remover_aba(0)
 
 
     def init_pacotes(self):
