@@ -65,6 +65,7 @@ email: victor.pacheco@brino.cc
 import functools
 import ntpath
 import os
+import re
 
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
@@ -92,24 +93,26 @@ class CodeEditor(QPlainTextEdit):
         # Dialogo para novo arquivo
         if ask:
             self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
-            if ok and self.nome != "":
-                self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
-                with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
-                    self.set_texto(arquivo.read())
-            elif not ok:
-                return
+            if ok:
+                if CodeEditor.validar(self.nome):
+                    if self.nome != "":
+                        self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
+                        with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
+                            self.set_texto(arquivo.read())
+                    else:
+                        QMessageBox().warning(None, 'Erro', "Favor insira um nome", QMessageBox.Ok)
+                else:
+                    pass
+                    # TODO nome invalido, voltar para a pergunta
             else:
-                QMessageBox().warning(None, 'Erro', "Favor insira um nome", QMessageBox.Ok)
+                return
         else:
             self.nome = "Novo"
-        # TODO oq isso faz?
-        if path and salvar_caminho:
-            self.caminho = path
-            head, tail = ntpath.split(path)
-            self.nome = ntpath.basename(head)
-            with open(self.caminho) as arquivo:
-                self.set_texto(arquivo.read())
-        elif path:
+        if path:
+            if salvar_caminho:
+                self.caminho = path
+                diretorio, nome = ntpath.split(path)
+                self.nome = ntpath.basename(diretorio)
             with open(path) as arquivo:
                 self.set_texto(arquivo.read())
         self.salvo = True
@@ -199,6 +202,12 @@ class CodeEditor(QPlainTextEdit):
 
     def set_caminho(self, caminho):
         self.caminho = caminho
+
+    @staticmethod
+    def validar(nome):
+        regex = re.compile('[A-Za-z_-]+[0-9A-Za-z_-]*')
+        return re.match(regex, nome)
+
 
 
 class ContadorDeLinhas(QWidget):
