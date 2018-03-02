@@ -48,7 +48,14 @@ import GerenciadorDeKeywords
 
 
 def format_(color, style=''):
-    """Return a QTextCharFormat with the given attributes.
+    """
+    Retorna a formatacao da palavra
+    :param color:
+        Cor da palavra
+    :param style:
+        Estilo da palavra
+    :return:
+        Formato
     """
     _color = QColor()
     _color.setNamedColor(color)
@@ -63,7 +70,7 @@ def format_(color, style=''):
     return _format
 
 
-# Syntax styles that can be shared by all languages
+# Define os estilos
 STYLES = {
     'keyword': format_('#D2D200', 'bold'),
     'keyword_2': format_('#60BC0E'),
@@ -79,7 +86,8 @@ STYLES = {
 
 
 class PythonHighlighter(QSyntaxHighlighter):
-    """Syntax highlighter for the Python language.
+    """
+    Define os devidos hightlightes de cada uma das categorias de keyword
     """
     # Br.ino keywords tipo 1
     keywords_1 = GerenciadorDeKeywords.get_highlights('1')
@@ -112,24 +120,24 @@ class PythonHighlighter(QSyntaxHighlighter):
         rules += [(r'%s' % b, 0, STYLES['keyword_4'])
                   for b in PythonHighlighter.keywords_4]
 
-        # All other rules
+        # Todas as outras regras
         rules += [
 
-            # Double-quoted string, possibly containing escape sequences
+            # string de aspas duplas
             (r'"[^"\\]*(\\.[^"\\]*)*"', 0, STYLES['string']),
-            # Single-quoted string, possibly containing escape sequences
+            # string de aspas simples
             (r"'[^'\\]*(\\.[^'\\]*)*'", 0, STYLES['string']),
 
-            # From '//' until a newline
+            # // ate o fim da linha (Comentario)
             (r'//[^\n]*', 0, STYLES['comment']),
 
-            # Numeric literals
+            # Numerico
             (r'\b[+-]?[0-9]+[lL]?\b', 0, STYLES['numbers']),
             (r'\b[+-]?0[xX][0-9A-Fa-f]+[lL]?\b', 0, STYLES['numbers']),
             (r'\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b', 0, STYLES['numbers']),
         ]
 
-        # Build a QRegExp for each pattern
+        # Cria um QRegExp para cada expressao
         self.rules = [(QRegExp(pat), index, fmt)
                       for (pat, index, fmt) in rules]
 
@@ -139,10 +147,13 @@ class PythonHighlighter(QSyntaxHighlighter):
         self.multiLineCommentFormat.setForeground(Qt.cyan)
 
     def highlightBlock(self, texto):
-        """Apply syntax highlighting to the given block of text.
         """
-        # Do other syntax formatting
-
+        Aplica hightlight em dados blocos de texto
+        :param texto:
+            Texto a receber o hightlight
+        :return:
+            None
+        """
         for expression, nth, format_ in self.rules:
             indice = expression.indexIn(texto, 0)
 
