@@ -124,9 +124,12 @@ class CodeEditor(QPlainTextEdit):
     def atualizar_area_contador(self, rect, dy):
         """
         Realiza o scroll do contador
-        :param rect: Retangulo de conteudos
-        :param dy: Variacao da posicao y
-        :return: None
+        :param rect:
+            Retangulo de conteudos
+        :param dy:
+            Variacao na posicao y
+        :return:
+            None
         """
         if dy != 0:
             self.contador_de_linhas.scroll(0, dy)
@@ -139,12 +142,19 @@ class CodeEditor(QPlainTextEdit):
     def set_salvo(self, estado):
         """
         Variavel para informar quando o documento nao precisa ser salvo
-        :param estado: Se o arquivo ja foi salvo ou nao
-        :return: None
+        :param estado:
+            Se o arquivo ja foi salvo ou nao
+        :return:
+            None
         """
         self.salvo = estado
 
     def marcar_linha_atual(self):
+        """
+        Da hightlight na linha do cursor
+        :return:
+            None
+        """
         selecoes_extras = list()
         if not self.isReadOnly():
             selecao = QTextEdit.ExtraSelection()
@@ -157,6 +167,13 @@ class CodeEditor(QPlainTextEdit):
         self.setExtraSelections(selecoes_extras)
 
     def lineNumberAreaPaintEvent(self, QPaintEvent):
+        """
+        Pinta o contador de linhas
+        :param QPaintEvent:
+             evento
+        :return:
+            None
+        """
         painter = QPainter(self.contador_de_linhas)
         painter.fillRect(QPaintEvent.rect(), QColor("#252525"))
 
@@ -179,6 +196,13 @@ class CodeEditor(QPlainTextEdit):
             numero_bloco += 1
 
     def AcharEventoDePintura(self, QPaintEvent):
+        """
+        Pinta da funcao achar
+        :param QPaintEvent:
+            Evento
+        :return:
+            None
+        """
         painter = QPainter(self.achar)
         painter.fillRect(QPaintEvent.rect(), QColor("#252525"))
 
@@ -186,18 +210,47 @@ class CodeEditor(QPlainTextEdit):
         painter.fillRect(0, top, self.width(), 2, QColor("#505050"))
 
     def set_texto(self, texto):
+        """
+        Coloca o texto no QPlainText
+        :param texto:
+            Texto a ser inserido
+        :return:
+            None
+        """
         self.setPlainText(texto)
 
     def get_texto(self):
+        """
+        Pega o texto do QPlainText
+        :return:
+            None
+        """
         return self.toPlainText()
 
     def get_nome(self):
+        """
+        Pega o nome
+        :return:
+            None
+        """
         return self.nome
 
     def get_caminho(self):
+        """
+        Pega o caminho
+        :return:
+            None
+        """
         return self.caminho
 
     def set_caminho(self, caminho):
+        """
+        Seta o caminho
+        :param caminho:
+            Caminho a ser setado
+        :return:
+            None
+        """
         self.caminho = caminho
 
 
@@ -208,9 +261,21 @@ class ContadorDeLinhas(QWidget):
         self.editor_de_codigo = editor
 
     def sizeHint(self):
+        """
+        Tamanho do contador de linhas
+        :return:
+            Tamanho do contador
+        """
         return QSize(self.editor_de_codigo.largura_contador, 0)
 
     def paintEvent(self, event):
+        """
+        paint do contador de linhas
+        :param event:
+            Evento
+        :return:
+            None
+        """
         self.editor_de_codigo.lineNumberAreaPaintEvent(event)
 
 
@@ -223,7 +288,19 @@ class Achar(QWidget):
         pass
 
     def sizeHint(self):
+        """
+        Seta o tamanho do widget do achar
+        :return:
+            Tamanho do widget
+        """
         return QSize(0, 20)
 
     def paintEvent(self, QPaintEvent):
+        """
+        Chama o paint do evento de pintura
+        :param QPaintEvent:
+            Evento
+        :return:
+            None
+        """
         self.editor_de_codigo.AcharEventoDePintura(QPaintEvent)
