@@ -77,6 +77,7 @@ class CodeEditor(QPlainTextEdit):
 
     def __init__(self, parent, ask=True, path="", salvar_caminho=True):
         super(CodeEditor, self).__init__(parent)
+        # Contador de linhas
         self.contador_de_linhas = ContadorDeLinhas(self)
         self.largura_contador = 38
         self.blockCountChanged.connect(self.atualizar_largura_contador)
@@ -88,6 +89,7 @@ class CodeEditor(QPlainTextEdit):
         self.achar = Achar(self)
         self.caminho = ""
         self.textChanged.connect(functools.partial(self.set_salvo, False))
+        # Dialogo para novo arquivo
         if ask:
             self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
             if ok and self.nome != "":
@@ -100,6 +102,7 @@ class CodeEditor(QPlainTextEdit):
                 QMessageBox().warning(None, 'Erro', "Favor insira um nome", QMessageBox.Ok)
         else:
             self.nome = "Novo"
+        # TODO oq isso faz?
         if path and salvar_caminho:
             self.caminho = path
             head, tail = ntpath.split(path)
@@ -112,9 +115,19 @@ class CodeEditor(QPlainTextEdit):
         self.salvo = True
 
     def atualizar_largura_contador(self):
+        """
+        Atualiza a largura e a altura do contador
+        :return: None
+        """
         self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))
 
     def atualizar_area_contador(self, rect, dy):
+        """
+        Realiza o scroll do contador
+        :param rect: Retangulo de conteudos
+        :param dy: Variacao da posicao y
+        :return: None
+        """
         if dy != 0:
             self.contador_de_linhas.scroll(0, dy)
         else:
@@ -124,6 +137,11 @@ class CodeEditor(QPlainTextEdit):
                 self.atualizar_largura_contador()
 
     def set_salvo(self, estado):
+        """
+        Variavel para informar quando o documento nao precisa ser salvo
+        :param estado: Se o arquivo ja foi salvo ou nao
+        :return: None
+        """
         self.salvo = estado
 
     def marcar_linha_atual(self):
