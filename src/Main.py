@@ -197,14 +197,18 @@ class Principal(QMainWindow):
         if monitor.conectar(Preferencias.get("serial.port")):
             monitor.show()
         else:
-            alerta = QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
-                                 QMessageBox.NoButton, self)
-            alerta.show()
+            QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
+                        QMessageBox.NoButton, self).show()
 
     def closeEvent(self, QCloseEvent):
+        num_examinar = 0
         for num_arquivo in range(self.widget_central.widget_abas.count()):
-            arquivo = self.widget_central.widget_abas.widget(0)
-            self.widget_central.widget_abas.setCurrentIndex(0)
+            # verifica se a primeira aba eh a de boas vindas
+            if self.widget_central.widget_abas.widget(0).get_caminho() == 0:
+                # se for, sempre verifica se a segunda aba esta salva(fechando uma por uma)
+                num_examinar = 1
+            arquivo = self.widget_central.widget_abas.widget(num_examinar)
+            self.widget_central.widget_abas.setCurrentIndex(num_examinar)
             if not arquivo.salvo:
                 ret = QMessageBox(self)
                 ret.setText("Gostaria de salvar este código antes de sair?")
@@ -218,7 +222,7 @@ class Principal(QMainWindow):
                     return
                 elif ret == 2:
                     self.widget_central.salvar()
-            self.widget_central.remover_aba(0)
+            self.widget_central.remover_aba(num_examinar)
         QCloseEvent.accept()
 
 

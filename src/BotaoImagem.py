@@ -64,13 +64,3 @@ class botaoImagem(QAbstractButton):
     def leaveEvent(self, QEvent):
         self.estado_botao = False
         self.update()
-
-    def eventFilter(self, object, event):
-        if event.type() == QAbstractButton.enterEvent:
-            print "Hovering"
-            return True
-        if event.type() == QAbstractButton.leaveEvent:
-            print "UnHovering"
-            pass
-
-        return False

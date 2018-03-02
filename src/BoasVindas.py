@@ -16,6 +16,7 @@ class BoasVindas(QWidget):
         self.parent = parent
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.layout.setColumnStretch(0, 1)
+        # Onde vai entrar o achar
         # self.layout.setColumnStretch(1, 12)
         self.layout.setRowStretch(0, 1)
         self.layout.setRowStretch(1, 1)
@@ -25,6 +26,7 @@ class BoasVindas(QWidget):
         self.setAutoFillBackground(True)
         self.itens = QVBoxLayout(self)
         self.popular_itens()
+        self.salvo = True
 
     def popular_itens(self):
         novo = Item(self, self.parent.nova_aba, "Rascunho em Branco", "Crie um novo rascunho do zero",
