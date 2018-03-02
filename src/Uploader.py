@@ -4,6 +4,16 @@ import Preferencias
 
 
 def novo_uploader(placa_alvo, porta, nao_existe_porta):
+    """
+    Caso seja um upload sem prefs
+    :param placa_alvo:
+        Placa alvo
+    :param porta:
+        Porta alvo
+    :param nao_existe_porta:
+        Porta nao existente ou invalida
+    :return:
+    """
     if nao_existe_porta:
         return UploaderSerial(nao_existe_porta)
     if porta is not None and porta.get_protocolo() == "network":
@@ -14,12 +24,22 @@ def novo_uploader(placa_alvo, porta, nao_existe_porta):
 
 
 def get_uploader_por_preferencias():
+    """
+    upload com prefs
+    :return:
+        None
+    """
     # TODO
     pass
 
 
 class UploaderSerial():
     def __init__(self, nao_existe_porta=False):
+        """
+        Init do uploader
+        :param nao_existe_porta:
+            Caso de porta invalida ou inexistente
+        """
         self.verbose = Preferencias.get("upload.verbose")
         self.verificar_carregar = Preferencias.get("upload.verify")
         self.error = ""
@@ -29,6 +49,17 @@ class UploaderSerial():
     # sucesso = Uploader.upload_usando_preferencias(self, caminho, caminho_temp, nome, usando_programador)
 
     def upload_usando_preferencias(self, parent, caminho_temp, nome):
+        """
+        Faz upload de acordo com as preferencias
+        :param parent:
+            Funcao pai
+        :param caminho_temp:
+            Caminho temporario
+        :param nome:
+            Nome do codigo
+        :return:
+            None
+        """
         plataforma_alvo = parent.get_plataforma_alvo()
         prefs = Preferencias.get_mapa()
         preferencias_placa = parent.get_preferencias_placa()
@@ -77,6 +108,13 @@ class UploaderSerial():
 
 
 def formatar_e_dividir(src, dictio, recursivo):
+    """
+    TODO
+    :param src:
+    :param dictio:
+    :param recursivo:
+    :return:
+    """
     res = ""
     for i in range(10):
         res = substituir_do_mapa(src, dictio)
@@ -89,6 +127,14 @@ def formatar_e_dividir(src, dictio, recursivo):
 
 
 def substituir_do_mapa(src, dictio, delimitador_esquerdo='{', delimitador_direito='}'):
+    """
+    TODO Delimitador de funcoes?
+    :param src:
+    :param dictio:
+    :param delimitador_esquerdo:
+    :param delimitador_direito:
+    :return:
+    """
     for key in dictio.keys():
         keyword = delimitador_esquerdo + key + delimitador_direito
         if dictio.get(key) is not None and keyword is not None:
@@ -97,6 +143,13 @@ def substituir_do_mapa(src, dictio, delimitador_esquerdo='{', delimitador_direit
 
 
 def separacao_quotes(src, quote_chars, arg_vazios):
+    """
+    TODO
+    :param src:
+    :param quote_chars:
+    :param arg_vazios:
+    :return:
+    """
     res = list()
     arg_escapado = None
     char_escapador = None
