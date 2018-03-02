@@ -41,6 +41,23 @@ import Main
 
 
 def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, temp, cache):
+    """
+    usa o arduino builder para compilar
+    :param caminho:
+        Caminho do codigo a ser compilado
+    :param placa_alvo:
+        Placa alvo
+    :param plataforma_alvo:
+        Plataforma alvo
+    :param pacote_alvo:
+        Pacote alvo
+    :param temp:
+        TODO
+    :param cache:
+        TODO
+    :return output:
+        Codigo compilado
+    """
     pacotes_instalados = os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages'))
     cmd = os.path.abspath(os.path.join('.', 'builder', 'arduino-builder'))
     cmd += " -compile"
@@ -70,18 +87,43 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
 
 
 def opcoes_da_placa(placa):
+    """
+    opcoes de placa
+    :param placa:
+    :return "":
+        ""
+    """
     return ""
 
 
 def adicionar_hardware_se_existe(string, arquivo):
+    """
+    TODO
+    :param string:
+    :param arquivo:
+    :return:
+    """
     return adicionar_se_existe(string, " -hardware ", arquivo)
 
 
 def adicionar_ferramenta_se_existe(string, arquivo):
+    """
+    TODO
+    :param string:
+    :param arquivo:
+    :return:
+    """
     return adicionar_se_existe(string, " -tools ", arquivo)
 
 
 def adicionar_se_existe(string, opcao, arquivo):
+    """
+    TODO
+    :param string:
+    :param opcao:
+    :param arquivo:
+    :return:
+    """
     if os.path.exists(arquivo):
         return string + opcao + arquivo
     return string
