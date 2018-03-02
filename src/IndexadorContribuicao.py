@@ -16,7 +16,6 @@ class IndexadorContribuicao:
         self.pasta_hardware = pasta_hardware
         self.pasta_pacotes = os.path.join(pasta_prefs, 'packages')
         self.indice = None
-        pass
 
     def parse_index(self, path=None):
         if path is not None:
