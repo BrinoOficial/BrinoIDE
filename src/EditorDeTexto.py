@@ -102,7 +102,6 @@ class CodeEditor(QPlainTextEdit):
                 QMessageBox().warning(None, 'Erro', "Favor insira um nome", QMessageBox.Ok)
         else:
             self.nome = "Novo"
-        # TODO oq isso faz?
         if path and salvar_caminho:
             self.caminho = path
             head, tail = ntpath.split(path)
