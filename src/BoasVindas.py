@@ -12,6 +12,7 @@ class BoasVindas(QWidget):
     def __init__(self, parent):
         super(BoasVindas, self).__init__(parent)
         self.caminho = 0
+        # Layout do monitor serial com grid
         self.layout = QGridLayout(self)
         self.parent = parent
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -29,6 +30,11 @@ class BoasVindas(QWidget):
         self.salvo = True
 
     def popular_itens(self):
+        """
+        Caixas do boas vindas
+        :return:
+            None
+        """
         novo = Item(self, self.parent.nova_aba, "Rascunho em Branco", "Crie um novo rascunho do zero",
                     os.path.join('recursos', 'novoArquivo.png'))
         aprender_mais = Item(self, self.abrir_site, "Não sabe como começar?",
@@ -38,11 +44,23 @@ class BoasVindas(QWidget):
         self.itens.addWidget(aprender_mais)
         self.setFixedHeight(300)
 
-    def abrir_site(self):
+    @staticmethod
+    def abrir_site():
+        """
+        Direciona para o nosso site brino.cc/tutoriais.php
+        :return:
+            None
+        """
         webbrowser.open("http://brino.cc/tutoriais.php", 1, True)
 
     def get_caminho(self):
+        """
+        Retorna o caminho
+        :return caminho:
+            Caminho
+        """
         return self.caminho
+
 
 class Item(QWidget):
     def __init__(self, parent, func, titulo="", label="", icone="", ):
@@ -66,18 +84,40 @@ class Item(QWidget):
 
         self.setFixedHeight(100)
 
-    def mousePressEvent(self, QMouseEvent):
+    def mousePressEvent(self, evento_mouse):
+        """
+        Chama a funcao func
+        :param evento_mouse:
+            evento
+        :return:
+            None
+        """
         self.func()
 
-    def enterEvent(self, QEvent):
+    def enterEvent(self, evento):
+        """
+        Cria animacao e linhas verdes quando on hover do mouse
+        :param evento:
+            evento de entrada do mouse
+        :return:
+            None
+        """
         self.label_titulo.setStyleSheet("border-top: 2px solid #5cb50d;background:#404040;")
         self.label_descricao.setStyleSheet("border-top: 2px solid #404040;background:#404040;")
 
-    def leaveEvent(self, QEvent):
+    def leaveEvent(self, evento):
+        """
+        Remove animacao e linhas verdes quando sai do hver do mouse
+        :param evento:
+            evento
+        :return:
+            None
+        """
         self.label_titulo.setStyleSheet("border:2px solid #404040;background:#404040;")
         self.label_descricao.setStyleSheet("border:2px solid #404040;background:#404040;")
 
 
+# Espaco para o mascote
 class Mascote(QWidget):
     def __init__(self, parent):
         super(Mascote, self).__init__(parent)
