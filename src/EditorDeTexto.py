@@ -1,5 +1,3 @@
-
-
 """
 Br.ino Qt editor de texto
 
