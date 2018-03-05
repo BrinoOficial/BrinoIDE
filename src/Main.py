@@ -200,13 +200,10 @@ class Principal(QMainWindow):
             QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
                         QMessageBox.NoButton, self).show()
 
-    def closeEvent(self, QCloseEvent):
+    def closeEvent(self, close_event):
         num_examinar = 0
         for num_arquivo in range(self.widget_central.widget_abas.count()):
             # verifica se a primeira aba eh a de boas vindas
-            if self.widget_central.widget_abas.widget(0).get_caminho() == 0:
-                # se for, sempre verifica se a segunda aba esta salva(fechando uma por uma)
-                num_examinar = 1
             arquivo = self.widget_central.widget_abas.widget(num_examinar)
             self.widget_central.widget_abas.setCurrentIndex(num_examinar)
             if not arquivo.salvo:
@@ -218,12 +215,12 @@ class Principal(QMainWindow):
                 ret.addButton("Salvar", QMessageBox.AcceptRole)
                 ret = ret.exec_()
                 if ret == 1:
-                    QCloseEvent.ignore()
+                    close_event.ignore()
                     return
                 elif ret == 2:
                     self.widget_central.salvar()
             self.widget_central.remover_aba(num_examinar)
-        QCloseEvent.accept()
+        close_event.accept()
 
 
 def get_caminho_padrao():

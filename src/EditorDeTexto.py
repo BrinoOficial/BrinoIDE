@@ -1,4 +1,5 @@
-
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """
 Br.ino Qt editor de texto
@@ -99,6 +100,10 @@ class CodeEditor(QPlainTextEdit):
                     if CodeEditor.validar(self.nome):
                         if self.nome != "":
                             self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
+                            if os.path.exists(self.caminho):
+                                QMessageBox().warning(None, 'Arquivo existe',
+                                                      "Ao abrir esse arquivo, você apagará um arquivo existente. Gostaria de continuar?",
+                                                      QMessageBox.Ok | QMessageBox.No)
                             with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
                                 self.set_texto(arquivo.read())
                         else:
