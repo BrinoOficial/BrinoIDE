@@ -49,7 +49,7 @@ def init():
 
 def set(preferencia, valor):
     """
-    Adiciona novas preferencias
+    Define a preferencia fornecida com o valor fornecido
     :param preferencia:
         Preferencia a ser salva
     :param valor:
@@ -62,18 +62,23 @@ def set(preferencia, valor):
 
 def get(preferencia):
     """
-    TODO
+    Busca a preferencia desejada
     :param preferencia:
+        Preferencia a buscar
     :return:
+        Valor da preferecia
+
     """
     return preferencias.get(preferencia)
 
 
 def get_int(preferencia):
     """
-    TODO
+    Retorna o valor da preferrencia como um inteiro
     :param preferencia:
+        Preferencia a ser buscada
     :return:
+        Valor inteiro da preferencia
     """
     return int(get(preferencia))
 

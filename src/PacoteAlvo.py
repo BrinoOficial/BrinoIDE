@@ -39,19 +39,52 @@ class PacoteAlvo:
         self.plataformas = dict()
 
     def get_plataformas(self):
+        """
+
+        :return:
+            None
+        """
         return self.plataformas
 
     def get_lista_plataformas(self):
+        """
+
+        :return:
+            None
+        """
         return self.plataformas.values()
 
     def get(self, plataforma):
+        """
+
+        :param plataforma:
+        :return:
+            None
+        """
         return self.plataformas.get(plataforma)
 
     def tem_plataforma(self, plataforma):
+        """
+
+        :param plataforma:
+        :return:
+            None
+        """
         return self.plataformas.has_key(plataforma.get_id())
 
     def get_id(self):
+        """
+
+        :return:
+            None
+        """
         return self.id_
 
     def adicionar_plataforma(self, plataforma):
+        """
+
+        :param plataforma:
+        :return:
+            None
+        """
         self.plataformas[plataforma.get_id()] = plataforma

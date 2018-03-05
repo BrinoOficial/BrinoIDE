@@ -50,22 +50,51 @@ class PacoteContribuido:
             self.ferramentas[ferramenta.get_nome()] = ferramenta
 
     def get_nome(self):
+        """
+
+        :return:
+        """
         return self.nome
 
     def get_plataformas(self):
+        """
+
+        :return:
+        """
         return self.plataformas.values()
 
     def get_ferramentas(self):
+        """
+
+        :return:
+        """
         return self.ferramentas
 
     def get_ferramenta_por_nome(self, nome):
+        """
+
+        :param nome:
+        :return:
+        """
         return self.ferramentas[nome]
 
     def achar_plataforma(self, arquitetura, versao):
+        """
+
+        :param arquitetura:
+        :param versao:
+        :return:
+        """
         for plataforma in self.get_plataformas():
             if plataforma.get_arquitetura() == arquitetura and versao == plataforma.get_versao():
                 return plataforma
 
     def achar_ferramenta(self, nome, versao):
+        """
+
+        :param nome:
+        :param versao:
+        :return:
+        """
         if self.get_ferramenta_por_nome(nome).get_versao() == versao:
             return self.get_ferramenta_por_nome(nome)
