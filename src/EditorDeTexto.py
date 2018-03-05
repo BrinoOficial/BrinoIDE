@@ -92,20 +92,23 @@ class CodeEditor(QPlainTextEdit):
         self.textChanged.connect(functools.partial(self.set_salvo, False))
         # Dialogo para novo arquivo
         if ask:
-            self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
-            if ok:
-                if CodeEditor.validar(self.nome):
-                    if self.nome != "":
-                        self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
-                        with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
-                            self.set_texto(arquivo.read())
+            valido = False
+            while not valido:
+                self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
+                if ok:
+                    if CodeEditor.validar(self.nome):
+                        if self.nome != "":
+                            self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
+                            with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
+                                self.set_texto(arquivo.read())
+                        else:
+                            QMessageBox().warning(None, 'Erro', "Favor insira um nome!", QMessageBox.Ok)
+                        valido = True
                     else:
-                        QMessageBox().warning(None, 'Erro', "Favor insira um nome", QMessageBox.Ok)
+                        QMessageBox().warning(None, 'Erro', "Nome inválido!", QMessageBox.Ok)
+                        valido = False
                 else:
-                    pass
-                    # TODO nome invalido, voltar para a pergunta
-            else:
-                return
+                    return
         else:
             self.nome = "Novo"
         if path:
