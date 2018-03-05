@@ -180,17 +180,19 @@ class Centro(QWidget):
     def abrir(self, caminho=None):
         """
         Abrir arquivo .ino ou .brpp em nova aba
-        :param caminho: endereço para abrir
-        :return: None
+        :param caminho:
+            endereço para abrir
+        :return:
+            None
         """
-        if caminho is None:
+        if not caminho:
             salvar_caminho = True
             dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
             if dialogo.exec_() == QFileDialog.Accepted:
                 caminho = dialogo.selectedFiles()[0]
                 # Testa se o arquivo existe
                 if os.path.exists(caminho):
-                    self.nova_aba(caminho)
+                    self.nova_aba(caminho, salvar_caminho)
                 else:
                     QMessageBox(QMessageBox.Warning, "Erro", "O arquivo não existe", QMessageBox.NoButton, self).show()
         else:
