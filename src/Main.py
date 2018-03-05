@@ -201,25 +201,15 @@ class Principal(QMainWindow):
                         QMessageBox.NoButton, self).show()
 
     def closeEvent(self, close_event):
-        num_examinar = 0
-        for num_arquivo in range(self.widget_central.widget_abas.count()):
-            # verifica se a primeira aba eh a de boas vindas
-            arquivo = self.widget_central.widget_abas.widget(num_examinar)
-            self.widget_central.widget_abas.setCurrentIndex(num_examinar)
-            if not arquivo.salvo:
-                ret = QMessageBox(self)
-                ret.setText("Gostaria de salvar este código antes de sair?")
-                ret.setIcon(QMessageBox.Question)
-                ret.addButton("Não Salvar", QMessageBox.NoRole)
-                ret.addButton("Cancelar", QMessageBox.RejectRole)
-                ret.addButton("Salvar", QMessageBox.AcceptRole)
-                ret = ret.exec_()
-                if ret == 1:
-                    close_event.ignore()
-                    return
-                elif ret == 2:
-                    self.widget_central.salvar()
-            self.widget_central.remover_aba(num_examinar)
+        if self.widget_central.widget_abas.widget(0).caminho == 0:
+            num_examinar = 1
+        else:
+            num_examinar = 0
+        print num_examinar
+        for num_arquivo in range(self.widget_central.widget_abas.count() - num_examinar):
+            if not self.widget_central.remover_aba(num_examinar, True):
+                close_event.ignore()
+                return
         close_event.accept()
 
 

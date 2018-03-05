@@ -133,23 +133,38 @@ class Centro(QWidget):
         # TODO carregar_hardware_rascunhos
         # TODO criar preferencias ferramentas
 
-    def remover_aba(self, index):
+    def remover_aba(self, index, fechando=False):
         """
         Remove a aba
         :param index: Indice da aba
         :return: None
         """
-        if self.widget_abas.count() > 1:
+        if self.widget_abas.count() > 1 or fechando:
             # Se o index for argumento padrao do sinal (QT)
-            if index is not int:
-                self.widget_abas.removeTab(self.widget_abas.currentIndex())
+            if type(index) is not int:
+                self.remover_aba(self.widget_abas.currentIndex())
             else:
-                widget = self.widget_abas.widget(index)
-                if widget is not None:
-                    widget.deleteLater()
+                arquivo = self.widget_abas.widget(index)
+                self.widget_abas.setCurrentIndex(index)
+                if not arquivo.salvo:
+                    ret = QMessageBox(self)
+                    ret.setText("Gostaria de salvar este código antes de sair?")
+                    ret.setIcon(QMessageBox.Question)
+                    ret.addButton("Não Salvar", QMessageBox.NoRole)
+                    ret.addButton("Cancelar", QMessageBox.RejectRole)
+                    ret.addButton("Salvar", QMessageBox.AcceptRole)
+                    ret = ret.exec_()
+                    if ret == 1:
+                        return False
+                    elif ret == 2:
+                        self.salvar()
+                if arquivo is not None:
+                    arquivo.deleteLater()
                 self.widget_abas.removeTab(index)
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(False)
+
+        return True
 
     def nova_aba(self, path="", salvar_caminho=True):
         """
