@@ -98,17 +98,22 @@ class CodeEditor(QPlainTextEdit):
                 self.nome, ok = QInputDialog.getText(None, "Novo arquivo", "Nome do rascunho:")
                 if ok:
                     if CodeEditor.validar(self.nome):
-                        if self.nome != "":
-                            self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
-                            if os.path.exists(self.caminho):
-                                QMessageBox().warning(None, 'Arquivo existe',
-                                                      "Ao abrir esse arquivo, você apagará um arquivo existente. Gostaria de continuar?",
-                                                      QMessageBox.Ok | QMessageBox.No)
+                        self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
+                        if os.path.exists(self.caminho):
+                            arq_existe = QMessageBox().warning(None, 'Arquivo existe',
+                                                               "Ao abrir esse arquivo, você apagará um arquivo existente. Gostaria de continuar?",
+                                                               QMessageBox.Ok | QMessageBox.No)
+                            print(arq_existe, QMessageBox.Ok)
+                            if arq_existe == QMessageBox.Ok:
+                                with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
+                                    self.set_texto(arquivo.read())
+                                valido = True
+                            else:
+                                valido = False
+                        else:
                             with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
                                 self.set_texto(arquivo.read())
-                        else:
-                            QMessageBox().warning(None, 'Erro', "Favor insira um nome!", QMessageBox.Ok)
-                        valido = True
+                            valido = True
                     else:
                         QMessageBox().warning(None, 'Erro', "Nome inválido!", QMessageBox.Ok)
                         valido = False
