@@ -121,8 +121,8 @@ class Centro(QWidget):
     def init_pacotes(self):
         """
         Carrega os pacotes de hardware do Arduino
-
-        :return: None
+        :return:
+            None
         """
         pasta_hardware = os.path.join('builder', 'hardware')
         self.indexer = IndexadorContribuicao(os.path.join('builder'), pasta_hardware)
@@ -136,8 +136,10 @@ class Centro(QWidget):
     def remover_aba(self, index, fechando=False):
         """
         Remove a aba
-        :param index: Indice da aba
-        :return: None
+        :param index:
+            Indice da aba
+        :return:
+            None
         """
         if self.widget_abas.count() > 1 or fechando:
             # Se o index for argumento padrao do sinal (QT)
@@ -169,9 +171,12 @@ class Centro(QWidget):
     def nova_aba(self, path="", salvar_caminho=True):
         """
         Criar nova aba de editor de texto
-        :param path: Caminho para o arquivo a ser aberto
-        :param salvar_caminho: Se o caminho deve ser definido como local para salvar
-        :return: None
+        :param path:
+            Caminho para o arquivo a ser aberto
+        :param salvar_caminho:
+            Se o caminho deve ser definido como local para salvar
+        :return:
+            None
         """
         if self.widget_abas.count() == 0 or path:
             editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path, salvar_caminho=salvar_caminho)
@@ -218,7 +223,8 @@ class Centro(QWidget):
     def salvar(self):
         """
         Salvar arquivo da aba atual
-        :return: None
+        :return:
+            None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
@@ -241,7 +247,8 @@ class Centro(QWidget):
     def salvar_como(self):
         """
         Salvar arquivo atual como
-        :return: None
+        :return:
+            None
         """
         dialogo = self.criar_dialogo_arquivo('Salvar arquivo', 'Salvar')
         if dialogo.exec_() == QFileDialog.Accepted:
@@ -258,11 +265,16 @@ class Centro(QWidget):
     def selecionar_texto(self, cursor, texto, indice_inicial, comprimento):
         """
         Seleciona texto
-        :param cursor: Cursor do documento
-        :param texto: Texto a ser selecionado
-        :param indice_inicial: Ponto de onde comecar a busca
-        :param comprimento: Tamanho do texto
-        :return: Cursor com a selecao
+        :param cursor:
+            Cursor do documento
+        :param texto:
+            Texto a ser selecionado
+        :param indice_inicial:
+            Ponto de onde comecar a busca
+        :param comprimento:
+            Tamanho do texto
+        :return cursor:
+            Cursor com a selecao
         """
         conteudo = self.widget_abas.widget(self.widget_abas.currentIndex()).toPlainText()
         indice_comeco = conteudo.find(texto, indice_inicial)
@@ -273,7 +285,8 @@ class Centro(QWidget):
     def comentar_linha(self):
         """
         comenta a linha
-        :return: None
+        :return:
+            None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         cursor_atual = editor.textCursor()
@@ -295,7 +308,8 @@ class Centro(QWidget):
     def achar(self):
         """
         Achar palavra chave no codigo
-        :return: None
+        :return:
+            None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
@@ -307,7 +321,8 @@ class Centro(QWidget):
     def achar_e_substituir(self):
         """
         Achar e substituir palavras chave por outras
-        :return: None
+        :return:
+            None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         subs = "haaaa"
@@ -325,9 +340,12 @@ class Centro(QWidget):
     def criar_dialogo_arquivo(titulo, acao):
         """
         Cria dialogo personalizado para buscar arquivos
-        :param titulo:  Titulo de aba
-        :param acao:    Texto do botao de selecionar
-        :return: dialogo
+        :param titulo:
+            Titulo de aba
+        :param acao:
+            Texto do botao de selecionar
+        :return dialogo:
+            dialogo
         """
         dialogo = QFileDialog()
         dialogo.setWindowTitle(titulo)
@@ -344,15 +362,18 @@ class Centro(QWidget):
     def abrir_serial(self):
         """
         Abre o monitor serial
-        :return: None
+        :return:
+            None
         """
         self.parent.abrir_serial()
 
     def carregar_hardware(self, pasta):
         """
         Carrega as opcoes de hardware do Arduino
-        :param pasta: Diretorio do hardware
-        :return: None
+        :param pasta:
+            Diretorio do hardware
+        :return:
+            None
         """
         if not os.path.isdir(pasta):
             return
@@ -373,8 +394,10 @@ class Centro(QWidget):
 
     def carregar_hardware_contribuido(self, indexer):
         """
-        :param indexer: Indexador de contribuicoes
-        :return:    NOne
+        :param indexer:
+            Indexador de contribuicoes
+        :return:
+            None
         """
         for pacote in indexer.criar_pacotes_alvo():
             if self.pacotes.get(pacote.get_id(), False):
@@ -383,9 +406,13 @@ class Centro(QWidget):
     @staticmethod
     def carregar_pacote_alvo(pacote_alvo, pasta):
         """
-        :param pacote_alvo: Pacote de hardware
-        :param pasta: Diretorio do pacote
+        Carrega o pacote alvo
+        :param pacote_alvo:
+            Pacote de hardware
+        :param pasta:
+            Diretorio do pacote
         :return:
+            None
         """
         pastas = os.listdir(pasta)
         if len(pastas) == 0:
@@ -397,7 +424,8 @@ class Centro(QWidget):
     def criar_menu_placas(self):
         """
         Cria o menu das placas
-        :return: None
+        :return:
+            None
         """
         placas = QActionGroup(self.parent)
         placas.setExclusive(True)
@@ -412,7 +440,8 @@ class Centro(QWidget):
     def criar_menu_portas(self):
         """
         Cria o menu das portas
-        :return: None
+        :return:
+            None
         """
         for acao in self.parent.menu_portas.actions():
             self.parent.menu_portas.removeAction(acao)
@@ -429,6 +458,11 @@ class Centro(QWidget):
             self.parent.menu_portas.addAction(QAction("Não há portas disponíveis", self))
 
     def criar_menu_exemplos(self):
+        """
+        Cria o menu exemplos
+        :return:
+            None
+        """
         caminho_exemplos = os.path.join('recursos', 'exemplos')
         pastas_exemplo = [x for x in os.listdir(caminho_exemplos) if os.path.isdir(os.path.join(caminho_exemplos, x))]
         pastas_exemplo.sort()
@@ -444,7 +478,8 @@ class Centro(QWidget):
     def on_troca_placa_ou_porta(self):
         """
         Troca a placa
-        :return: None
+        :return:
+            None
         """
         plataforma = self.get_plataforma_alvo()
         pastas_bibliotecas = list()
@@ -457,7 +492,8 @@ class Centro(QWidget):
     def get_preferencias_placa(self):
         """
         Busca as preferencias da palca que esta sendo utilizada
-        :return prefs: Retorna as preferencias
+        :return prefs:
+            Retorna as preferencias
         """
         placa_alvo = self.get_placa_alvo()
         if placa_alvo is None:
@@ -498,7 +534,8 @@ class Centro(QWidget):
     def get_placa_alvo(self):
         """
         Busca a placa alvo
-        :return placa alvo:
+        :return
+            placa alvo:
         """
         plataforma_alvo = self.get_plataforma_alvo()
         if plataforma_alvo:
@@ -508,9 +545,12 @@ class Centro(QWidget):
     def get_plataforma_alvo(self, pacote=None, plataforma=None):
         """
         Pega a plataforma alvo
-        :param pacote:  Pacote da plataforma
-        :param plataforma:  A plataforma
-        :return plataforma_alvo:    Plataforma alvo
+        :param pacote:
+            Pacote da plataforma
+        :param plataforma:
+            A plataforma
+        :return plataforma_alvo:
+            Plataforma alvo
         """
         if pacote is None:
             pacote = Preferencias.get('target_package')
@@ -522,15 +562,18 @@ class Centro(QWidget):
 
     def get_plataforma_atual_do_pacote(self, pacote):
         """
-        :param pacote:  Pacote da plataforma
-        :return:    Retorna a plataforma alvo
+        :param pacote:
+            Pacote da plataforma
+        :return:
+            Retorna a plataforma alvo
         """
         return self.get_plataforma_alvo(pacote, Preferencias.get("target_platform"))
 
     def compilar(self):
         """
         Compila o codigo da aba atual
-        :return: None
+        :return:
+            None
         """
         self.salvar()
         self.log.clear()
@@ -550,7 +593,8 @@ class Centro(QWidget):
     def upload(self):
         """
         Compila e carrega o codigo da aba atual
-        :return: None
+        :return:
+            None
         """
         self.compilar()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())

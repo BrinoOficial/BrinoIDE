@@ -39,6 +39,12 @@ import re
 
 
 def get_highlights(tipo):
+    """
+    Faz os hightlights das palavras
+    :param tipo:
+    :return palavras:
+        Palavras com hightlights
+    """
     data = json.load(open(os.path.join('recursos', 'pt-br.json')))
     palavras = list()
 
@@ -51,6 +57,12 @@ def get_highlights(tipo):
 
 
 def traduzir(caminho):
+    """
+    Traduz do brino pro arduino para ser compilado
+    :param caminho:
+    :return:
+        None
+    """
     data = json.load(open(os.path.join('recursos', 'pt-br.json')))
     if not caminho.__contains__(".brpp") and caminho.__contains__(".ino"):
         return

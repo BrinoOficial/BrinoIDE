@@ -46,6 +46,7 @@ class MonitorSerial(QWidget):
 
     def __init__(self, parent=None):
         super(MonitorSerial, self).__init__(parent)
+        # Define widgets
         self.linha_envio = QLineEdit(self)
         self.log_monitor = QPlainTextEdit(self)
         self.conexao = None
@@ -55,10 +56,18 @@ class MonitorSerial(QWidget):
         self.init_ui()
 
     def keyPressEvent(self, e):
+        """
+        Fecha o monitor serial quando Esc eh precionado
+        :param e:
+            caractere pressionado
+        :return:
+            None
+        """
         if e.key() == Qt.Key_Escape:
             self.close()
 
     def init_ui(self):
+        # Define o layout do monitor serial
         self.setGeometry(650, 50, 400, 500)
         layout = QGridLayout(self)
         layout.setColumnStretch(0, 8)
@@ -90,6 +99,14 @@ class MonitorSerial(QWidget):
         layout.addWidget(rolagem_check, 2, 0)
 
     def conectar(self, porta, baud=9600):
+        """
+        Conectar o monitor serial a porta serial
+        :param porta:
+            Porta serial que recebe os dados
+        :param baud:
+            Velocidade padrão da porta
+        :return:
+        """
         try:
             self.conexao = serial.Serial('/dev/ttyACM0', baud)
             self.parar = False
@@ -99,20 +116,43 @@ class MonitorSerial(QWidget):
             return False
 
     def inserir_texto(self, texto):
+        """
+        Insere o texto recebido pela porta serial no terminal
+        :param texto:
+            O texto que sera mostrado
+        :return:
+            None
+        """
         if not texto == '\n':
             self.log_monitor.insertPlainText(texto)
 
     def desconectar(self):
+        """
+        Desconecta a porta serial
+        :return:
+            None
+        """
         self.parar = True
         self.thread_monitor.join()
         self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
         self.conexao.close()
 
     def enviar(self):
+        """
+        Enviar comandos pela serial pro Arduino
+        :return:
+            None
+        """
         self.conexao.write(self.linha_envio.text().encode('utf-8'))
         self.linha_envio.setText("")
 
     def serial_listener(self, nome, parar):
+        """
+        TODO
+        :param nome:
+        :param parar:
+        :return:
+        """
         while not parar():
             while self.conexao.inWaiting() and not parar():
                 if parar():
@@ -122,6 +162,13 @@ class MonitorSerial(QWidget):
                 break
 
     def closeEvent(self, event):
+        """
+        Parar e fechar o monitor serial
+        :param event:
+            Evento
+        :return:
+            None
+        """
         if self.parar == False:
             self.desconectar()
         event.accept()

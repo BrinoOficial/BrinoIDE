@@ -55,6 +55,8 @@ class Menu(QWidget):
         layout = QVBoxLayout(menu)
         menu.setStyleSheet("background-color: '#5cb50d';")
 
+        # Adiciona os botoes e suas acoes ao menu lateral
+
         btn_compilar = botaoImagem(QPixmap(os.path.join('recursos', 'compilar.png')),
                                    QPixmap(os.path.join('recursos', 'compilarFoco.png')), self)
         btn_compilar.clicked.connect(self.parent.compilar)
@@ -87,6 +89,7 @@ class Menu(QWidget):
         btn_monitor_serial.clicked.connect(self.parent.abrir_serial)
         btn_monitor_serial.setStatusTip("Abrir monitor serial")
 
+        # Layout do menu
         espacador_vertical = QSpacerItem(0, 50000, QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         layout.setContentsMargins(5, 5, 5, 5)

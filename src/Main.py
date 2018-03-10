@@ -60,6 +60,7 @@ class Principal(QMainWindow):
     def __init__(self):
         super(Principal, self).__init__()
 
+        # Define as acoes
         self.acao_novo = QAction('&Novo', self)
         self.acao_abrir = QAction('Abrir', self)
         self.acao_exemplos = QAction('Exemplos', self)
@@ -104,7 +105,9 @@ class Principal(QMainWindow):
 
     def criar_acoes(self):
         """
-            Define as funcoes de resposta as acoes e conecta elas. Define atalhos de teclado
+        Define as funcoes de resposta as acoes e conecta elas. Define atalhos de teclado
+        :return:
+            None
         """
         self.acao_sair.setShortcut('Ctrl+Q')
         self.acao_sair.setStatusTip('Sair da IDE do Br.ino')
@@ -163,6 +166,11 @@ class Principal(QMainWindow):
         self.acao_verificar_e_carregar.setStatusTip("Verificar e carregar código")
 
     def criar_barra_menu(self):
+        """
+        Cria a barra menu e adiciona as funcoes nela
+        :return:
+            None
+        """
         self.criar_acoes()
 
         barra_menu = self.menuBar()
@@ -194,6 +202,11 @@ class Principal(QMainWindow):
         menu_rascunho.addAction(self.acao_verificar_e_carregar)
 
     def abrir_serial(self):
+        """
+        Abre o monitor serial ou indica que a porta nao esta disponivel
+        :return:
+            None
+        """
         if monitor.conectar(Preferencias.get("serial.port")):
             monitor.show()
         else:
@@ -201,6 +214,11 @@ class Principal(QMainWindow):
                         QMessageBox.NoButton, self).show()
 
     def closeEvent(self, close_event):
+        """
+                Fecha o programa, mas antes verifica se os arquivos foram salvos
+                :param QCloseEvent:
+                :return:
+        """
         if self.widget_central.widget_abas.widget(0).caminho == 0:
             num_examinar = 1
         else:
@@ -214,6 +232,11 @@ class Principal(QMainWindow):
 
 
 def get_caminho_padrao():
+    """
+    Pega o caminho padrao ate a pasta de RascunhosBrino
+    :return:
+        Caminho padrao
+    """
     global caminho_padrao
     caminho_padrao = os.path.expanduser("~")
     docu = re.compile("Documen.*")

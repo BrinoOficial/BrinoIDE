@@ -55,12 +55,31 @@ class botaoImagem(QAbstractButton):
             painter.drawPixmap(event.rect(), self.hover_pixmap)
 
     def sizeHint(self):
+        """
+        Define o tamanho dos botoes
+        :return:
+            Tamanho dos botoes
+        """
         return QSize(50, 63)
 
     def enterEvent(self, QEvent):
+        """
+        Evento de entrada do botao
+        :param QEvent:
+            Evento
+        :return:
+            None
+        """
         self.estado_botao = True
         self.update()
 
     def leaveEvent(self, QEvent):
+        """
+        Evento de saida do botao
+        :param QEvent:
+            Evento
+        :return:
+            None
+        """
         self.estado_botao = False
         self.update()
