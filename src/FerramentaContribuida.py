@@ -32,6 +32,7 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+
 class FerramentaContribuida:
     def __init__(self, data, pacote_pai=None):
         self.pacote = pacote_pai

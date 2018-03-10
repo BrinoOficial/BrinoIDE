@@ -104,11 +104,11 @@ class MonitorSerial(QWidget):
         :param porta:
             Porta serial que recebe os dados
         :param baud:
-            Velocidade padrão da porta
+            Velocidade da porta
         :return:
         """
         try:
-            self.conexao = serial.Serial('/dev/ttyACM0', baud)
+            self.conexao = serial.Serial(porta, baud)
             self.parar = False
             self.thread_monitor.start()
             return True
@@ -148,9 +148,11 @@ class MonitorSerial(QWidget):
 
     def serial_listener(self, nome, parar):
         """
-        TODO
+        Aguarda mensagens via porta serial
         :param nome:
+            nome
         :param parar:
+            funcao para sair do loop infinito
         :return:
         """
         while not parar():
@@ -165,10 +167,10 @@ class MonitorSerial(QWidget):
         """
         Parar e fechar o monitor serial
         :param event:
-            Evento
+            Evento de fechamento
         :return:
             None
         """
-        if self.parar == False:
+        if not self.parar:
             self.desconectar()
         event.accept()

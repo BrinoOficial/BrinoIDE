@@ -83,6 +83,7 @@ class BoasVindas(QWidget):
         :return:
             None
         """
+
     @staticmethod
     def abrir_site():
         """
