@@ -67,6 +67,11 @@ class MonitorSerial(QWidget):
             self.close()
 
     def init_ui(self):
+        """
+        Inicializa a interface gráfica
+        :return:
+            None
+        """
         # Define o layout do monitor serial
         self.setGeometry(650, 50, 400, 500)
         layout = QGridLayout(self)
