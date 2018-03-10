@@ -32,7 +32,15 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+
 def carregar(arquivo):
+    """
+    Faz o parsing do arquivo de preferencias
+    :param arquivo:
+        caminho do arquivo de preferencias
+    :return prefs:
+        dicionario das preferencias
+    """
     prefs = dict()
     with open(arquivo, 'r') as linhas:
         for linha in linhas.readlines():
@@ -46,6 +54,13 @@ def carregar(arquivo):
 
 
 def primeiro_nivel(dicio):
+    """
+    Percorre o dicionario para separar em dicionarios de acordo com o primeiro nivel
+    :param dicio:
+        dicionario a processar
+    :return opcoes:
+        dicionario de primeiro nivel
+    """
     opcoes = dict()
     for chave in dicio.keys():
         if chave.__contains__('.'):
