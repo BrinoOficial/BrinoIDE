@@ -72,6 +72,13 @@ def primeiro_nivel(dicio):
 
 
 def dicionario_superior(dicio):
+    """
+    Retorna dicionario de nivel superior
+    :param dicio:
+        dicionario alvo
+    :return:
+        dicionario superior
+    """
     res = dict()
     for chave in dicio.keys():
         if not chave.__contains__('.'):

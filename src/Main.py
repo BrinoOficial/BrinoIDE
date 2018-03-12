@@ -216,7 +216,7 @@ class Principal(QMainWindow):
     def closeEvent(self, close_event):
         """
                 Fecha o programa, mas antes verifica se os arquivos foram salvos
-                :param QCloseEvent:
+                :param close_event:
                 :return:
         """
         if self.widget_central.widget_abas.widget(0).caminho == 0:
