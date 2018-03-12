@@ -44,10 +44,11 @@ import serial
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
-                             QAction, QInputDialog, QMessageBox)
+                             QAction, QInputDialog, QMessageBox, QMenu)
 
 import DestaqueSintaxe
 import EditorDeTexto
+import Main
 import Menu
 import Preferencias
 import Uploader
@@ -128,16 +129,18 @@ class Centro(QWidget):
         self.indexer = IndexadorContribuicao(os.path.join('builder'), pasta_hardware)
         self.indexer.parse_index()
         self.indexer.sincronizar_com_arquivos()
-        self.carregar_hardware_contribuido(self.indexer)
         self.carregar_hardware(pasta_hardware)
-        # TODO carregar_hardware_rascunhos
-        # TODO criar preferencias ferramentas
+        self.carregar_hardware_contribuido(self.indexer)
+        self.carregar_hardware(os.path.join(Main.get_caminho_padrao(), 'hardware'))
 
     def remover_aba(self, index, fechando=False):
         """
         Remove a aba
         :param index:
             Indice da aba
+        :param fechando:
+            Indica se o programa esta fechando
+            default: False
         :return:
             None
         """
@@ -427,6 +430,15 @@ class Centro(QWidget):
         :return:
             None
         """
+        menus_personalizados = list()
+        titulos_menus_personalizados = list()
+        for pacote_alvo in self.pacotes.values():
+            for plataforma_alvo in pacote_alvo.get_lista_plataformas():
+                titulos_menus_personalizados += plataforma_alvo.get_menus().values()
+        for titulo_menu_personalizado in titulos_menus_personalizados:
+            menu = QMenu(titulo_menu_personalizado)
+            menus_personalizados.append(menu)
+
         placas = QActionGroup(self.parent)
         placas.setExclusive(True)
         for pacote_alvo in self.pacotes.values():

@@ -55,7 +55,7 @@ class PlataformaAlvo:
         print preferencias_placas
         menu = preferencias_placas['menu']
         if len(menu) > 0:
-            menus = MapaUtils.dicionario_superior(menu)
+            self.menus = MapaUtils.dicionario_superior(menu)
         preferencias_placas.pop('menu')
         nome_placas = preferencias_placas.keys()
         for placa in nome_placas:
@@ -89,3 +89,6 @@ class PlataformaAlvo:
 
     def get_ferramenta(self, tool):
         return MapaUtils.sub_tree(MapaUtils.sub_tree(self.get_preferencias(), "tools"), tool)
+
+    def get_menus(self):
+        return self.menus;
