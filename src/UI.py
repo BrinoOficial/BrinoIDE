@@ -249,9 +249,13 @@ class Centro(QWidget):
         """
         conteudo = self.widget_abas.widget(self.widget_abas.currentIndex()).toPlainText()
         indice_comeco = conteudo.find(texto, indice_inicial)
-        cursor.setPosition(indice_comeco, QTextCursor.MoveAnchor)
-        cursor.setPosition(indice_comeco + comprimento, QTextCursor.KeepAnchor)
-        return cursor
+        if indice_comeco == -1:
+            indice_comeco = conteudo.find(texto, 0)
+        if not indice_comeco == -1:
+            cursor.setPosition(indice_comeco, QTextCursor.MoveAnchor)
+            cursor.setPosition(indice_comeco + comprimento, QTextCursor.KeepAnchor)
+            return cursor
+        return -1
 
     def comentar_linha(self):
         """
@@ -285,7 +289,8 @@ class Centro(QWidget):
         if ok and texto != "":
             cursor = editor.textCursor()
             cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
-            editor.setTextCursor(cursor)
+            if not cursor == -1:
+                editor.setTextCursor(cursor)
 
     def achar_e_substituir(self):
         """
@@ -293,15 +298,15 @@ class Centro(QWidget):
         :return: None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
-        subs = "haaaa"
-        # TODO Substituir
-        texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
+        texto, ok = QInputDialog.getText(None, "Achar", "Achar:")
+        subs, ok = QInputDialog.getText(None, "Substituir", "Substituir:")
         if ok and texto != "":
             cursor = editor.textCursor()
             cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
-            cursor.removeSelectedText()
-            editor.setTextCursor(cursor)
-            editor.insertPlainText(subs)
+            if not cursor == -1:
+                cursor.removeSelectedText()
+                editor.setTextCursor(cursor)
+                editor.insertPlainText(subs)
         return
 
     @staticmethod
