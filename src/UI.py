@@ -183,11 +183,12 @@ class Centro(QWidget):
         :param caminho: endereço para abrir
         :return: None
         """
-        if caminho is None:
+        print caminho
+        if caminho is None or not caminho:
             salvar_caminho = True
             dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
             if dialogo.exec_() == QFileDialog.Accepted:
-                caminho = dialogo.selectedFiles()[0]
+                caminho = dialogo.selectctedFiles()[0]
                 # Testa se o arquivo existe
                 if os.path.exists(caminho):
                     self.nova_aba(caminho)
@@ -208,6 +209,8 @@ class Centro(QWidget):
         # Testa se a aba eh a de boas vindas
         if caminho == 0:
             return
+        caminho = editor.get_caminho()
+        # Testa se a aba eh a de boas vindas
         editor.set_salvo(True)
         if caminho != "":
             if not os.path.exists(os.path.dirname(caminho)):
@@ -226,13 +229,18 @@ class Centro(QWidget):
         Salvar arquivo atual como
         :return: None
         """
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        # Testa se a aba eh a de boas vindas
+        if caminho == 0:
+            return
+        caminho = editor.get_caminho()
         dialogo = self.criar_dialogo_arquivo('Salvar arquivo', 'Salvar')
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedFiles()[0]
             # Verifica se a pessoa selecionou a pasta ao inves do arquivo em si
             if not ntpath.basename(caminho).__contains__(".brpp"):
                 caminho = os.path.join(caminho, ntpath.basename(caminho) + ".brpp")
-            editor = self.widget_abas.widget(self.widget_abas.currentIndex())
             # Troca o identificador da aba
             self.widget_abas.setTabText(self.widget_abas.currentIndex(), ntpath.basename(caminho).replace(".brpp", ""))
             editor.set_caminho(caminho)
@@ -263,6 +271,10 @@ class Centro(QWidget):
         :return: None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        # Testa se a aba eh a de boas vindas
+        if caminho == 0:
+            return
         cursor_atual = editor.textCursor()
         posicao = cursor_atual.position()
         bloco_atual = cursor_atual.block()
@@ -285,6 +297,10 @@ class Centro(QWidget):
         :return: None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        # Testa se a aba eh a de boas vindas
+        if caminho == 0:
+            return
         texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
         if ok and texto != "":
             cursor = editor.textCursor()
@@ -298,6 +314,10 @@ class Centro(QWidget):
         :return: None
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        # Testa se a aba eh a de boas vindas
+        if caminho == 0:
+            return
         texto, ok = QInputDialog.getText(None, "Achar", "Achar:")
         subs, ok = QInputDialog.getText(None, "Substituir", "Substituir:")
         if ok and texto != "":
@@ -522,14 +542,14 @@ class Centro(QWidget):
         """
         self.salvar()
         self.log.clear()
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho = editor.get_caminho()
+        # Testa se a aba eh a de boas vindas
+        if caminho == 0:
+            return
         placa_alvo = self.get_placa_alvo()
         plataforma_alvo = placa_alvo.get_plataforma()
         pacote_alvo = plataforma_alvo.get_pacote()
-        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
-        caminho = editor.get_caminho()
-        # Evita upload na pagina de boas vindas
-        if caminho == 0:
-            return
         # Transforma o codigo brpp em ino
         traduzir(caminho)
         resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build,
@@ -544,10 +564,12 @@ class Centro(QWidget):
         self.compilar()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
-        # Ajustes do Arduino
-        # TODO Terminar ajustes
+        # Testa se a aba eh a de boas vindas
         if caminho == 0:
             return
+        caminho = editor.get_caminho()
+        # Ajustes do Arduino
+        # TODO Terminar ajustes
         caminho_temp = self.temp_build
         uploader = None
         if uploader is None:
