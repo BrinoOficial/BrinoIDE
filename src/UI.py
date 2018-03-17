@@ -165,6 +165,8 @@ class Centro(QWidget):
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(True)
         identificador_aba = editor.get_nome()
+        if len(identificador_aba) > 10:
+            identificador_aba = identificador_aba[:10] + "..."
         editor.setStyleSheet("background:#252525")
         highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         # Adiciona a aba se o arquivo tiver nome
@@ -242,7 +244,10 @@ class Centro(QWidget):
             if not ntpath.basename(caminho).__contains__(".brpp"):
                 caminho = os.path.join(caminho, ntpath.basename(caminho) + ".brpp")
             # Troca o identificador da aba
-            self.widget_abas.setTabText(self.widget_abas.currentIndex(), ntpath.basename(caminho).replace(".brpp", ""))
+            identificador_aba = ntpath.basename(caminho).replace(".brpp", "")
+            if len(identificador_aba) > 10:
+                identificador_aba = identificador_aba[:10] + "..."
+            self.widget_abas.setTabText(self.widget_abas.currentIndex(), identificador_aba)
             editor.set_caminho(caminho)
             self.salvar()
 
