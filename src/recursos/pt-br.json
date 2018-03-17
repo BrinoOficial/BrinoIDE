@@ -64,6 +64,10 @@
       "translate": "USB.enviar"
     },
     {
+      "highlight": "enviarln",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "ler",
       "arduino": "Serial.read",
       "arg": "false",
