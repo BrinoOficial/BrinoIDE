@@ -527,6 +527,7 @@ class Centro(QWidget):
         pacote_alvo = plataforma_alvo.get_pacote()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        # Evita upload na pagina de boas vindas
         if caminho == 0:
             return
         # Transforma o codigo brpp em ino
