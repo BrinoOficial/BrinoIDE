@@ -3,7 +3,7 @@
     {
       "highlight": "Configuracao",
       "arduino": "void setup",
-      "palavra-arduino": "void setup",
+      "palavra-arduino": "setup",
       "arg": "false",
       "highlight-type": "2",
       "translate": "Configuracao"
@@ -11,7 +11,7 @@
     {
       "highlight": "Principal",
       "arduino": "void loop",
-      "palavra-arduino": "void loop",
+      "palavra-arduino": "loop",
       "arg": "false",
       "highlight-type": "2",
       "translate": "Principal"
@@ -87,7 +87,6 @@
     {
       "highlight": "Pino",
       "arduino": "",
-      "palavra-arduino": "",
       "arg": "false",
       "highlight-type": "4",
       "translate": "Pino."
