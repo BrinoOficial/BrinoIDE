@@ -54,9 +54,10 @@ def get_highlights(tipo):
             string_unicode = palavra_chave['highlight']
             palavras.append(string_unicode.encode('utf-8'))
             # TODO Hightlight palavras do arduino
-            # string_unicode = palavra_chave.get('palavra-arduino')
-            # if not palavras.__contains__(string_unicode) and string_unicode is not None:
-            #    palavras.append(string_unicode.encode('utf-8'))
+            string_unicode = palavra_chave['palavra-arduino']
+            if not palavras.__contains__(string_unicode) and string_unicode is not None:
+                pass
+            #     palavras.append(string_unicode.encode('utf-8'))
 
     return palavras
 
