@@ -887,26 +887,35 @@
     {
       "highlight": "solicitar",
       "arduino": "requestFrom",
-      "palavra-arduino": "requestFrom",
       "arg": "false",
       "highlight-type": "3",
       "translate": "solicitar"
     },
     {
+      "highlight": "requestFrom",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "solicitado",
       "arduino": "onRequest",
-      "palavra-arduino": "onRequest",
       "arg": "false",
       "highlight-type": "3",
       "translate": "solicitado"
     },
     {
+      "highlight": "onRequest",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "recebido",
       "arduino": "onReceive",
-      "palavra-arduino": "onReceive",
       "arg": "false",
       "highlight-type": "3",
       "translate": "recebido"
+    },
+    {
+      "highlight": "onReceive",
+      "highlight-type": "3"
     },
     {
       "highlight": "disponivel",
