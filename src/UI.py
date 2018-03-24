@@ -159,7 +159,7 @@ class Centro(QWidget):
         :return: None
         """
         if self.widget_abas.count() == 0 or path:
-            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path, salvar_caminho=salvar_caminho)
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path, salvar_caminho=salvar_caminho )
         else:
             editor = EditorDeTexto.CodeEditor(self.widget_abas, True, path=path, salvar_caminho=salvar_caminho)
         if self.widget_abas.count() == 1:
@@ -168,7 +168,7 @@ class Centro(QWidget):
         if len(identificador_aba) > 10:
             identificador_aba = identificador_aba[:10] + "..."
         editor.setStyleSheet("background:#252525")
-        highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
+        editor.highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         # Adiciona a aba se o arquivo tiver nome
         if editor.get_nome():
             self.widget_abas.addTab(editor, identificador_aba)
