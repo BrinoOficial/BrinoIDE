@@ -38,6 +38,7 @@ import shlex
 from subprocess import Popen, PIPE
 
 import Main
+import Preferencias
 
 
 def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, temp, cache):
@@ -70,7 +71,8 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     cmd = adicionar_ferramenta_se_existe(cmd, pacotes_instalados)
     cmd = adicionar_se_existe(cmd, ' -built-in-libraries ', os.path.abspath(os.path.join('.', 'builder', 'libraries')))
     cmd = adicionar_se_existe(cmd, ' -libraries ', os.path.join(Main.get_caminho_padrao(), 'bibliotecas'))
-    fqbn = pacote_alvo.get_id() + ":" + plataforma_alvo.get_id() + ":" + placa_alvo.get_id()  # +":"+opcoes_da_placa(placa_alvo)
+    fqbn = pacote_alvo.get_id() + ":" + plataforma_alvo.get_id() + ":" + placa_alvo.get_id() + opcoes_da_placa(
+        placa_alvo)
     cmd += " -fqbn=" + fqbn
     # TODO vidpid
     cmd += " -ide-version=10805"
@@ -93,7 +95,13 @@ def opcoes_da_placa(placa):
     :return "":
         ""
     """
-    return ""
+    opcoes = ":"
+    for menu_id in placa.menu_opcoes.keys():
+        opcoes += menu_id + "="
+        opcoes += Preferencias.get("custom_" + menu_id)[len(placa.get_id()) + 1:]
+        opcoes += ","
+
+    return opcoes[:len(opcoes) - 1]
 
 
 def adicionar_hardware_se_existe(string, arquivo):

@@ -41,7 +41,7 @@ class IndiceContribuicao:
         if data is not None:
             for package in data['packages']:
                 pacote = PacoteContribuido(package)
-                self.pacotes[pacote.get_nome()] = pacote
+                self.pacotes[pacote.get_id()] = pacote
 
     def get_plataformas_instaladas(self):
         return self.get_plataformas()

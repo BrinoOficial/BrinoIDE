@@ -49,7 +49,7 @@ class PacoteContribuido:
             ferramenta = FerramentaContribuida(tool, self)
             self.ferramentas[ferramenta.get_nome()] = ferramenta
 
-    def get_nome(self):
+    def get_id(self):
         """
 
         :return:

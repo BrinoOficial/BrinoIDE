@@ -103,7 +103,6 @@ class CodeEditor(QPlainTextEdit):
                             arq_existe = QMessageBox().warning(None, 'Arquivo existe',
                                                                "Ao abrir esse arquivo, você apagará um arquivo existente. Gostaria de continuar?",
                                                                QMessageBox.Ok | QMessageBox.No)
-                            print(arq_existe, QMessageBox.Ok)
                             if arq_existe == QMessageBox.Ok:
                                 with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
                                     self.set_texto(arquivo.read())

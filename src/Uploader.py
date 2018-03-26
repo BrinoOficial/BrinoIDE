@@ -162,7 +162,6 @@ def formatar_e_dividir(src, dictio, recursivo):
 
 def substituir_do_mapa(src, dictio, delimitador_esquerdo='{', delimitador_direito='}'):
     """
-    TODO Delimitador de funcoes?
     :param src:
     :param dictio:
     :param delimitador_esquerdo:
@@ -172,7 +171,10 @@ def substituir_do_mapa(src, dictio, delimitador_esquerdo='{', delimitador_direit
     for key in dictio.keys():
         keyword = delimitador_esquerdo + key + delimitador_direito
         if dictio.get(key) is not None and keyword is not None:
-            src = src.replace(keyword, dictio.get(key))
+            # try:
+            src = src.replace(keyword, dictio.get(key).decode('utf-8'))
+            # except UnicodeDecodeError:
+            #   print "<" +src+">", dictio.get(key)
     return src
 
 

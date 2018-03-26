@@ -430,14 +430,15 @@ class Centro(QWidget):
         :return:
             None
         """
-        menus_personalizados = list()
+        self.menus_personalizados = list()
         titulos_menus_personalizados = list()
         for pacote_alvo in self.pacotes.values():
             for plataforma_alvo in pacote_alvo.get_lista_plataformas():
+                print plataforma_alvo.get_menus()
                 titulos_menus_personalizados += plataforma_alvo.get_menus().values()
         for titulo_menu_personalizado in titulos_menus_personalizados:
             menu = QMenu(titulo_menu_personalizado)
-            menus_personalizados.append(menu)
+            self.menus_personalizados.append(menu)
 
         placas = QActionGroup(self.parent)
         placas.setExclusive(True)
@@ -485,7 +486,6 @@ class Centro(QWidget):
                 caminho_exemplo = os.path.join(caminho_exemplos, pasta_exemplo, exemplo, exemplo + ".brpp")
                 menu.addAction(exemplo_acao)
                 exemplo_acao.triggered.connect(functools.partial(self.abrir, caminho_exemplo))
-        print self.parent.menu_exemplos
 
     def on_troca_placa_ou_porta(self):
         """
@@ -652,6 +652,11 @@ class Centro(QWidget):
             except (OSError, serial.SerialException):
                 pass
         return result
+
+    def get_menu_personalizado_placa(self, title):
+        for menu in self.menus_personalizados:
+            if menu.title() == title:
+                return menu
 
 
 class Porta:

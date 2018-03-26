@@ -190,12 +190,12 @@ class Principal(QMainWindow):
         menu_editar.addAction(self.acao_achar_e_substituir)
         menu_editar.addAction(self.acao_ir_para_linha)
 
-        menu_ferramentas = barra_menu.addMenu('Ferramentas')
-        menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
-        menu_ferramentas.addMenu(self.menu_placas)
-        menu_ferramentas.addMenu(self.menu_portas)
-        menu_ferramentas.addAction(self.acao_lingua)
-        menu_ferramentas.addAction(self.acao_monitor_serial)
+        self.menu_ferramentas = barra_menu.addMenu('Ferramentas')
+        self.menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
+        self.menu_ferramentas.addMenu(self.menu_placas)
+        self.menu_ferramentas.addMenu(self.menu_portas)
+        self.menu_ferramentas.addAction(self.acao_lingua)
+        self.menu_ferramentas.addAction(self.acao_monitor_serial)
 
         menu_rascunho = barra_menu.addMenu('Rascunho')
         menu_rascunho.addAction(self.acao_verificar)
@@ -223,7 +223,6 @@ class Principal(QMainWindow):
             num_examinar = 1
         else:
             num_examinar = 0
-        print num_examinar
         for num_arquivo in range(self.widget_central.widget_abas.count() - num_examinar):
             if not self.widget_central.remover_aba(num_examinar, True):
                 close_event.ignore()

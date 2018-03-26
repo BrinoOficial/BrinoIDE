@@ -83,6 +83,30 @@ class PlacaAlvo:
         parent.on_troca_placa_ou_porta()
         parent.parent.placa_porta_label.setText(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
 
+        titulos_menus_personalizados = plataforma_alvo.get_menus()
+        for id in titulos_menus_personalizados.keys():
+            menu = parent.get_menu_personalizado_placa(titulos_menus_personalizados.get(id))
+            menu.clear()
+            if id in arg.menu_opcoes:
+                menu_personalizado_placa = MapaUtils.dicionario_superior(arg.menu_opcoes.get(id))
+                for opcao in menu_personalizado_placa.keys():
+                    acao_opcao = QAction(menu_personalizado_placa.get(opcao), parent)
+                    acao_opcao.triggered.connect(
+                        functools.partial(PlacaAlvo.set_opcoes_personalizadas, arg.get_id(), opcao, id))
+                    menu.addAction(acao_opcao)
+                parent.parent.menu_ferramentas.addMenu(menu)
+                acao_opcao.trigger()
+            else:
+                for item in parent.parent.menu_ferramentas.actions():
+                    if menu == item.menu():
+                        parent.parent.menu_ferramentas.removeAction(item)
+
+                # Base.java line 1534
+
+    @staticmethod
+    def set_opcoes_personalizadas(placa, opcao, menu_id):
+        Preferencias.set("custom_" + menu_id, placa + "_" + opcao)
+
     @staticmethod
     def capitalizar(string):
         retorno = "%s%s" % (string[0].upper(), string[1:])

@@ -84,7 +84,7 @@ class IndexadorContribuicao:
     def criar_pacotes_alvo(self):
         pacotes = list()
         for pacote in self.indice.get_pacotes():
-            pacote_ = PacoteAlvo(pacote.get_nome())
+            pacote_ = PacoteAlvo(pacote.get_id())
             plataformas = pacote.get_plataformas()
             if plataformas:
                 for plataforma in pacote.get_plataformas():
@@ -112,7 +112,7 @@ class IndexadorContribuicao:
             for pasta_ferramenta in [os.path.join(pasta_tools, x) for x in os.listdir(pasta_tools) if
                                      os.path.isdir(os.path.join(pasta_tools, x))]:
                 versao_ferramentas = MapaUtils.sub_tree(
-                    MapaUtils.carregar(os.path.join(pasta_ferramenta, 'builtin_tools_versions.txt')), pacote.get_nome())
+                    MapaUtils.carregar(os.path.join(pasta_ferramenta, 'builtin_tools_versions.txt')), pacote.get_id())
                 for nome in versao_ferramentas.keys():
                     self.sincronizar_ferramenta_com_sistema(pacote, pasta_ferramenta, nome,
                                                             versao_ferramentas.get(nome))
