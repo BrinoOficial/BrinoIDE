@@ -182,7 +182,7 @@ class Centro(QWidget):
             None
         """
         if self.widget_abas.count() == 0 or path:
-            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path, salvar_caminho=salvar_caminho )
+            editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path, salvar_caminho=salvar_caminho)
         else:
             editor = EditorDeTexto.CodeEditor(self.widget_abas, True, path=path, salvar_caminho=salvar_caminho)
         if self.widget_abas.count() == 1:
