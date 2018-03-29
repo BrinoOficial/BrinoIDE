@@ -80,6 +80,7 @@ class CodeEditor(QPlainTextEdit):
     def __init__(self, parent, ask=True, path="", salvar_caminho=True):
         super(CodeEditor, self).__init__(parent)
         # Contador de linhas
+        self.highlight = None
         self.contador_de_linhas = ContadorDeLinhas(self)
         self.largura_contador = 38
         self.blockCountChanged.connect(self.atualizar_largura_contador)

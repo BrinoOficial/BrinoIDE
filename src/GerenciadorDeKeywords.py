@@ -40,26 +40,29 @@ import re
 
 def get_highlights(tipo):
     """
-    Faz os hightlights das palavras
+    Busca as palavras que devem ser destacadas com hightlight tipo
     :param tipo:
+        Tipo de hightlight
     :return palavras:
-        Palavras com hightlights
+        Lista de palavras com hightlight tipo
     """
     data = json.load(open(os.path.join('recursos', 'pt-br.json')))
     palavras = list()
 
     for palavra_chave in data['Keywords']:
-        if palavra_chave['highlight-type'] == tipo:
-            string_unicode = palavra_chave['highlight']
-            palavras.append(string_unicode.encode('utf-8'))
+        if palavra_chave.get('highlight-type') == tipo:
+            string_unicode = palavra_chave.get('highlight')
+            if string_unicode:
+                palavras.append(string_unicode.encode('utf-8'))
 
     return palavras
 
 
 def traduzir(caminho):
     """
-    Traduz do brino pro arduino para ser compilado
+    Traduz as palavras do brino para o arduino
     :param caminho:
+        Caminho do arquivo a ser traduzido
     :return:
         None
     """

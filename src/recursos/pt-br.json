@@ -8,11 +8,19 @@
       "translate": "Configuracao"
     },
     {
+      "highlight": "stup",
+      "highlight-type": "2"
+    },
+    {
       "highlight": "Principal",
       "arduino": "void loop",
       "arg": "false",
       "highlight-type": "2",
       "translate": "Principal"
+    },
+    {
+      "highlight": "loop",
+      "highlight-type": "2"
     },
     {
       "highlight": "esperar",
@@ -22,11 +30,19 @@
       "translate": "esperar"
     },
     {
+      "highlight": "delay",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "SemRetorno",
       "arduino": "void",
       "arg": "false",
       "highlight-type": "1",
       "translate": "SemRetorno"
+    },
+    {
+      "highlight": "void",
+      "highlight-type": "1"
     },
     {
       "highlight": "responder",
@@ -36,11 +52,19 @@
       "translate": "responder"
     },
     {
+      "highlight": "return",
+      "highlight-type": "2"
+    },
+    {
       "highlight": "se",
       "arduino": "if(",
       "arg": "true",
       "highlight-type": "2",
       "translate": "se\\s*\\("
+    },
+    {
+      "highlight": "if",
+      "highlight-type": "2"
     },
     {
       "highlight": "enquanto",
@@ -50,11 +74,63 @@
       "translate": "enquanto\\s*\\("
     },
     {
+      "highlight": "while",
+      "highlight-type": "2"
+    },
+    {
+      "highlight": "trocar",
+      "arduino": "switch(",
+      "arg": "true",
+      "highlight-type": "2",
+      "translate": "trocar\\s*\\("
+    },
+    {
+      "highlight": "switch",
+      "highlight-type": "2"
+    },
+    {
+      "highlight": "caso",
+      "arduino": "case",
+      "arg": "false",
+      "highlight-type": "2",
+      "translate": "caso"
+    },
+    {
+      "highlight": "case",
+      "highlight-type": "2"
+    },
+    {
+      "highlight": "quebrar",
+      "arduino": "break",
+      "arg": "false",
+      "highlight-type": "2",
+      "translate": "quebrar"
+    },
+    {
+      "highlight": "break",
+      "highlight-type": "2"
+    },
+    {
+      "highlight": "padrao",
+      "arduino": "default",
+      "arg": "false",
+      "highlight-type": "2",
+      "translate": "padrao"
+    },
+    {
+      "highlight": "default",
+      "highlight-type": "2"
+    },
+    {
       "highlight": "conectar",
       "arduino": "Serial.begin",
       "arg": "false",
       "highlight-type": "3",
       "translate": "USB.conectar"
+    },
+    {
+      "highlight": "begin",
+      "highlight-type": "3"
     },
     {
       "highlight": "enviar",
@@ -64,11 +140,27 @@
       "translate": "USB.enviar"
     },
     {
+      "highlight": "print",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "enviarln",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "println",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "ler",
       "arduino": "Serial.read",
       "arg": "false",
       "highlight-type": "3",
       "translate": "USB.ler"
+    },
+    {
+      "highlight": "read",
+      "highlight-type": "3"
     },
     {
       "highlight": "Pino",
@@ -85,11 +177,19 @@
       "translate": "definirModo"
     },
     {
+      "highlight": "pinMode",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "escreverAnalogico",
       "arduino": "analogWrite",
       "arg": "false",
       "highlight-type": "3",
       "translate": "escreverAnalogico"
+    },
+    {
+      "highlight": "analogWrite",
+      "highlight-type": "3"
     },
     {
       "highlight": "escrever",
@@ -99,11 +199,19 @@
       "translate": "escrever\\("
     },
     {
+      "highlight": "digitalWrite",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "Digital",
       "arduino": ".attach(",
       "arg": "false",
       "highlight-type": "1",
       "translate": ".conectar\\(Digital."
+    },
+    {
+      "highlight": "attach",
+      "highlight-type": "1"
     },
     {
       "highlight": "lerAnalogico",
@@ -113,11 +221,19 @@
       "translate": "lerAnalogico"
     },
     {
+      "highlight": "analogRead",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "ler",
       "arduino": "digitalRead",
       "arg": "false",
       "highlight-type": "3",
       "translate": "ler"
+    },
+    {
+      "highlight": "digitalRead",
+      "highlight-type": "3"
     },
     {
       "highlight": "Numero",
@@ -127,11 +243,19 @@
       "translate": "Numero "
     },
     {
+      "highlight": "int",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "NumeroDecimal",
       "arduino": "float",
       "arg": "false",
       "highlight-type": "1",
       "translate": "NumeroDecimal"
+    },
+    {
+      "highlight": "float",
+      "highlight-type": "1"
     },
     {
       "highlight": "Palavra",
@@ -141,11 +265,19 @@
       "translate": "Palavra"
     },
     {
+      "highlight": "string",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "Condicao",
       "arduino": "boolean",
       "arg": "false",
       "highlight-type": "1",
       "translate": "Condicao"
+    },
+    {
+      "highlight": "boolean",
+      "highlight-type": "1"
     },
     {
       "highlight": "Verdadeiro",
@@ -155,11 +287,19 @@
       "translate": "Verdadeiro"
     },
     {
+      "highlight": "true",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "Falso",
       "arduino": "false",
       "arg": "false",
       "highlight-type": "1",
       "translate": "Falso"
+    },
+    {
+      "highlight": "false",
+      "highlight-type": "1"
     },
     {
       "highlight": "Ligado",
@@ -169,6 +309,10 @@
       "translate": "Ligado"
     },
     {
+      "highlight": "HIGH",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "Desligado",
       "arduino": "LOW",
       "arg": "false",
@@ -176,11 +320,19 @@
       "translate": "Desligado"
     },
     {
+      "highlight": "LOW",
+      "highlight-type": "1"
+    },
+    {
       "highlight": " e ",
       "arduino": " && ",
       "arg": "false",
       "highlight-type": "2",
       "translate": " e "
+    },
+    {
+      "highlight": "&&",
+      "highlight-type": "2"
     },
     {
       "highlight": " ou ",
@@ -197,11 +349,19 @@
       "translate": "senao"
     },
     {
+      "highlight": "else",
+      "highlight-type": "2"
+    },
+    {
       "highlight": "definir",
       "arduino": "#define",
       "arg": "false",
       "highlight-type": "2",
       "translate": "definir"
+    },
+    {
+      "highlight": "#define",
+      "highlight-type": "2"
     },
     {
       "highlight": "Constante",
@@ -211,11 +371,19 @@
       "translate": "Constante"
     },
     {
+      "highlight": "const",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "Saida",
       "arduino": "OUTPUT",
       "arg": "false",
       "highlight-type": "1",
       "translate": "Saida"
+    },
+    {
+      "highlight": "OUTPUT",
+      "highlight-type": "1"
     },
     {
       "highlight": "Entrada",
@@ -225,11 +393,19 @@
       "translate": "Entrada"
     },
     {
+      "highlight": "INPUT",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "NumeroLongo",
       "arduino": "long",
       "arg": "false",
       "highlight-type": "1",
       "translate": "NumeroLongo"
+    },
+    {
+      "highlight": "long",
+      "highlight-type": "1"
     },
     {
       "highlight": "Modulo",
@@ -239,11 +415,20 @@
       "translate": "Modulo"
     },
     {
+      "highlight": "unsigned",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "soar",
       "arduino": "tone",
+      "palavra-arduino": "tone",
       "arg": "false",
       "highlight-type": "3",
       "translate": "soar"
+    },
+    {
+      "highlight": "tone",
+      "highlight-type": "3"
     },
     {
       "highlight": "pararSoar",
@@ -253,6 +438,10 @@
       "translate": "pararSoar"
     },
     {
+      "highlight": "noTone",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "para",
       "arduino": "for",
       "arg": "false",
@@ -260,11 +449,19 @@
       "translate": "para"
     },
     {
+      "highlight": "for",
+      "highlight-type": "2"
+    },
+    {
       "highlight": "proporcionar",
       "arduino": "map",
       "arg": "false",
       "highlight-type": "3",
       "translate": "proporcionar"
+    },
+    {
+      "highlight": "map",
+      "highlight-type": "3"
     },
     {
       "highlight": "ligar",
@@ -288,11 +485,8 @@
       "translate": "usar\\s*([\\w]+)"
     },
     {
-      "highlight": "LCD",
-      "arduino": "LiquidCrystal",
-      "arg": "false",
-      "highlight-type": "4",
-      "translate": "LCD"
+      "highlight": "#include",
+      "highlight-type": "3"
     },
     {
       "highlight": "I2C",
@@ -302,11 +496,19 @@
       "translate": "I2C"
     },
     {
+      "highlight": "Wire",
+      "highlight-type": "4"
+    },
+    {
       "highlight": "Memoria",
       "arduino": "EEPROM",
       "arg": "false",
       "highlight-type": "4",
       "translate": "Memoria"
+    },
+    {
+      "highlight": "EEPROM",
+      "highlight-type": "4"
     },
     {
       "highlight": "null",
@@ -323,11 +525,19 @@
       "translate": "Letra"
     },
     {
+      "highlight": "char",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "enviarBinario",
       "arduino": "shiftOut",
       "arg": "false",
       "highlight-type": "3",
       "translate": "enviarBinario"
+    },
+    {
+      "highlight": "shiftOut",
+      "highlight-type": "3"
     },
     {
       "highlight": "Esquerdo",
@@ -337,11 +547,19 @@
       "translate": "Esquerdo"
     },
     {
+      "highlight": "MSBFIRST",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "Direito",
       "arduino": "LSBFIRST",
       "arg": "false",
       "highlight-type": "1",
       "translate": "Direito"
+    },
+    {
+      "highlight": "LSBFIRST",
+      "highlight-type": "1"
     },
     {
       "highlight": "pulsoEm",
@@ -351,11 +569,19 @@
       "translate": "pulsoEm"
     },
     {
+      "highlight": "pulseIn",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "conectarInterruptor",
       "arduino": "attachInterrupt(digitalPinToInterrupt(\\1),",
       "arg": "d",
       "highlight-type": "3",
       "translate": "conectarInterruptor\\(\\s*([0-9]+)\\s*,"
+    },
+    {
+      "highlight": "attachInterrupt",
+      "highlight-type": "3"
     },
     {
       "highlight": "Mudando",
@@ -365,11 +591,19 @@
       "translate": "Mudando"
     },
     {
+      "highlight": "CHANGING",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "Ligando",
       "arduino": "RISING",
       "arg": "false",
       "highlight-type": "1",
       "translate": "Ligando"
+    },
+    {
+      "highlight": "RISING",
+      "highlight-type": "1"
     },
     {
       "highlight": "Desligando",
@@ -379,11 +613,19 @@
       "translate": "Desligando"
     },
     {
+      "highlight": "FALLING",
+      "highlight-type": "1"
+    },
+    {
       "highlight": "desconectarInterruptor",
       "arduino": "detachInterrupt(digitalPinToInterrupt(\\1))",
       "arg": "d",
       "highlight-type": "3",
       "translate": "desconectarInterruptor\\(([0-9]{1,2})\\)"
+    },
+    {
+      "highlight": "detachInterrupt",
+      "highlight-type": "3"
     },
     {
       "highlight": "ligarInterruptores",
@@ -393,11 +635,19 @@
       "translate": "ligarInterruptores"
     },
     {
+      "highlight": "interrupts",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "desligarInterruptores",
       "arduino": "noInterrupts",
       "arg": "false",
       "highlight-type": "3",
       "translate": "desligarInterruptores"
+    },
+    {
+      "highlight": "noInterrupts",
+      "highlight-type": "3"
     },
     {
       "highlight": "existe",
@@ -407,11 +657,19 @@
       "translate": "existe"
     },
     {
+      "highlight": "exists",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "criarPasta",
       "arduino": "mkdir",
       "arg": "false",
       "highlight-type": "3",
       "translate": "criarPasta"
+    },
+    {
+      "highlight": "mkdir",
+      "highlight-type": "3"
     },
     {
       "highlight": "removerPasta",
@@ -421,11 +679,19 @@
       "translate": "removerPasta"
     },
     {
+      "highlight": "rmdir",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "abrir",
       "arduino": "open",
       "arg": "false",
       "highlight-type": "3",
       "translate": "abrir"
+    },
+    {
+      "highlight": "open",
+      "highlight-type": "3"
     },
     {
       "highlight": "remover",
@@ -435,6 +701,10 @@
       "translate": "remover"
     },
     {
+      "highlight": "remove",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "Arquivo",
       "arduino": "File",
       "arg": "false",
@@ -442,11 +712,19 @@
       "translate": "Arquivo"
     },
     {
+      "highlight": "File",
+      "highlight-type": "4"
+    },
+    {
       "highlight": "fechar",
       "arduino": "close",
       "arg": "false",
       "highlight-type": "3",
       "translate": "fechar"
+    },
+    {
+      "highlight": "close",
+      "highlight-type": "3"
     },
     {
       "highlight": "gravar",
@@ -463,6 +741,10 @@
       "translate": "descarregar"
     },
     {
+      "highlight": "flush",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "ArquivoGravar",
       "arduino": "FILE_WRITE",
       "arg": "false",
@@ -470,11 +752,8 @@
       "translate": "ArquivoGravar"
     },
     {
-      "highlight": "enviarBinario",
-      "arduino": "shiftOut",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "enviarBinario"
+      "highlight": "FILE_WRITE",
+      "highlight-type": "1"
     },
     {
       "highlight": "escreverAngulo",
@@ -484,11 +763,19 @@
       "translate": "escreverAngulo"
     },
     {
+      "highlight": "write",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "escreverMicros",
       "arduino": "writeMicroseconds",
       "arg": "false",
       "highlight-type": "3",
       "translate": "escreverMicros"
+    },
+    {
+      "highlight": "writeMicroseconds",
+      "highlight-type": "3"
     },
     {
       "highlight": "frente",
@@ -521,6 +808,7 @@
     {
       "highlight": "conectar",
       "arduino": "begin",
+      "palavra-arduino": "begin",
       "arg": "false",
       "highlight-type": "3",
       "translate": "conectar"
@@ -528,9 +816,14 @@
     {
       "highlight": "limpar",
       "arduino": "clear",
+      "palavra-arduino": "clear",
       "arg": "false",
       "highlight-type": "3",
       "translate": "limpar"
+    },
+    {
+      "highlight": "clear",
+      "highlight-type": "3"
     },
     {
       "highlight": "transmitir",
@@ -540,11 +833,19 @@
       "translate": "transmitir"
     },
     {
+      "highlight": "beginTransmission",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "fechar",
       "arduino": "close",
       "arg": "false",
       "highlight-type": "3",
       "translate": "fechar"
+    },
+    {
+      "highlight": "close",
+      "highlight-type": "3"
     },
     {
       "highlight": "pararTransmitir",
@@ -554,11 +855,19 @@
       "translate": "pararTransmitir"
     },
     {
+      "highlight": "endTransmission",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "solicitar",
       "arduino": "requestFrom",
       "arg": "false",
       "highlight-type": "3",
       "translate": "solicitar"
+    },
+    {
+      "highlight": "requestFrom",
+      "highlight-type": "3"
     },
     {
       "highlight": "solicitado",
@@ -568,6 +877,10 @@
       "translate": "solicitado"
     },
     {
+      "highlight": "onRequest",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "recebido",
       "arduino": "onReceive",
       "arg": "false",
@@ -575,11 +888,19 @@
       "translate": "recebido"
     },
     {
+      "highlight": "onReceive",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "disponivel",
       "arduino": "available",
       "arg": "false",
       "highlight-type": "3",
       "translate": "disponivel"
+    },
+    {
+      "highlight": "available",
+      "highlight-type": "3"
     },
     {
       "highlight": "enviar",
@@ -596,11 +917,19 @@
       "translate": "posicao"
     },
     {
+      "highlight": "setCursor",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "escrever",
       "arduino": "write",
       "arg": "false",
       "highlight-type": "3",
       "translate": "escrever"
+    },
+    {
+      "highlight": "write",
+      "highlight-type": "3"
     },
     {
       "highlight": "ler",
@@ -610,11 +939,19 @@
       "translate": "ler"
     },
     {
+      "highlight": "read",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "tamanho",
       "arduino": "length",
       "arg": "false",
       "highlight-type": "3",
       "translate": "tamanho"
+    },
+    {
+      "highlight": "length",
+      "highlight-type": "3"
     },
     {
       "highlight": "Constante",
@@ -624,11 +961,8 @@
       "translate": "Constante"
     },
     {
-      "highlight": "Modulo",
-      "arduino": "unsigned",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "Modulo"
+      "highlight": "const",
+      "highlight-type": "1"
     },
     {
       "highlight": "formatar",
@@ -638,18 +972,235 @@
       "translate": "formatar"
     },
     {
-      "highlight": "Procedimento",
-      "arduino": "void",
-      "arg": "false",
-      "highlight-type": "1",
-      "translate": "Procedimento"
-    },
-    {
       "highlight": "USB",
       "arduino": "Serial",
       "arg": "false",
       "highlight-type": "4",
       "translate": "USB"
+    },
+    {
+      "highlight": "Serial",
+      "highlight-type": "4"
+    },
+    {
+      "highlight": "LCD",
+      "arduino": "LiquidCrystal",
+      "arg": "false",
+      "highlight-type": "4",
+      "translate": "LCD"
+    },
+    {
+      "highlight": "LiquidCrystal",
+      "highlight-type": "4"
+    },
+    {
+      "highlight": "rolarMensagemEsquerda",
+      "arduino": "scrollDisplayLeft",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "rolarMensagemEsquerda"
+    },
+    {
+      "highlight": "scrollDisplayLeft",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "rolarMensagemDireita",
+      "arduino": "scrollDisplayRight",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "rolarMensagemDireita"
+    },
+    {
+      "highlight": "scrollDisplayRight",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "origem",
+      "arduino": "home",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "origem"
+    },
+    {
+      "highlight": "home",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "cursor",
+      "arduino": "cursor",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "cursor"
+    },
+    {
+      "highlight": "cursor",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "esconderCursor",
+      "arduino": "noCursor",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "esconderCursor"
+    },
+    {
+      "highlight": "noCursor",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "piscarCursor",
+      "arduino": "blink",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "piscarCursor"
+    },
+    {
+      "highlight": "blink",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "pararPiscarCursor",
+      "arduino": "noBlink",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "pararPiscarCursor"
+    },
+    {
+      "highlight": "noBlink",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "autoRolar",
+      "arduino": "autoscroll",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "autoRolar"
+    },
+    {
+      "highlight": "autoscroll",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "pararAutoRolar",
+      "arduino": "noAutoscroll",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "pararAutoRolar"
+    },
+    {
+      "highlight": "noAutoscroll",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "esquerdaPraDireita",
+      "arduino": "leftToRight",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "esquerdaPraDireita"
+    },
+    {
+      "highlight": "leftToRight",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "direitaPraEsquerda",
+      "arduino": "rightToLeft",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "direitaPraEsquerda"
+    },
+    {
+      "highlight": "rightToLeft",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "criarLetra",
+      "arduino": "createChar",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "criarLetra"
+    },
+    {
+      "highlight": "createChar",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "MotorDePasso",
+      "arduino": "Stepper",
+      "arg": "false",
+      "highlight-type": "4",
+      "translate": "MotorDePasso"
+    },
+    {
+      "highlight": "Stepper",
+      "highlight-type": "4"
+    },
+    {
+      "highlight": "definirVelocidade",
+      "arduino": "setSpeed",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "definirVelocidade"
+    },
+    {
+      "highlight": "setSpeed",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "passo",
+      "arduino": "step",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "passo"
+    },
+    {
+      "highlight": "step",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "emNumero",
+      "arduino": "toInt",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "emNumero"
+    },
+    {
+      "highlight": "toInt",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "comecaCom",
+      "arduino": "startsWith",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "comecaCom"
+    },
+    {
+      "highlight": "startsWith",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "terminaCom",
+      "arduino": "endsWtih",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "terminaCom"
+    },
+    {
+      "highlight": "endsWith",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "milissegundos",
+      "arduino": "milis",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "milissegundos"
+    },
+    {
+      "highlight": "milis",
+      "highlight-type": "3"
     }
   ],
   "language": "pt-br",
