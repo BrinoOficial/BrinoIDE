@@ -1,0 +1,213 @@
+QMainWindow {
+    background: '#252525';
+}
+QMenu{
+    background: '#252525';
+}
+QMenu::item {
+    background: '#252525';
+}
+QMenu::item:selected{
+    background: '#101010';
+}
+QMenuBar {
+   background: '#252525';
+}
+QMenuBar::item {
+   background: '#252525';
+}
+QMenuBar::item:selected{
+   border-top: 2px solid #5cb50d;
+}
+QPlainTextEdit{
+   border: None;
+   color: '#efefef';
+   selection-background-color: '#454545';
+}
+QScrollBar:vertical {
+   width: 10px;
+   margin: 2px 0 2px 0;
+}
+QScrollBar::handle:vertical {
+   min-height: 5px;
+   background: #5cb50d;
+   border-radius: 5px;
+}
+QScrollBar::add-line:vertical {
+   height: 0px;
+   subcontrol-position: bottom;
+   subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+   height: 0px;
+   subcontrol-position: top;
+   subcontrol-origin: margin;
+}
+QScrollBar:horizontal {
+   height: 10px;
+   margin: 0px 2px 0px 2px;
+ }
+QScrollBar::handle:horizontal {
+   min-width: 5px;
+   background: #5cb50d;
+   border-radius: 5px;
+}
+QScrollBar::add-line:horizontal {
+   width: 0px;
+   subcontrol-position: bottom;
+   subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+   width: 0px;
+   subcontrol-position: top;
+   subcontrol-origin: margin;
+}
+QDialog{
+   background:#454545;
+   background-clip:#5cb50d;
+   filedialog-listview-icon: url(recursos/listaFoco.png);
+   filedialog-new-directory-icon: url(recursos/NovaPasta.png);
+   filedialog-parent-directory-icon: url(recursos/pastaPrincipal.png);
+   filedialog-detailedview-icon: url(recursos/detalhesFoco.png);
+   filedialog-contentsview-icon: url(recursos/pasta.png)
+}
+QDialog QListView{
+   background:#101010;
+   margin:0;
+   padding:5;
+   border-radius:5px;
+   border-color:#101010;
+}
+QListView QScrollBar:vertical{
+   background:#101010;
+}
+QListView QScrollBar:horizontal{
+   background:#101010;
+}
+QHeaderView{
+   background-color:#252525;
+   border-radius:5px;
+}
+QHeaderView::section{
+   background-color:#252525;
+   color:#efefef;
+   border-radius:5px;
+}
+QDialog QTreeView::branch{
+   background:#101010;
+   border-color:#101010;
+}
+QDialog QTreeView{
+   background:#101010;
+   margin:0;
+   padding:5;
+   border-radius:5px;
+   border-color:#101010;
+}
+QDialog QLabel{
+   color:#efefef;
+}
+QDialog QComboBox{
+   height:25px;
+   background:#101010;
+   border-radius:5px;
+}
+QComboBox{
+   selection-background-color: #5cb50d;
+}
+QDialog QComboBox::down-arrow{
+   border: 0;
+   height: 50px;
+   image: url(recursos/setaBaixo.png);
+}
+QComboBox::drop-down{
+   border: 0px;
+}
+QDialog QLineEdit{
+   height:25px;
+   background:#101010;
+   border-radius:5px;
+}
+QDialog QPushButton{
+   background:#5cb50d;
+   border-radius:5px;
+   height:30px;
+   width:70px;
+   color:#efefef;
+}
+QTreeView QScrollBar:vertical{
+   background:#101010;
+}
+QTreeView QScrollBar:horizontal{
+   background:#101010;
+}
+QTabBar::tab{
+   background: #252525;
+   color: #efefef;
+   border-right: 1px solid #505050;
+   padding-right: 5px;
+   padding-left: 5px;
+}
+QTabBar QToolButton{
+    background: #252525;
+    border: 0;
+}
+QTabBar QToolButton::right-arrow{
+    image: url(recursos/setaDireitaFoco.png);
+    padding: 2px;
+}
+QTabBar QToolButton::left-arrow{
+    image: url(recursos/setaEsquerdaFoco.png);
+    padding: 2px;
+}
+QTabBar QToolButton::right-arrow:hover{
+    image: url(recursos/setaDireita.png);
+    padding: 0;
+}
+QTabBar QToolButton::left-arrow:hover{
+    image: url(recursos/setaEsquerda.png);
+    padding: 0;
+}
+QTabBar::close-button{
+   image: url(recursos/fechar.png);
+   padding: 6px;
+}
+QTabBar::close-button:hover{
+   image: url(recursos/fecharFoco.png);
+   padding: 4px;
+}
+QTabBar::tab:selected{
+   background:#252525;
+   border-top: 2px solid #5cb50d;
+}
+QTabWidget::pane{
+   background: #101010;
+}
+QTabWidget QPushButton{
+   background:#252525;
+   border:0;
+   padding:3px;
+   margin-top: 3px;
+   image: url(recursos/mais.png);
+}
+QTabWidget QPushButton:hover{
+   padding:0;
+   image: url(recursos/maisFoco.png);
+}
+QCheckBox::indicator:unchecked {
+    image: url(recursos/boxUnchecked.png);
+    width: 11px;
+    height: 11px;
+    margin-right: 2px;
+}
+QCheckBox::indicator:checked {
+    image: url(recursos/boxChecked.png);
+    margin: 0;
+    width: 13px;
+    height: 13px;
+}
+QStatusBar {
+    background: #252525;
+    color: efefef;
+}
+

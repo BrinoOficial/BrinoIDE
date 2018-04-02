@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="text/x-brino">
+        <comment>Brino source code</comment>
+	<comment xml:lang="ara">شفرة مصدر Brino</comment>
+	<comment xml:lang="be@latin">Kryničny kod Brino</comment>
+	<comment xml:lang="bg">Изходен код на Brino</comment>
+	<comment xml:lang="ca">codi font en Brino</comment>
+	<comment xml:lang="da">Brinokildekode</comment>
+	<comment xml:lang="de">Brino-Quelltext</comment>
+	<comment xml:lang="el">πηγαίος κώδικας Brino</comment>
+	<comment xml:lang="en_GB">Brino source code</comment>
+	<comment xml:lang="eo">Brino-fontkodo</comment>
+	<comment xml:lang="es">código fuente en Brino</comment>
+	<comment xml:lang="eu">Brino iturburu-kodea</comment>
+	<comment xml:lang="fi">Brino-lähdekoodi</comment>
+	<comment xml:lang="fr">code source Brino</comment>
+	<comment xml:lang="ga">cód foinseach Brino</comment>
+	<comment xml:lang="hu">Brino-forráskód</comment>
+	<comment xml:lang="id">Kode program Brino</comment>
+	<comment xml:lang="it">Codice sorgente Brino</comment>
+	<comment xml:lang="ja">Brino ソースコード</comment>
+	<comment xml:lang="lt">Brino pradinis kodas</comment>
+	<comment xml:lang="lv">Brino pirmkods</comment>
+	<comment xml:lang="ms">Kod sumber Brino</comment>
+	<comment xml:lang="nb">Brino-kildekode</comment>
+	<comment xml:lang="nl">Brino-broncode</comment>
+	<comment xml:lang="nn">Brino-kjeldekode</comment>
+	<comment xml:lang="pl">Kod źródłowy Brino</comment>
+	<comment xml:lang="pt">código fonte Brino</comment>
+	<comment xml:lang="pt_BR">Código fonte Brino</comment>
+	<comment xml:lang="ru">исходный код Brino</comment>
+	<comment xml:lang="sq">Kod burues Brino</comment>
+	<comment xml:lang="sv">Brino-källkod</comment>
+	<comment xml:lang="uk">Вихідний код на мові Brino</comment>
+	<comment xml:lang="vi">Mã nguồn Brino</comment>
+	<comment xml:lang="zh_CN">Brino 源代码</comment>
+	<comment xml:lang="zh_TW">Brino 源代碼</comment>
+        <sub-class-of type="text/x-br++src"/>
+        <glob pattern="*.brpp"/>
+    </mime-type>
+</mime-info>

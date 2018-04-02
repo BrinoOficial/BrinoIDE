@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Brino IDE
+GenericName=Brino IDE
+Comment=IDE Open-source em Português para o Arduino
+Exec=<BINARY_LOCATION>
+Icon=<ICON_NAME>
+Terminal=false
+Categories=Development;IDE;Electronics;
+MimeType=text/x-brino
+Keywords=embedded electronics;electronics;avr;microcontroller;
+StartupWMClass=BrppCompilerMain
