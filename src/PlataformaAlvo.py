@@ -49,10 +49,9 @@ class PlataformaAlvo:
 
         arquivo_placas = os.path.join(pasta, 'boards.txt')
         if not os.path.exists(arquivo_placas):
-            print "no boards.txt"
+            print("no boards.txt")
         pref_placas = MapaUtils.carregar(arquivo_placas)
         preferencias_placas = MapaUtils.primeiro_nivel(pref_placas)
-        print preferencias_placas
         menu = preferencias_placas['menu']
         if len(menu) > 0:
             self.menus = MapaUtils.dicionario_superior(menu)

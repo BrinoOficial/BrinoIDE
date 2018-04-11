@@ -33,20 +33,7 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-def porta():
-    #TODO abrir portas
-    print "Abrindo portas"
-
-def achar():
-    #TODO achar
-    print "Buscando"
-
-def achar_e_substituir():
-    #TODO achar e substituir
-    print "Substituindo"
 
 def ir_para_linha():
     #TODO ir para linha
-    print "Indo"
-
-
+    pass

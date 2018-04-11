@@ -240,7 +240,7 @@ def get_caminho_padrao():
     caminho_padrao = os.path.expanduser("~")
     docu = re.compile("Documen.*")
     pastas = os.listdir(caminho_padrao)
-    documentos = filter(docu.match, pastas)
+    documentos = list(filter(docu.match, pastas))
     return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 

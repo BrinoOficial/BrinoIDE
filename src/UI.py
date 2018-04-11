@@ -463,7 +463,6 @@ class Centro(QWidget):
         titulos_menus_personalizados = list()
         for pacote_alvo in self.pacotes.values():
             for plataforma_alvo in pacote_alvo.get_lista_plataformas():
-                print plataforma_alvo.get_menus()
                 titulos_menus_personalizados += plataforma_alvo.get_menus().values()
         for titulo_menu_personalizado in titulos_menus_personalizados:
             menu = QMenu(titulo_menu_personalizado)

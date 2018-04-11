@@ -36,4 +36,4 @@ email: victor.pacheco@brino.cc
 
 def lingua():
     # TODO abrir linguas
-    print "Abrindo portas"
+    pass
