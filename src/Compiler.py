@@ -34,6 +34,7 @@ email: victor.pacheco@brino.cc
 """
 
 import os
+import platform
 from subprocess import Popen, PIPE
 
 import Main
@@ -59,7 +60,10 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
         resultado do comando de compilacao
     """
     pacotes_instalados = os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages'))
-    cmd = os.path.abspath(os.path.join('.', 'builder', 'arduino-builder'))
+    if platform.system() == "Windows":
+        cmd = os.path.abspath(os.path.join('.', 'builder', 'arduino-builder.exe'))
+    else:
+        cmd = os.path.abspath(os.path.join('.', 'builder', 'arduino-builder'))
     cmd += " -compile"
     cmd += " -logger=human"
     cmd = adicionar_hardware_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'hardware')))
@@ -84,7 +88,6 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     output = p.stdout.read()
     output += p.stderr.read()
     return output
-    # os.system(cmd)
 
 
 def opcoes_da_placa(placa):
