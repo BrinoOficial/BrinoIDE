@@ -32,8 +32,8 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-from subprocess import Popen, PIPE
 import sys
+from subprocess import Popen, PIPE
 
 import Preferencias
 
@@ -134,6 +134,7 @@ class UploaderSerial():
         # TODO verbose, verify upload
         padrao = prefs["upload.pattern"]
         cmd = formatar_e_dividir(padrao, prefs, True)
+        cmd = " ".join(cmd)
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         output = p.stdout.read()
         output += p.stderr.read()
