@@ -128,6 +128,7 @@ QComboBox::drop-down{
 QDialog QLineEdit{
    height:25px;
    background:#101010;
+   color:#efefef;
    border-radius:5px;
 }
 QDialog QPushButton{
