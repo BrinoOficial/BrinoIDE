@@ -34,7 +34,6 @@ email: victor.pacheco@brino.cc
 """
 
 import os
-import shlex
 from subprocess import Popen, PIPE
 
 import Main
@@ -81,7 +80,7 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     cmd += " -build-cache " + cache
     # TODO mais preferencias
     cmd += " " + os.path.dirname(caminho)
-    p = Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE, stdin=PIPE)
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     output = p.stdout.read()
     output += p.stderr.read()
     return output

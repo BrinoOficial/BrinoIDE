@@ -53,7 +53,7 @@ def get_highlights(tipo):
         if palavra_chave.get('highlight-type') == tipo:
             string_unicode = palavra_chave.get('highlight')
             if string_unicode:
-                palavras.append(string_unicode.encode('utf-8'))
+                palavras.append(string_unicode)
 
     return palavras
 
