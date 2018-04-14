@@ -33,6 +33,7 @@ email: victor.pacheco@brino.cc
 """
 
 from subprocess import Popen, PIPE
+import sys
 
 import Preferencias
 
@@ -115,30 +116,31 @@ class UploaderSerial():
             padrao = prefs.get("upload.pattern")
             cmd = formatar_e_dividir(padrao, prefs, True)
             # TODO executar comando e retornar
+
         t = prefs.get("upload.use_1200bps_touch", None)
         fazer_toque = t is not None and t
         t = prefs.get("upload.wait_for_upload_port", None)
         esperar_porta_upload = t is not None and t
         porta_selecionada = prefs.get("serial.port", None)
         if porta_selecionada is None:
-            pass
             # TODO erro e retornar
-        if fazer_toque:
             pass
+        if fazer_toque:
             # TODO
+            pass
         prefs['build.path'] = caminho_temp
         prefs['build.project_name'] = nome
         prefs['upload.verbose'] = prefs.get("upload.params.quiet")
         # TODO verbose, verify upload
         padrao = prefs["upload.pattern"]
         cmd = formatar_e_dividir(padrao, prefs, True)
-        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE)
+        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         output = p.stdout.read()
         output += p.stderr.read()
         if not output:
             parent.log.insertPlainText("Carregado!")
         else:
-            parent.log.insertPlainText(output)
+            parent.log.insertPlainText(str(output, sys.stdout.encoding))
 
 
 def formatar_e_dividir(src, dictio, recursivo):
@@ -168,13 +170,14 @@ def substituir_do_mapa(src, dictio, delimitador_esquerdo='{', delimitador_direit
     :param delimitador_direito:
     :return:
     """
+
     for key in dictio.keys():
-        keyword = delimitador_esquerdo + key + delimitador_direito
+        try:
+            keyword = delimitador_esquerdo + key + delimitador_direito
+        except TypeError:
+            keyword = delimitador_esquerdo + str(key, 'utf-8') + delimitador_direito
         if dictio.get(key) is not None and keyword is not None:
-            # try:
-            src = src.replace(keyword, dictio.get(key).decode('utf-8'))
-            # except UnicodeDecodeError:
-            #   print "<" +src+">", dictio.get(key)
+            src = src.replace(keyword, dictio.get(key))
     return src
 
 
@@ -196,7 +199,7 @@ def separacao_quotes(src, quote_chars, arg_vazios):
                 first = s[0:1]
             if first is None or not quote_chars.__contains__(first):
                 if not len(s.strip()) == 0 or arg_vazios:
-                    res.append(s.encode("utf-8"))
+                    res.append(s)
                 continue
             char_escapador = first
             s = s[1:]
@@ -206,7 +209,7 @@ def separacao_quotes(src, quote_chars, arg_vazios):
             continue
         arg_escapado += s[0:len(s) - 1]
         if not len(arg_escapado.strip()) == 0 or arg_vazios:
-            res.append(arg_escapado.encode('utf-8'))
+            res.append(arg_escapado)
             char_escapador = None
     if char_escapador is not None:
         print("Erro")
