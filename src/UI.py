@@ -433,7 +433,7 @@ class Centro(QWidget):
         """
         for pacote in indexer.criar_pacotes_alvo():
             if self.pacotes.get(pacote.get_id(), False):
-                self.pacotes[pacote.get_id().encode('utf-8')] = pacote
+                self.pacotes[pacote.get_id()] = pacote
 
     @staticmethod
     def carregar_pacote_alvo(pacote_alvo, pasta):
@@ -461,13 +461,13 @@ class Centro(QWidget):
         """
         self.menus_personalizados = list()
         titulos_menus_personalizados = list()
+        print(self.pacotes)
         for pacote_alvo in self.pacotes.values():
             for plataforma_alvo in pacote_alvo.get_lista_plataformas():
                 titulos_menus_personalizados += plataforma_alvo.get_menus().values()
         for titulo_menu_personalizado in titulos_menus_personalizados:
             menu = QMenu(titulo_menu_personalizado)
             self.menus_personalizados.append(menu)
-
         placas = QActionGroup(self.parent)
         placas.setExclusive(True)
         for pacote_alvo in self.pacotes.values():
@@ -566,7 +566,7 @@ class Centro(QWidget):
         for tool in ferramentas:
             pasta = tool.get_pasta_instalada()
             caminho = os.path.abspath(pasta)
-            prefs[(prefix + tool.get_nome() + ".path").encode('utf-8')] = caminho
+            prefs[(prefix + tool.get_nome() + ".path")] = caminho
             Preferencias.set(prefix + tool.get_nome() + ".path", caminho)
             Preferencias.set(prefix + tool.get_nome() + "-" + tool.get_versao() + ".path", caminho)
         return prefs
