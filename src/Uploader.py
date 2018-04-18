@@ -135,13 +135,20 @@ class UploaderSerial():
         padrao = prefs["upload.pattern"]
         cmd = formatar_e_dividir(padrao, prefs, True)
         cmd = " ".join(cmd)
+        print(cmd)
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         output = p.stdout.read()
         output += p.stderr.read()
         if not output:
             parent.log.insertPlainText("Carregado!")
         else:
-            parent.log.insertPlainText(str(output, sys.stdout.encoding))
+            try:
+                decodificada = output.decode('utf8')
+            except UnicodeDecodeError:
+                utf8_string = str(output.decode('latin1').encode('utf-8'))
+                decodificada = utf8_string.replace("b'", "").replace("'", "").replace("\\xc3\\xa3",'ã').replace("\\r", '').replace('\\n', '').replace("\\", '')
+            finally:
+                parent.log.insertPlainText(decodificada)
 
 
 def formatar_e_dividir(src, dictio, recursivo):
