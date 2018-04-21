@@ -214,7 +214,7 @@ class Centro(QWidget):
             salvar_caminho = True
             dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
             if dialogo.exec_() == QFileDialog.Accepted:
-                caminho = dialogo.selectctedFiles()[0]
+                caminho = dialogo.selectedFiles()[0]
                 # Testa se o arquivo existe
                 if os.path.exists(caminho):
                     self.nova_aba(caminho, salvar_caminho)
