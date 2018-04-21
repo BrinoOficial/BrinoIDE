@@ -620,8 +620,8 @@ class Centro(QWidget):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
         # Testa se a aba eh a de boas vindas
-        if caminho == 0:
-            return
+        if caminho == 0 or caminho == '':
+            return None
         placa_alvo = self.get_placa_alvo()
         plataforma_alvo = placa_alvo.get_plataforma()
         pacote_alvo = plataforma_alvo.get_pacote()
@@ -641,8 +641,8 @@ class Centro(QWidget):
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
         # Testa se a aba eh a de boas vindas
-        if caminho == 0:
-            return
+        if caminho == 0 or caminho == '':
+            return None
         caminho = editor.get_caminho()
         # Ajustes do Arduino
         # TODO Terminar ajustes
