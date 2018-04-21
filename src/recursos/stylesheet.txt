@@ -6,6 +6,7 @@ QMenu{
 }
 QMenu::item {
     background: '#252525';
+    color: '#efefef'
 }
 QMenu::item:selected{
     background: '#101010';
