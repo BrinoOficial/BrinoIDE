@@ -41,8 +41,9 @@ import os
 import re
 import sys
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QSplashScreen, QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
 
 import GerenciadorDeCodigo
 import GerenciadorDeLinguas
@@ -246,6 +247,11 @@ def get_caminho_padrao():
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash.setMask(splash_pix.mask())
+    splash.show()
+    app.processEvents()
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
@@ -253,4 +259,5 @@ if __name__ == '__main__':
     Preferencias.init()
     principal = Principal()
     principal.show()
+    splash.finish(principal)
     sys.exit(app.exec_())
