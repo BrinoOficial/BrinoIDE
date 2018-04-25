@@ -67,6 +67,7 @@ QScrollBar::sub-line:horizontal {
 }
 QDialog{
    background:#454545;
+   color:#efefef;
    background-clip:#5cb50d;
    filedialog-listview-icon: url(recursos/listaFoco.png);
    filedialog-new-directory-icon: url(recursos/NovaPasta.png);
