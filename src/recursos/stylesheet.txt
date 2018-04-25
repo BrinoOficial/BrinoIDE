@@ -20,7 +20,7 @@ QMenuBar::item {
    color: #efefef;
 }
 QMenuBar::item:selected{
-   border-top: 2px solid #5cb50d;
+   border-top: '2px solid #5cb50d';
 }
 QPlainTextEdit{
    border: None;
@@ -28,42 +28,42 @@ QPlainTextEdit{
    selection-background-color: '#454545';
 }
 QScrollBar:vertical {
-   width: 10px;
-   margin: 2px 0 2px 0;
+   width: '10px';
+   margin: '2px 0 2px 01;
 }
 QScrollBar::handle:vertical {
-   min-height: 5px;
-   background: #5cb50d;
-   border-radius: 5px;
+   min-height: '5px';
+   background: '#5cb50d';
+   border-radius: '5px';
 }
 QScrollBar::add-line:vertical {
-   height: 0px;
-   subcontrol-position: bottom;
-   subcontrol-origin: margin;
+   height: '0px';
+   subcontrol-position: 'bottom';
+   subcontrol-origin: 'margin';
 }
 QScrollBar::sub-line:vertical {
-   height: 0px;
-   subcontrol-position: top;
-   subcontrol-origin: margin;
+   height: '0px';
+   subcontrol-position: 'top';
+   subcontrol-origin: 'margin';
 }
 QScrollBar:horizontal {
-   height: 10px;
-   margin: 0px 2px 0px 2px;
+   height: '10px';
+   margin: '0px 2px 0px 2px';
  }
 QScrollBar::handle:horizontal {
-   min-width: 5px;
-   background: #5cb50d;
-   border-radius: 5px;
+   min-width: '5px';
+   background: '#5cb50d';
+   border-radius: '5px';
 }
 QScrollBar::add-line:horizontal {
-   width: 0px;
-   subcontrol-position: bottom;
-   subcontrol-origin: margin;
+   width: '0px';
+   subcontrol-position: 'bottom';
+   subcontrol-origin: 'margin';
 }
 QScrollBar::sub-line:horizontal {
-   width: 0px;
-   subcontrol-position: top;
-   subcontrol-origin: margin;
+   width: '0px';
+   subcontrol-position: 'top';
+   subcontrol-origin: 'margin';
 }
 QDialog{
    background:#454545;
