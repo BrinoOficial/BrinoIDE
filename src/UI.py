@@ -46,7 +46,6 @@ from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
                              QAction, QInputDialog, QMessageBox, QMenu)
 
-import DestaqueSintaxe
 import EditorDeTexto
 import Main
 import Menu
@@ -191,7 +190,6 @@ class Centro(QWidget):
         if len(identificador_aba) > 10:
             identificador_aba = identificador_aba[:10] + "..."
         editor.setStyleSheet("background:#252525")
-        editor.highlight = DestaqueSintaxe.PythonHighlighter(editor.document())
         # Adiciona a aba se o arquivo tiver nome
         if editor.get_nome():
             self.widget_abas.addTab(editor, identificador_aba)

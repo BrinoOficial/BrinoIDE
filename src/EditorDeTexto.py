@@ -63,15 +63,16 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-import functools
 import ntpath
 import os
-import re
 
+import functools
+import re
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter
 from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QMessageBox
 
+import DestaqueSintaxe
 import Main
 
 
@@ -129,6 +130,7 @@ class CodeEditor(QPlainTextEdit):
             with open(path) as arquivo:
                 self.set_texto(arquivo.read())
         self.salvo = True
+        self.highlight = DestaqueSintaxe.PythonHighlighter(self.document())
 
     def atualizar_largura_contador(self):
         """
