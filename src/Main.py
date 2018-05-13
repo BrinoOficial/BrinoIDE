@@ -38,9 +38,9 @@ email: victor.pacheco@brino.cc
 """
 
 import os
-import re
 import sys
 
+import re
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QSplashScreen, QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
@@ -247,6 +247,7 @@ def get_caminho_padrao():
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    print(sys.argv)
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setMask(splash_pix.mask())
