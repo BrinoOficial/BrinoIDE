@@ -33,13 +33,13 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-import functools
 import glob
 import ntpath
 import os
 import sys
 from tempfile import mkdtemp
 
+import functools
 import serial
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
@@ -202,7 +202,7 @@ class Centro(QWidget):
         # Define que nao eh necessario salvar pois acabou de ser aberto
         editor.set_salvo(True)
 
-    def abrir(self, caminho=None):
+    def abrir(self, caminho=None, exemplo=True):
         """
         Abrir arquivo .ino ou .brpp em nova aba
         :param caminho:
@@ -223,7 +223,8 @@ class Centro(QWidget):
         else:
             self.nova_aba(caminho)
             widget = self.widget_abas.widget(self.widget_abas.currentIndex())
-            widget.caminho = ""
+            if exemplo:
+                widget.caminho = ""
 
     def salvar(self):
         """
@@ -236,7 +237,6 @@ class Centro(QWidget):
         # Testa se a aba eh a de boas vindas
         if caminho == 0:
             return
-        caminho = editor.get_caminho()
         # Testa se a aba eh a de boas vindas
         editor.set_salvo(True)
         if caminho != "":
@@ -461,7 +461,6 @@ class Centro(QWidget):
         """
         self.menus_personalizados = list()
         titulos_menus_personalizados = list()
-        print(self.pacotes)
         for pacote_alvo in self.pacotes.values():
             for plataforma_alvo in pacote_alvo.get_lista_plataformas():
                 titulos_menus_personalizados += plataforma_alvo.get_menus().values()
@@ -513,7 +512,7 @@ class Centro(QWidget):
                 exemplo_acao = QAction(exemplo, self)
                 caminho_exemplo = os.path.join(caminho_exemplos, pasta_exemplo, exemplo, exemplo + ".brpp")
                 menu.addAction(exemplo_acao)
-                exemplo_acao.triggered.connect(functools.partial(self.abrir, caminho_exemplo))
+                exemplo_acao.triggered.connect(functools.partial(self.abrir, caminho_exemplo, True))
 
     def on_troca_placa_ou_porta(self):
         """

@@ -247,10 +247,9 @@ def get_caminho_padrao():
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    print(sys.argv)
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
-    splash.setMask(splash_pix.mask())
+    splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
     splash.show()
     app.processEvents()
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
@@ -260,5 +259,8 @@ if __name__ == '__main__':
     Preferencias.init()
     principal = Principal()
     principal.show()
+    if len(sys.argv) > 1:
+        principal.widget_central.abrir(sys.argv[1], False)
     splash.finish(principal)
+
     sys.exit(app.exec_())
