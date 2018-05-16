@@ -1,4 +1,11 @@
+/*
+    AnalisarLetra - Usa operadores de analise de letras. ~Mande qualquer dado e ele ira analisa-lo.
 
+    O circuito: Nenhum hardware alem de seu arduino sera nescessario
+
+    Exemplo original do Arduino:
+    http://www.arduino.cc/en/Tutorial/CharacterAnalysis
+*/
 
 Configuracao() {
     // Inicia a comunicacao com o computador

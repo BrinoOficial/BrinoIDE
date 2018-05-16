@@ -1,4 +1,4 @@
-﻿/*
+/*
     entrada analogica, saida analogica e saida serial - Le uma porta analogica, faz uma regra de 3 para o alcance de 0 a 255 e usa o seu resultado em uma saida PWM mostrando-o tambem pelo monitor serial.
 
     O circuito:
@@ -38,7 +38,7 @@ Principal() {
     USB.enviar("saida = ");
     USB.enviarln(saidaPWM);
 
-    // Espera 2 milisegundos antes de começar o proximo loop
+    // Espera 2 milisegundos antes de come�ar o proximo loop
     // Para converter do analogico pro digital depois da
     // Ultima leitura
     esperar(2);

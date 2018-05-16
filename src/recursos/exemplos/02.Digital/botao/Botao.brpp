@@ -1,4 +1,4 @@
-﻿/*
+/*
     Botao - Liga e desliga um LED conectado na porta digital 13 quando um botao, conectado a porta digital 2, for pressionado
 
     O circuito:

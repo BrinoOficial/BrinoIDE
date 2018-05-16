@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  Amortecer - Esse exemplo mostra como "graduar"  um LED ligado a porta 9 
  fazendo com que ele se acenda e apague lentamente
  usando a funcao Pino.escreverAnalogivo(Porta, Valor).

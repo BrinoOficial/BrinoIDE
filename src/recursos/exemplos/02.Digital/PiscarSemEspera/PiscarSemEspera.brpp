@@ -1,4 +1,4 @@
-﻿/*
+/*
   PiscarSemEsperar - Liga e desliga um LED conectado a uma porta digital sem usar esperar(). Isso signifiva que outro codigo pode rodar ao mesmo tempo sem interromper o LED.
 	
     O circuito

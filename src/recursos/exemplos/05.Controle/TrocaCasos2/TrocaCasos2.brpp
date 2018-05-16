@@ -1,4 +1,4 @@
-﻿/*
+/*
     TrocaCasos2 - switch com o monitor serial. Demonstra o uso do swich, um valor e comparado com casos possiveis, caso nao se encaixe em nenhum ele executa a opcao padrao.
     Esse codigo recebe dados pela serial, se for 'a', 'b', 'c', 'd' ou 'e' ele liga um led em especifico. Caso seja qualquer outro valor os LEDs serao apagados.
 

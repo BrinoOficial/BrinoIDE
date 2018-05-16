@@ -1,4 +1,4 @@
-﻿/*
+/*
     TabelaASCII - Mostra um valor em todos os formatos:
     - Como binario
     - Seguindo o padrao ASCII em decimal, octadecimal, hexadecimal e binario.

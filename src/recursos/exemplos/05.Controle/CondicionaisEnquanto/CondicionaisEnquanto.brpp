@@ -1,4 +1,4 @@
-﻿/*
+/*
     CondicionaisEnquanto - Esse exemplo demonstra o uso do laco enquanto(). Enquanto um botao estiver pressionado ele entra em um codigo de calibracao que busca valores minimos e maximos de leitura. No resto do tempo ele aplica esses parametros e a leitura do sensor para controlar um LED.
 
     O circuito:

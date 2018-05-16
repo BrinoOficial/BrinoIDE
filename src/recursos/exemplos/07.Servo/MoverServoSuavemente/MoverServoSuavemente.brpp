@@ -1,4 +1,4 @@
-﻿/*   
+/*   
     MoverServoSuavemente - Movimenta um servo motor conectado a porta digital 9 suavimente do angulo 0 ate o angulo 180 e depois volta para o angulo 0
 
     O circuito:

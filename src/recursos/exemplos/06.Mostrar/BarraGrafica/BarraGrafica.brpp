@@ -1,4 +1,4 @@
-﻿/*
+/*
     BarraGrafica - Controla uma serie de LEDs com base na leitura de um sensor analogico. 
   This is a simple way to make a bar graph display. Though this graph uses 10
   LEDs, you can use any number by changing the LED count and the pins in the

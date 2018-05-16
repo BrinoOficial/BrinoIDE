@@ -1,4 +1,4 @@
-﻿/*
+/*
     Vetor - Demonstra o uso de um vetor para armazenar as portas onde uma serie de LEDs estao conectados. Eles irao piscar na sequencia fornecida e depois na ordem contraria. Os pinos podem estar em qualquer ordem dentro do vetor
 
     O circuito:

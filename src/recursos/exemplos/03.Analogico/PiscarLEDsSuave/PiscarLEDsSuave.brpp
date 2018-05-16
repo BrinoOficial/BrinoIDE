@@ -1,4 +1,4 @@
-﻿/*
+/*
     PiscarLEDsSuave - Esse codigo pisca LEDs suavimente usando portas digitais. Os LEDs estao conectados da porta 2 ate a porta 13 e sao ligados um a um. Esse codigo foi escrito para o Arduino Mega e pode nao funcionar em outras versoes da placa
 
     O circuito:

@@ -1,4 +1,4 @@
-﻿/*
+/*
    EntradaDigitalComResistor - Esse exemplo faz a leitura de um botao ligado a porta 2 usando a funcao Entrada_PULLUP.
 
    O circuito:

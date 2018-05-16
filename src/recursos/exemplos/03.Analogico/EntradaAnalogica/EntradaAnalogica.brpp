@@ -1,4 +1,4 @@
-﻿/*
+/*
     EntradaAnalogica - Demonstra a leitura analogica da porta A0 por meio de um LED que acende a apaga. O tempo que ele permanece em cada estado depende da leitura.
 
     O circuito:

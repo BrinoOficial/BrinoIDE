@@ -1,4 +1,4 @@
-﻿/*
+/*
     LeituraAnalogicaSerial - Le a entrada analogica do pino 0 e apresenta o valor no monitor serial. Conecte o pino central de um potenciometro a porta A0 e os pinos externos dele as portas de alimentacao 5V e ao GND.
  */
 // Parte do codigo de configuracao

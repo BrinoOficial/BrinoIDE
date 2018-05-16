@@ -1,4 +1,4 @@
-﻿/*
+/*
     lacoPara - Demonstra o uso de um laco para() piscando um conjunto de LEDs. Primeiro eles serao piscados em uma ordem e, em seguida, em uma ordem contraria
   
     O circuito:
