@@ -33,9 +33,8 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-import threading
-
 import serial
+import threading
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
@@ -164,7 +163,7 @@ class MonitorSerial(QWidget):
             while self.conexao.inWaiting() and not parar():
                 if parar():
                     break
-                self._sinal_recebido_.emit(self.conexao.read())
+                self._sinal_recebido_.emit(self.conexao.read().decode("utf-8"))
             if parar():
                 break
 
