@@ -1,4 +1,4 @@
-/*
+﻿/*
     Suavizar - Executa uma serie de leituras analogicas e mostra a media delas no monitor serial. As medidas tambem sao mantidas em um vetor.
 
     O circuito:

@@ -1,4 +1,4 @@
-/*
+﻿/*
     CondicionaisSe - Esse exemplo demonstra como usar a condicional se(). Esse codigo faz uma leitura analogica e decide se um LED deve ou nao acender comparando a leitura com um valor previamente estabelecido.
 
     O circuito:

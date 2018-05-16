@@ -1,4 +1,4 @@
-/*
+﻿/*
     TabelaASCII - Mostra um valor em todos os formatos:
     - Como binario
     - Seguindo o padrao ASCII em decimal, octadecimal, hexadecimal e binario.
@@ -21,7 +21,7 @@ Configuracao() {
     USB.enviarln("Tabela ASCII ~ Mapa de caracteres");
 }
 
-// O primeiro caracter ASCII visivel � o '!' que possui numero 33
+// O primeiro caracter ASCII visivel é o '!' que possui numero 33
 Numero esseByte = 33;
 // Caracteres ASCII tambem podem ser escritos entre aspas simples '', ou seja, digitar 33 ou '!' surtem o mesmo efeito. O comando poderia ter sido:
 // Numero esseByte = '!';

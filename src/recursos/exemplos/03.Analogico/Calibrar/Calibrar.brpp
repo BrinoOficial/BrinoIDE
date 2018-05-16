@@ -1,4 +1,4 @@
-/*
+﻿/*
   Calibrar - Demonstra uma tecnica de calibrar a entrada de um sensor. As entradas do sensor sao usadas pelos primeiros cinco segundos para definir os parametros minimos e maximos que serao usados.
     
     O circuito:

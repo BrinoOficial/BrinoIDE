@@ -1,4 +1,4 @@
-/*
+﻿/*
     BotaoAlteraEstadoLED - Sempre que um botao e pressionado uma saida tem seu estado alterado. Essa mudanca possui um tempo minimo para acontecer novamente.
 
     O circuito:

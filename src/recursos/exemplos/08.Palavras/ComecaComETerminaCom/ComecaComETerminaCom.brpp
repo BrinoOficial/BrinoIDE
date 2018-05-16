@@ -1,4 +1,4 @@
-/*
+ï»¿/*
     ComecaComETerminaCom - Aplica os comandos startsWith() e endsWith() em strings
 
     O circuito: Nenhum hardware alem de seu arduino sera nescessario
@@ -37,9 +37,9 @@ Principal() {
     leituraSensor += Pino.lerAnalogico(A0);
     USB.enviar(leituraSensor);
     se (leituraSensor.endsWith("0")) {
-        USB.enviarln(". Essa leitura é divisivel por dez");
+        USB.enviarln(". Essa leitura Ã© divisivel por dez");
     } senao {
-        USB.enviarln(". Essa leitura nao é divisivel por dez");
+        USB.enviarln(". Essa leitura nao Ã© divisivel por dez");
     }
 
     // Para o codigo

@@ -1,4 +1,4 @@
-/*
+﻿/*
     Deteccao de mudanca de estado (contador botao) - Normalmente, nao e necessario saber o estado do pino digital o tempo todo, basta saber quando ha mudanca de estado (ligado/ deligado). Por exemplo, deseja-se saber quando e quantas vezes um botao e acionado, isso e chamado deteccao de mudanca de estado. Esse exemplo mostra como detectar quando um botao e pressionado
 
     O circuito:

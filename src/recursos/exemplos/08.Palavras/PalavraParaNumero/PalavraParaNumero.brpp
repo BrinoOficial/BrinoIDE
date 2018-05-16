@@ -1,4 +1,4 @@
-/*
+﻿/*
     PalavraParaNumero - Converte uma palavra em um valor numerico. Faz a leitura pela porta USB ate o ponto final '.' e mostra o valor numerico correspondente
   
     O circuito: Nenhum hardware alem de seu arduino sera nescessario
