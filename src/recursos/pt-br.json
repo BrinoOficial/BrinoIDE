@@ -8,7 +8,7 @@
       "translate": "Configuracao"
     },
     {
-      "highlight": "stup",
+      "highlight": "setup",
       "highlight-type": "2"
     },
     {
@@ -56,11 +56,11 @@
       "highlight-type": "2"
     },
     {
-      "highlight": "se",
+      "highlight": "\\bse\\b",
       "arduino": "if(",
       "arg": "true",
       "highlight-type": "2",
-      "translate": "se\\s*\\("
+      "translate": "\\bse\\b\\s*\\("
     },
     {
       "highlight": "if",

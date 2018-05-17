@@ -51,7 +51,7 @@ import MonitorSerial
 import Preferencias
 import UI
 
-versao = '3.0.0'
+versao = '3.0.1'
 caminho_padrao = ''
 monitor = 3
 
