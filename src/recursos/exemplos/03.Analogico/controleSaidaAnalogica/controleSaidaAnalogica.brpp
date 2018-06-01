@@ -38,7 +38,7 @@ Principal() {
     USB.enviar("saida = ");
     USB.enviarln(saidaPWM);
 
-    // Espera 2 milisegundos antes de começar o proximo loop
+    // Espera 2 milisegundos antes de comeï¿½ar o proximo loop
     // Para converter do analogico pro digital depois da
     // Ultima leitura
     esperar(2);
