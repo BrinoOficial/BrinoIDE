@@ -136,7 +136,6 @@ class UploaderSerial():
         # TODO verbose, verify upload
         padrao = prefs["upload.pattern"]
         cmd = formatar_e_dividir(padrao, prefs, True)
-        cmd = " ".join(cmd)
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         output = p.stdout.read()
         output += p.stderr.read()
@@ -161,8 +160,11 @@ def formatar_e_dividir(src, dictio, recursivo):
     :return:
     """
     res = ""
+    print(src)
     for i in range(10):
+
         res = substituir_do_mapa(src, dictio)
+        print(res)
         if not recursivo:
             break
         if res == src:
@@ -187,6 +189,7 @@ def substituir_do_mapa(src, dictio, delimitador_esquerdo='{', delimitador_direit
             keyword = delimitador_esquerdo + str(key, 'utf-8') + delimitador_direito
         if dictio.get(key) is not None and keyword is not None:
             src = src.replace(keyword, dictio.get(key))
+
     return src
 
 
