@@ -18,6 +18,7 @@ class MeuDicionarioComplete(QCompleter):
     def __init__(self, minhas_palavras_chaves=None, parent=None):
         minhas_palavras_chaves = get_words('1') + get_words('2') + get_words('3') + get_words('4')
         minhas_palavras_chaves = sorted(minhas_palavras_chaves)
+        minhas_palavras_chaves = list(set(minhas_palavras_chaves))
         QCompleter.__init__(self, minhas_palavras_chaves, parent)
         self.activated.connect(self.changeCompletion)
 
