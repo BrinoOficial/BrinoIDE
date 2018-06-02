@@ -136,7 +136,9 @@ class UploaderSerial():
         # TODO verbose, verify upload
         padrao = prefs["upload.pattern"]
         cmd = formatar_e_dividir(padrao, prefs, True)
-        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+        print("<", cmd, ">")
+        # Testar em windows, pode ser necessário ativar a opção de shell
+        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=False)
         output = p.stdout.read()
         output += p.stderr.read()
         if not output:
@@ -160,11 +162,9 @@ def formatar_e_dividir(src, dictio, recursivo):
     :return:
     """
     res = ""
-    print(src)
     for i in range(10):
 
         res = substituir_do_mapa(src, dictio)
-        print(res)
         if not recursivo:
             break
         if res == src:

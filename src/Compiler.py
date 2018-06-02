@@ -34,6 +34,7 @@ email: victor.pacheco@brino.cc
 """
 
 import os
+
 from subprocess import Popen, PIPE
 
 import Main
@@ -80,7 +81,6 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     cmd += " -build-cache " + cache
     # TODO mais preferencias
     cmd += " " + '"' + os.path.dirname(caminho) + '"'
-    print(cmd)
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     output = p.stdout.read()
     output += p.stderr.read()
