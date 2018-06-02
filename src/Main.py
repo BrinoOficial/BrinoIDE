@@ -39,6 +39,7 @@ email: victor.pacheco@brino.cc
 
 import os
 import sys
+from urllib.request import urlopen
 
 import re
 from PyQt5.QtCore import Qt
@@ -252,9 +253,24 @@ if __name__ == '__main__':
     splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
     splash.show()
     app.processEvents()
+    versaoOnline = ''
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
+    try:
+        with urlopen('http://brino.cc/brino/versao.php') as response:
+            for line in response:
+                versaoOnline += line.decode('utf-8')
+
+        vOn = versaoOnline.split('.')
+        v = versao.split('.')
+        for i in range(0, 3):
+            if vOn[i] > v[i]:
+                print("precisa atualizar")
+    except:
+        pass
+
+
     monitor = MonitorSerial.MonitorSerial()
     Preferencias.init()
     principal = Principal()
