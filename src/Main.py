@@ -37,8 +37,10 @@ contributor: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import json
 import os
 import sys
+import webbrowser
 from urllib.request import urlopen
 
 import re
@@ -254,6 +256,7 @@ if __name__ == '__main__':
     splash.show()
     app.processEvents()
     versaoOnline = ''
+    deve_atualizar = False
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
@@ -266,11 +269,31 @@ if __name__ == '__main__':
         v = versao.split('.')
         for i in range(0, 3):
             if vOn[i] > v[i]:
+                deve_atualizar = True
                 print("precisa atualizar")
+                i = 4
     except:
         pass
 
-
+    versaoJSON = ""
+    try:
+        with urlopen('http://brino.cc/brino/lib/ling/version.json') as response:
+            for line in response:
+                versaoJSON += line.decode('utf-8')
+            data = json.loads(versaoJSON)
+            files = os.listdir(os.path.abspath('./recursos'))
+            lings = [fi.replace('.json', '') for fi in files if fi.endswith(".json")]
+            for lingua in data['Linguas']:
+                if lingua['ling'] in lings:
+                    data2 = json.load(open(os.path.join('recursos', lingua['ling'] + '.json')))
+                    if lingua['version'] > data2['version']:
+                        with open(os.path.join('recursos', lingua['ling'] + '.json'), 'w') as f, urlopen(
+                                'http://brino.cc/brino/lib/ling/' + lingua['ling'] + "/" + lingua[
+                                    'ling'] + ".json") as json:
+                            for line in json:
+                                f.write(line.decode('utf-8'))
+    except:
+        pass
     monitor = MonitorSerial.MonitorSerial()
     Preferencias.init()
     principal = Principal()
@@ -278,5 +301,10 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         principal.widget_central.abrir(sys.argv[1], False)
     splash.finish(principal)
-
+    if deve_atualizar:
+        atual = QMessageBox().warning(None, 'Atualização',
+                                      "Existe uma atualização disponível para o Brino!",
+                                      QMessageBox.Ok | QMessageBox.Cancel)
+        if atual == QMessageBox.Ok:
+            webbrowser.open("http://brino.cc/download.php", 1, True)
     sys.exit(app.exec_())
