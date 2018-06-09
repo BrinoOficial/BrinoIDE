@@ -12,6 +12,7 @@ Versão em PyQt5 da IDE do Br.ino! Mais rápida e eficiente
 * **Pycharm** - *2018.1.2*
 * **PyQt5** - *5.10*
 * **Python** - *3.5*
+* **Ubuntu** - *16.04*
 
 ## Autores
 
@@ -22,4 +23,4 @@ Veja também a lista de [contributors](https://github.com/BrinoOficial/BrinoPy/g
 
 ## Licença
 
-Este projeto está sob a licença GPL v3.0 - Veja em [COPYING.txt](COPYING.txt) arquivo para mais detalhes
+Este projeto está sob a licença GPL v3.0 - Veja em [LICENSE.md](LICENSE.md) arquivo para mais detalhes

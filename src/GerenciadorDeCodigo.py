@@ -4,8 +4,8 @@
 """
 Br.ino Qt GerenciadorDeCodigo
 
-Codigo do gerenciador de codigo do Br.ino
-em PyQt5 (python 2.7)
+Codigo do gerenciador de codigos do Br.ino
+em PyQt5 (python 3.6)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 

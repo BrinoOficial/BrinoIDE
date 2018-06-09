@@ -5,7 +5,7 @@
 Br.ino Qt Main
 
 Codigo da janela principal da IDE Br.ino
-em PyQt5 (python 2.7)
+em PyQt5 (python 3.6)
 
     Icones made by Dave Gandy
     Site: https://www.flaticon.com/authors/dave-gandy
@@ -33,7 +33,7 @@ em PyQt5 (python 2.7)
 website: brino.cc
 author: Mateus Berardo
 email: mateus.berardo@brino.cc
-contributor: Victor Rodrigues Pacheco
+author: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 

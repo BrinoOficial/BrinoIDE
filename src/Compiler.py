@@ -4,8 +4,8 @@
 """
 Br.ino Qt DestaqueSintaxe
 
-Codigo de destaque da sintaxe do BRpp da IDE Br.ino
-em PyQt4 (python 2.7)
+Codigo de destaque da sintaxe do brpp e ino da IDE Br.ino
+em PyQt5 (python 3.6)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
