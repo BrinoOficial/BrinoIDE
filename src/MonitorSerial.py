@@ -35,8 +35,8 @@ email: victor.pacheco@brino.cc
 
 import serial
 import threading
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
 
 
@@ -94,13 +94,13 @@ class MonitorSerial(QWidget):
                                     #btn_enviar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
         btn_enviar.clicked.connect(self.enviar)
 
-        rolagem_check = QCheckBox(self)
-        rolagem_check.setText("Rolagem-automática")
+        self.rolagem_check = QCheckBox(self)
+        self.rolagem_check.setText("Rolagem-automática")
 
         layout.addWidget(self.linha_envio, 0, 0)
         layout.addWidget(self.log_monitor, 1, 0, 1, 0)
         layout.addWidget(btn_enviar, 0, 1)
-        layout.addWidget(rolagem_check, 2, 0)
+        layout.addWidget(self.rolagem_check, 2, 0)
 
     def conectar(self, porta, baud=9600):
         """
@@ -127,8 +127,10 @@ class MonitorSerial(QWidget):
         :return:
             None
         """
-        if not texto == '\n':
-            self.log_monitor.insertPlainText(texto)
+        self.log_monitor.insertPlainText(texto)
+
+        if self.rolagem_check.isChecked():
+            self.log_monitor.moveCursor(QTextCursor.End)
 
     def desconectar(self):
         """

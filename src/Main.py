@@ -231,6 +231,7 @@ class Principal(QMainWindow):
             if not self.widget_central.remover_aba(num_examinar, True):
                 close_event.ignore()
                 return
+        monitor.close()
         close_event.accept()
 
 
