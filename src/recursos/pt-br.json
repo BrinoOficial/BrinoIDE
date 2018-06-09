@@ -386,15 +386,15 @@
       "highlight-type": "1"
     },
     {
-      "highlight": "\\bEntrada\\b",
-      "arduino": "INPUT",
+      "highlight": "\\bINPUT_PULLUP\\b",
+      "highlight-type": "1"
+    },
+        {
+      "highlight": "\\bEntrada_PULLUP\\b",
+      "arduino": "INPUT_PULLUP",
       "arg": "false",
       "highlight-type": "1",
-      "translate": "\\bEntrada\\b"
-    },
-    {
-      "highlight": "\\bINPUT\\b",
-      "highlight-type": "1"
+      "translate": "\\bEntrada_PULLUP\\b"
     },
     {
       "highlight": "\\bNumeroLongo\\b",

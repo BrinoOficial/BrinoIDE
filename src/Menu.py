@@ -5,7 +5,7 @@
 Br.ino Qt Menu
 
 Interface base da IDE Br.ino
-em PyQt5 (python 2.7)
+em PyQt5 (python 3.6)
 
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
@@ -29,7 +29,7 @@ em PyQt5 (python 2.7)
 website: brino.cc
 author: Mateus Berardo
 email: mateus.berardo@brino.cc
-contributor: Victor Rodrigues Pacheco
+author: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
