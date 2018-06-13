@@ -76,6 +76,7 @@ class Principal(QMainWindow):
         self.acao_placa = QAction('Placa', self)
         self.acao_porta = QAction('Porta', self)
         self.acao_lingua = QAction('Lingua', self)
+        self.acao_instalar_biblioteca = QAction('Instalar biblioteca', self)
         self.acao_monitor_serial = QAction('Monitor serial', self)
         self.acao_verificar = QAction('Verificar', self)
         self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
@@ -154,6 +155,9 @@ class Principal(QMainWindow):
         self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
         self.acao_lingua.setStatusTip("Opções de língua")
 
+        self.acao_instalar_biblioteca.triggered.connect(self.widget_central.instalar_biblioteca)
+        self.acao_instalar_biblioteca.setStatusTip("Instalar bilioteca")
+
         self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
         self.acao_monitor_serial.triggered.connect(self.abrir_serial)
         self.acao_monitor_serial.setStatusTip("Abrir monitor serial")
@@ -197,6 +201,7 @@ class Principal(QMainWindow):
         self.menu_ferramentas.addMenu(self.menu_portas)
         self.menu_ferramentas.addAction(self.acao_lingua)
         self.menu_ferramentas.addAction(self.acao_monitor_serial)
+        self.menu_ferramentas.addAction(self.acao_instalar_biblioteca)
 
         menu_rascunho = barra_menu.addMenu('Rascunho')
         menu_rascunho.addAction(self.acao_verificar)

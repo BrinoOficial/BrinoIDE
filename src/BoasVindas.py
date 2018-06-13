@@ -79,14 +79,6 @@ class BoasVindas(QWidget):
     @staticmethod
     def abrir_site():
         """
-        Direciona para o nosso site brino.cc/tutoriais.php
-        :return:
-            None
-        """
-
-    @staticmethod
-    def abrir_site():
-        """
                Direciona para o nosso site brino.cc/tutoriais.php
                :return:
                    None
