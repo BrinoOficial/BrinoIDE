@@ -37,7 +37,9 @@ import serial
 import threading
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox, QComboBox
+
+import Preferencias
 
 
 class MonitorSerial(QWidget):
@@ -48,6 +50,10 @@ class MonitorSerial(QWidget):
         # Define widgets
         self.linha_envio = QLineEdit(self)
         self.log_monitor = QPlainTextEdit(self)
+        self.velocidade = QComboBox(self)
+        self.velocidade.addItems(
+            ("300", "600", "1200", "2400", "4800", "9600", "14400", "19200", "28800", "38400", "57600", "115200"))
+        self.velocidade.currentTextChanged.connect(self.mudar_velocidade)
         self.conexao = None
         self.parar = True
         self.last = ''
@@ -101,6 +107,11 @@ class MonitorSerial(QWidget):
         layout.addWidget(self.log_monitor, 1, 0, 1, 0)
         layout.addWidget(btn_enviar, 0, 1)
         layout.addWidget(self.rolagem_check, 2, 0)
+        layout.addWidget(self.velocidade, 2, 1)
+
+    def mudar_velocidade(self):
+        self.desconectar()
+        self.conectar(Preferencias.get("serial.port"), baud=int(self.velocidade.currentText()))
 
     def conectar(self, porta, baud=9600):
         """
@@ -161,13 +172,16 @@ class MonitorSerial(QWidget):
             funcao para sair do loop infinito
         :return:
         """
-        while not parar():
-            while self.conexao.inWaiting() and not parar():
+        try:
+            while not parar():
+                while self.conexao.inWaiting() and not parar():
+                    if parar():
+                        break
+                    self._sinal_recebido_.emit(self.conexao.read().decode("utf-8"))
                 if parar():
                     break
-                self._sinal_recebido_.emit(self.conexao.read().decode("utf-8"))
-            if parar():
-                break
+        except UnicodeDecodeError:
+            pass
 
     def closeEvent(self, event):
         """
