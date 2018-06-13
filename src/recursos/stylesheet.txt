@@ -119,6 +119,9 @@ QDialog QComboBox{
 QComboBox{
    selection-background-color: #5cb50d;
 }
+QLineEdit{
+   color:#efefef;
+}
 QDialog QComboBox::down-arrow{
    border: 0;
    height: 50px;

@@ -34,6 +34,7 @@ email: victor.pacheco@brino.cc
 """
 
 import os
+
 from subprocess import Popen, PIPE
 
 import Main
@@ -58,8 +59,8 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     :return output:
         resultado do comando de compilacao
     """
-    pacotes_instalados = os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages'))
-    cmd = os.path.abspath(os.path.join('.', 'builder', 'arduino-builder'))
+    pacotes_instalados = '"'+os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages'))+'"'
+    cmd = '"'+os.path.abspath(os.path.join('.', 'builder', 'arduino-builder'))+'"'
     cmd += " -compile"
     cmd += " -logger=human"
     cmd = adicionar_hardware_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'hardware')))
@@ -79,7 +80,7 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     # TODO warning level
     cmd += " -build-cache " + cache
     # TODO mais preferencias
-    cmd += " " + os.path.dirname(caminho)
+    cmd += " " + '"' + os.path.dirname(caminho) + '"'
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     output = p.stdout.read()
     output += p.stderr.read()
@@ -141,5 +142,5 @@ def adicionar_se_existe(string, opcao, arquivo):
         comando com acresimos
     """
     if os.path.exists(arquivo):
-        return string + opcao + arquivo
+        return string + opcao + '"' + arquivo + '"'
     return string

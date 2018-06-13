@@ -35,6 +35,7 @@ email: victor.pacheco@brino.cc
 
 import json
 import os
+
 import re
 
 
@@ -57,6 +58,26 @@ def get_highlights(tipo):
 
     return palavras
 
+
+def get_words(tipo):
+    """
+    Busca as palavras que devem ser destacadas com hightlight tipo
+    :param tipo:
+        Tipo de hightlight
+    :return palavras:
+        Lista de palavras com hightlight tipo
+    """
+    data = json.load(open(os.path.join('recursos', 'pt-br.json')))
+    palavras = list()
+
+    for palavra_chave in data['Keywords']:
+        if palavra_chave.get('highlight-type') == tipo:
+            string_unicode = palavra_chave.get('highlight')
+            string_unicode = string_unicode.replace("\\b", '')
+            if string_unicode:
+                palavras.append(string_unicode)
+
+    return palavras
 
 def traduzir(caminho):
     """

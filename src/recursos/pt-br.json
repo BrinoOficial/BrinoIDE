@@ -153,10 +153,10 @@
     },
     {
       "highlight": "\\bler\\b",
-      "arduino": "Serial.read",
+      "arduino": "Serial\\1.read",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "\\bUSB.ler\\b"
+      "translate": "\\bUSB([0-9]*).ler\\b"
     },
     {
       "highlight": "\\bread\\b",
@@ -468,7 +468,7 @@
       "arduino": "digitalWrite(\\1,HIGH)",
       "arg": "d",
       "highlight-type": "3",
-      "translate": "\\bligar\\(\\s*([a-zA-z0-9]+)\\s*\\)"
+      "translate": "\\bligar\\(\\s*([][a-zA-z0-9+-]+)\\s*\\)"
     },
     {
       "highlight": "\\bdesligar\\b",
@@ -986,11 +986,11 @@
       "translate": "\\bformatar\\b"
     },
     {
-      "highlight": "\\bUSB\\b",
-      "arduino": "Serial",
+      "highlight": "\\bUSB[0-9]*\\b",
+      "arduino": "Serial\\1",
       "arg": "false",
       "highlight-type": "4",
-      "translate": "\\bUSB\\b"
+      "translate": "\\bUSB([0-9]*)\\b"
     },
     {
       "highlight": "\\bSerial\\b",
@@ -1218,5 +1218,5 @@
     }
   ],
   "language": "pt-br",
-  "version": "7"
+  "version": "8"
 }

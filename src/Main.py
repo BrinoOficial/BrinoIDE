@@ -37,10 +37,13 @@ author: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import json
 import os
-import re
 import sys
+import webbrowser
+from urllib.request import urlopen
 
+import re
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QSplashScreen, QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
@@ -51,7 +54,7 @@ import MonitorSerial
 import Preferencias
 import UI
 
-versao = '3.0.1'
+versao = '3.0.3'
 caminho_padrao = ''
 monitor = 3
 
@@ -233,6 +236,7 @@ class Principal(QMainWindow):
             if not self.widget_central.remover_aba(num_examinar, True):
                 close_event.ignore()
                 return
+        monitor.close()
         close_event.accept()
 
 
@@ -254,15 +258,66 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
-    splash.setMask(splash_pix.mask())
+    splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
     splash.show()
     app.processEvents()
+    versaoOnline = ''
+    deve_atualizar = False
+
+    try:
+        with urlopen('http://brino.cc/brino/rastrear.php') as response:
+            pass
+    except:
+        pass
+
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
+    try:
+        with urlopen('http://brino.cc/brino/versao.php') as response:
+            for line in response:
+                versaoOnline += line.decode('utf-8')
+
+        vOn = versaoOnline.split('.')
+        v = versao.split('.')
+        for i in range(0, 3):
+            if vOn[i] > v[i]:
+                deve_atualizar = True
+                print("precisa atualizar")
+                i = 4
+    except:
+        pass
+
+    versaoJSON = ""
+    try:
+        with urlopen('http://brino.cc/brino/lib/ling/version.json') as response:
+            for line in response:
+                versaoJSON += line.decode('utf-8')
+            data = json.loads(versaoJSON)
+            files = os.listdir(os.path.abspath('./recursos'))
+            lings = [fi.replace('.json', '') for fi in files if fi.endswith(".json")]
+            for lingua in data['Linguas']:
+                if lingua['ling'] in lings:
+                    data2 = json.load(open(os.path.join('recursos', lingua['ling'] + '.json')))
+                    if lingua['version'] > data2['version']:
+                        with open(os.path.join('recursos', lingua['ling'] + '.json'), 'w') as f, urlopen(
+                                'http://brino.cc/brino/lib/ling/' + lingua['ling'] + "/" + lingua[
+                                    'ling'] + ".json") as json:
+                            for line in json:
+                                f.write(line.decode('utf-8'))
+    except:
+        pass
     monitor = MonitorSerial.MonitorSerial()
     Preferencias.init()
     principal = Principal()
     principal.show()
+    if len(sys.argv) > 1:
+        principal.widget_central.abrir(sys.argv[1], False)
     splash.finish(principal)
+    if deve_atualizar:
+        atual = QMessageBox().warning(None, 'Atualização',
+                                      "Existe uma atualização disponível para o Brino!",
+                                      QMessageBox.Ok | QMessageBox.Cancel)
+        if atual == QMessageBox.Ok:
+            webbrowser.open("http://brino.cc/download.php", 1, True)
     sys.exit(app.exec_())

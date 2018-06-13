@@ -61,18 +61,23 @@ modificado por: Mateus Berardo
 email: mateus.berardo@brino.cc
 modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
+
+auto-complete modificado a partir do codigo de smitkpatel
+disponivel em https://stackoverflow.com/questions/28956693/pyqt5-qtextedit-auto-completion
 """
 
-import functools
 import ntpath
 import os
+
+import functools
 import re
-
 from PyQt5.QtCore import QRect, Qt, QSize
-from PyQt5.QtGui import QColor, QTextFormat, QPainter
-from PyQt5.QtWidgets import QPlainTextEdit, QTextEdit, QWidget, QInputDialog, QMessageBox
+from PyQt5.QtGui import QColor, QTextFormat, QPainter, QTextCursor
+from PyQt5.QtWidgets import QPlainTextEdit, QCompleter, QTextEdit, QWidget, QInputDialog, QMessageBox
 
+import DestaqueSintaxe
 import Main
+import MeuDicionarioComplete
 
 
 class CodeEditor(QPlainTextEdit):
@@ -129,6 +134,13 @@ class CodeEditor(QPlainTextEdit):
             with open(path) as arquivo:
                 self.set_texto(arquivo.read())
         self.salvo = True
+        self.highlight = DestaqueSintaxe.PythonHighlighter(self.document())
+        self.completer = MeuDicionarioComplete.MeuDicionarioComplete()
+        self.completer.popup().setStyleSheet("""
+            background: #101010;
+            color: #efefef;
+        """)
+        self.setCompleter(self.completer)
 
     def atualizar_largura_contador(self):
         """
@@ -274,6 +286,107 @@ class CodeEditor(QPlainTextEdit):
         regex = re.compile('[A-Za-z_-]+[0-9A-Za-z_-]*')
         return re.match(regex, nome)
 
+    def setCompleter(self, completer):
+        #        if self.completer:
+        #            self.disconnect(self.completer, 0, self, 0)
+        #        if not completer:
+        #            return
+        completer.setWidget(self)
+        completer.setCompletionMode(QCompleter.PopupCompletion)
+        completer.setCaseSensitivity(Qt.CaseSensitive)
+        self.completer = completer
+        self.completer.insertText.connect(self.insertCompletion)
+
+    def insertCompletion(self, completion):
+        tc = self.textCursor()
+        extra = (len(completion) -
+                 len(self.completer.completionPrefix()))
+        tc.movePosition(QTextCursor.Left)
+        tc.movePosition(QTextCursor.EndOfWord)
+        tc.insertText(completion[-extra:])
+        self.setTextCursor(tc)
+
+    def textUnderCursor(self):
+        tc = self.textCursor()
+        tc.select(QTextCursor.WordUnderCursor)
+        return tc.selectedText()
+
+    def focusInEvent(self, event):
+        if self.completer:
+            self.completer.setWidget(self);
+        QPlainTextEdit.focusInEvent(self, event)
+
+    def keyPressEvent(self, event):
+        if self.completer and self.completer.popup() and self.completer.popup().isVisible():
+            if event.key() in (
+                    Qt.Key_Enter,
+                    Qt.Key_Return,
+                    Qt.Key_Escape,
+                    Qt.Key_Backtab):
+                event.ignore()
+                return
+        # ctrl+espaco foi pressionado?
+        e_atalho = (event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_Space)
+        # modifier to complete suggestion inline ctrl-e
+        inline = (event.modifiers() == Qt.ControlModifier and event.key() == Qt.Key_E) or (
+                self.completer.popup().isVisible() and event.key() == Qt.Key_Tab)
+        # if inline completion has been chosen
+        if inline:
+            # set completion mode as inline
+            self.completer.setCompletionMode(QCompleter.InlineCompletion)
+            prefixo_a_completar = self.textUnderCursor()
+            if (prefixo_a_completar != self.completer.completionPrefix()):
+                self.completer.setCompletionPrefix(prefixo_a_completar)
+            self.completer.complete()
+            #            self.completer.setCurrentRow(0)
+            #            self.completer.activated.emit(self.completer.currentCompletion())
+            # set the current suggestion in the text box
+            self.completer.insertText.emit(self.completer.currentCompletion())
+            # reset the completion mode
+            self.completer.setCompletionMode(QCompleter.PopupCompletion)
+            return
+        if (not self.completer or not e_atalho):
+            pass
+            QPlainTextEdit.keyPressEvent(self, event)
+        # debug
+        #        print("After controlspace")
+        #        print("e_atalho is: {}".format(e_atalho))
+        # debug over
+        # ctrl or shift key on it's own??
+        ctrlOrShift = event.modifiers() in (Qt.ControlModifier, Qt.ShiftModifier)
+        if ctrlOrShift and event.text() == '':
+            #             ctrl or shift key on it's own
+            return
+        # debug
+        #        print("After on its own")
+        #        print("e_atalho is: {}".format(e_atalho))
+        # debug over
+        #        eow = "~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=" #fim da palavra
+        eow = "~!@#$%^&*+{}|:\"<>?,./;'[]\\-="  # fim da palavra
+
+        hasModifier = ((event.modifiers() != Qt.NoModifier) and not ctrlOrShift)
+
+        prefixo_a_completar = self.textUnderCursor()
+        #         print('event . text = {}'.format(event.text().right(1)))
+        #         if (not e_atalho and (hasModifier or event.text()=='' or\
+        #                                 len(prefixo_a_completar) < 3 or \
+        #                                 eow.contains(event.text().right(1)))):
+        if not e_atalho:
+            if self.completer.popup():
+                self.completer.popup().hide()
+            return
+        #        print("complPref: {}".format(prefixo_a_completar))
+        #        print("completer.complPref: {}".format(self.completer.prefixo_a_completar()))
+        #        print("mode: {}".format(self.completer.completionMode()))
+        #        if (prefixo_a_completar != self.completer.prefixo_a_completar()):
+        self.completer.setCompletionPrefix(prefixo_a_completar)
+        popup = self.completer.popup()
+        popup.setCurrentIndex(
+            self.completer.completionModel().index(0, 0))
+        cr = self.cursorRect()
+        cr.setWidth(self.completer.popup().sizeHintForColumn(0)
+                    + self.completer.popup().verticalScrollBar().sizeHint().width())
+        self.completer.complete(cr)  # popup it up!
 
 class ContadorDeLinhas(QWidget):
 
