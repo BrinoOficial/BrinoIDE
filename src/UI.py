@@ -39,6 +39,7 @@ import ntpath
 import os
 import sys
 from tempfile import mkdtemp
+import shutil
 
 import serial
 from PyQt5.QtCore import Qt
@@ -688,6 +689,35 @@ class Centro(QWidget):
         for menu in self.menus_personalizados:
             if menu.title() == title:
                 return menu
+
+    def instalar_biblioteca(self):
+        caminho_bibliotecas = os.path.join(get_caminho_padrao(), "bibliotecas")
+        dialogo = QFileDialog()
+        dialogo.setWindowTitle("Escolher biblioteca")
+        dialogo.setLabelText(QFileDialog.FileName, "Arquivo:")
+        dialogo.setLabelText(QFileDialog.LookIn, "Buscar em:")
+        dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
+        dialogo.setLabelText(QFileDialog.Accept, "Escolher")
+        dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
+        dialogo.setFileMode(QFileDialog.DirectoryOnly)
+        dialogo.setDirectory(get_caminho_padrao())
+        if dialogo.exec_() == QFileDialog.Accepted:
+            caminho = dialogo.selectedUrls()[0].path()
+            # Testa se o arquivo existe
+            if os.path.exists(caminho):
+                try:
+                    shutil.copytree(caminho, os.path.join(caminho_bibliotecas,os.path.basename(caminho)))
+                    # Directories are the same
+                except shutil.Error as e:
+                    print('Directory not copied. Error: %s' % e)
+                    # Any error saying that the directory doesn't exist
+                except OSError as e:
+                    print('Directory not copied. Error: %s' % e)
+            else:
+                QMessageBox(QMessageBox.Warning, "Erro", "O arquivo não existe", QMessageBox.NoButton, self).show()
+        else:
+            return
+
 
 
 class Porta:
