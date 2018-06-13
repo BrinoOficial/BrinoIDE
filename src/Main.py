@@ -258,6 +258,13 @@ if __name__ == '__main__':
     app.processEvents()
     versaoOnline = ''
     deve_atualizar = False
+
+    try:
+        with urlopen('http://brino.cc/brino/rastrear.php') as response:
+            pass
+    except:
+        pass
+
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
