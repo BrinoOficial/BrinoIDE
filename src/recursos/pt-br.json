@@ -188,18 +188,51 @@
       "translate": "\\bescreverAnalogico\\b"
     },
     {
+      "highlight": "\\bMemoria.escrever\\b",
+      "arduino": "EEPROM.write",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bMemoria.escrever\\b"
+    },
+    {
+      "highlight": "\\bEEPROM.write\\b",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "\\bMemoria.ler\\b",
+      "arduino": "EEPROM.read",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bMemoria.ler\\b"
+    },
+    {
+      "highlight": "\\bEEPROM.read\\b",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "\\bMemoria.tamanho\\b",
+      "arduino": "EEPROM.length",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bMemoria.tamanho\\b"
+    },
+    {
+      "highlight": "\\bEEPROM.length\\b",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "\\banalogWrite\\b",
       "highlight-type": "3"
     },
     {
-      "highlight": "\\bescrever\\b",
+      "highlight": "\\bDigital.escrever\\b",
       "arduino": "digitalWrite(",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "\\bescrever\\("
+      "translate": "\\Digital.escrever\\("
     },
     {
-      "highlight": "\\bdigitalWrite\\b",
+      "highlight": "\\bbdigitalWrite\\b",
       "highlight-type": "3"
     },
     {
@@ -498,13 +531,6 @@
     {
       "highlight": "\\bWire\\b",
       "highlight-type": "4"
-    },
-    {
-      "highlight": "\\bMemoria\\b",
-      "arduino": "EEPROM",
-      "arg": "false",
-      "highlight-type": "4",
-      "translate": "\\bMemoria\\b"
     },
     {
       "highlight": "\\bEEPROM\\b",
@@ -979,11 +1005,11 @@
       "highlight-type": "1"
     },
     {
-      "highlight": "\\bformatar\\b",
+      "highlight": "\\bMemoria.formatar\\b",
       "arduino": "for (int i = 0 ; i < EEPROM.length() ; i++) EEPROM.write(i, 0);",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "\\bformatar\\b"
+      "translate": "\\bMemoria.formatar\\b"
     },
     {
       "highlight": "\\bUSB[0-9]*\\b",
