@@ -627,8 +627,10 @@ class Centro(QWidget):
         traduzir(caminho)
         resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build,
                                              self.temp_cache)
-        self.log.insertPlainText(str(resultado, sys.stdout.encoding))
-
+        try:
+            self.log.insertPlainText(str(resultado, sys.stdout.encoding))
+        except UnicodeDecodeError:
+            self.log.insertPlainText("Não foi possível processar a saída de texto do compilador, é possível que ele tenha compilado corretamente.")
     def upload(self):
         """
         Compila e carrega o codigo da aba atual
