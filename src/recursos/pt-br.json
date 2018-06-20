@@ -163,6 +163,39 @@
       "highlight-type": "3"
     },
     {
+      "highlight": "\\bescrever\\b",
+      "arduino": "EEPROM.write",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bMemoria.escrever\\b"
+    },
+    {
+      "highlight": "\\bwrite\\b",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "\\bler\\b",
+      "arduino": "EEPROM.read",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bMemoria.ler\\b"
+    },
+    {
+      "highlight": "\\bread\\b",
+      "highlight-type": "3"
+    },
+    {
+      "highlight": "\\btamanho\\b",
+      "arduino": "EEPROM.length",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bMemoria.tamanho\\b"
+    },
+    {
+      "highlight": "\\blength\\b",
+      "highlight-type": "3"
+    },
+    {
       "highlight": "\\bPino\\b",
       "arduino": "",
       "arg": "false",
@@ -961,39 +994,6 @@
       "highlight-type": "3"
     },
     {
-      "highlight": "\\bescrever\\b",
-      "arduino": "write",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "\\bescrever\\b"
-    },
-    {
-      "highlight": "\\bwrite\\b",
-      "highlight-type": "3"
-    },
-    {
-      "highlight": "\\bler\\b",
-      "arduino": "read",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "\\bler\\b"
-    },
-    {
-      "highlight": "\\bread\\b",
-      "highlight-type": "3"
-    },
-    {
-      "highlight": "\\btamanho\\b",
-      "arduino": "length",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "\\btamanho\\b"
-    },
-    {
-      "highlight": "\\blength\\b",
-      "highlight-type": "3"
-    },
-    {
       "highlight": "\\bConstante\\b",
       "arduino": "const",
       "arg": "false",
@@ -1009,7 +1009,7 @@
       "arduino": "for (int i = 0 ; i < EEPROM.length() ; i++) EEPROM.write(i, 0);",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "\\bMemoria.formatar\\b"
+      "translate": "\\bEEPROM.formatar();\\b"
     },
     {
       "highlight": "\\bUSB[0-9]*\\b",
@@ -1244,5 +1244,5 @@
     }
   ],
   "language": "pt-br",
-  "version": "8"
+  "version": "9"
 }
