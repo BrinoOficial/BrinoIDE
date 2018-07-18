@@ -17,7 +17,7 @@ Versão em PyQt5 da IDE do Br.ino! Mais rápida e eficiente
 ## Autores
 
 * **Mateus Berardo** - *Autor* - [MatTerra](https://github.com/MatTerra)
-* **Víctor Rodrigues Pacheco** - *Autor* - [granix3](https://github.com/granix3)
+* **Víctor Rodrigues Pacheco** - *Autor* - [VictorRPacheco](https://github.com/VictorRPacheco)
 
 Veja também a lista de [contributors](https://github.com/BrinoOficial/BrinoPy/graphs/contributors).
 
