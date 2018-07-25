@@ -38,10 +38,10 @@ import ntpath
 import os
 import sys
 from tempfile import mkdtemp
-import shutil
 
 import functools
 import serial
+import shutil
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,
@@ -700,10 +700,11 @@ class Centro(QWidget):
         dialogo.setDirectory(get_caminho_padrao())
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedUrls()[0].path()
+            print(caminho)
             # Testa se o arquivo existe
             if os.path.exists(caminho):
                 try:
-                    shutil.copytree(caminho, os.path.join(caminho_bibliotecas,os.path.basename(caminho)))
+                    shutil.copytree(caminho, os.path.join(caminho_bibliotecas, os.path.basename(caminho)))
                     # Directories are the same
                 except shutil.Error as e:
                     print('Directory not copied. Error: %s' % e)
