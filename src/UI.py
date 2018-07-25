@@ -701,6 +701,9 @@ class Centro(QWidget):
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedUrls()[0].path()
             print(caminho)
+            if(caminho.startswith("/") and os.name == 'nt'):
+                caminho = caminho[1:]
+                print(caminho)
             # Testa se o arquivo existe
             if os.path.exists(caminho):
                 try:
