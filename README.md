@@ -1,6 +1,8 @@
 # BrinoPy
 Versão em PyQt5 da IDE do Br.ino! Mais rápida e eficiente
 
+## Erros na instalação? Confira a nossa página: [Correção de erros]https://github.com/BrinoOficial/BrinoPy/wiki/Corre%C3%A7%C3%A3o-de-erros)!
+
 ## Feito com
 
 * [Pycharm](https://www.jetbrains.com/pycharm/) - IDEA utilizada
