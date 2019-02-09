@@ -41,7 +41,6 @@ import json
 import os
 import sys
 import webbrowser
-import functools
 from urllib.request import urlopen
 
 import re
@@ -308,6 +307,7 @@ if __name__ == '__main__':
     versaoJSON = ""
     try:
         with urlopen('http://brino.cc/brino/lib/ling/version.json') as response:
+
             for line in response:
                 versaoJSON += line.decode('utf-8')
             data = json.loads(versaoJSON)
@@ -316,13 +316,15 @@ if __name__ == '__main__':
             for lingua in data['Linguas']:
                 if lingua['ling'] in lings:
                     data2 = json.load(open(os.path.join('recursos', lingua['ling'] + '.json')))
-                    if lingua['version'] > data2['version']:
+                    if int(lingua['version']) > int(data2['version']):
                         with open(os.path.join('recursos', lingua['ling'] + '.json'), 'w') as f, urlopen(
                                 'http://brino.cc/brino/lib/ling/' + lingua['ling'] + "/" + lingua[
                                     'ling'] + ".json") as json:
                             for line in json:
                                 f.write(line.decode('utf-8'))
+                            print("JSON ", lingua['ling'], " atualizado")
     except:
+
         pass
     monitor = MonitorSerial.MonitorSerial()
     Preferencias.init()
