@@ -51,8 +51,8 @@ class MonitorSerial(QWidget):
         self.linha_envio = QLineEdit(self)
         self.log_monitor = QPlainTextEdit(self)
         self.velocidade = QComboBox(self)
-        self.velocidade.addItems(
-            ("300", "600", "1200", "2400", "4800", "9600", "14400", "19200", "28800", "38400", "57600", "115200"))
+        self.velocidade.addItem(
+            ("9600"))
         self.velocidade.currentTextChanged.connect(self.mudar_velocidade)
         self.conexao = None
         self.parar = True
@@ -82,6 +82,7 @@ class MonitorSerial(QWidget):
         layout = QGridLayout(self)
         layout.setColumnStretch(0, 8)
         layout.setColumnStretch(1, 2)
+        layout.setColumnStretch(2, 2)
         layout.setRowStretch(0, 1)
         layout.setRowStretch(1, 12)
         layout.setRowStretch(2, 1)
@@ -100,14 +101,22 @@ class MonitorSerial(QWidget):
                                     #btn_enviar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
         btn_enviar.clicked.connect(self.enviar)
 
+        btn_limpar = QPushButton("Limpar")
+        btn_limpar.setObjectName("btn_limpar")
+        btn_limpar.setStyleSheet("""#btn_limpar_tag{border-radius:2px;color:#252525;background:#5cb50d;margin:2px;}
+                                            #btn_limpar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
+        btn_limpar.clicked.connect(self.limpar)
+
         self.rolagem_check = QCheckBox(self)
+        self.rolagem_check.setChecked(True)
         self.rolagem_check.setText("Rolagem-automática")
 
         layout.addWidget(self.linha_envio, 0, 0)
         layout.addWidget(self.log_monitor, 1, 0, 1, 0)
-        layout.addWidget(btn_enviar, 0, 1)
+        layout.addWidget(btn_enviar, 0, 2)
         layout.addWidget(self.rolagem_check, 2, 0)
         layout.addWidget(self.velocidade, 2, 1)
+        layout.addWidget(btn_limpar, 2, 2)
 
     def mudar_velocidade(self):
         self.desconectar()
@@ -162,6 +171,14 @@ class MonitorSerial(QWidget):
         """
         self.conexao.write(self.linha_envio.text().encode('utf-8'))
         self.linha_envio.setText("")
+
+    def limpar(self):
+        """
+        Limpa o log do Monitor Serial
+        :return:
+            None
+        """
+        self.log_monitor.clear()
 
     def serial_listener(self, nome, parar):
         """
