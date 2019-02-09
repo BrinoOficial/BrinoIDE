@@ -41,6 +41,13 @@
       "translate": "\\bSemRetorno\\b"
     },
     {
+      "highlight": "\\bProcedimento\\b",
+      "arduino": "void",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bProcedimento\\b"
+    },
+    {
       "highlight": "\\bvoid\\b",
       "highlight-type": "1"
     },
@@ -221,51 +228,18 @@
       "translate": "\\bescreverAnalogico\\b"
     },
     {
-      "highlight": "\\bMemoria.escrever\\b",
-      "arduino": "EEPROM.write",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "\\bMemoria.escrever\\b"
-    },
-    {
-      "highlight": "\\bEEPROM.write\\b",
-      "highlight-type": "3"
-    },
-    {
-      "highlight": "\\bMemoria.ler\\b",
-      "arduino": "EEPROM.read",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "\\bMemoria.ler\\b"
-    },
-    {
-      "highlight": "\\bEEPROM.read\\b",
-      "highlight-type": "3"
-    },
-    {
-      "highlight": "\\bMemoria.tamanho\\b",
-      "arduino": "EEPROM.length",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "\\bMemoria.tamanho\\b"
-    },
-    {
-      "highlight": "\\bEEPROM.length\\b",
-      "highlight-type": "3"
-    },
-    {
       "highlight": "\\banalogWrite\\b",
       "highlight-type": "3"
     },
     {
-      "highlight": "\\bDigital.escrever\\b",
+      "highlight": "\\bescrever\\b",
       "arduino": "digitalWrite(",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "\\Digital.escrever\\("
+      "translate": "\\bescrever\\("
     },
     {
-      "highlight": "\\bbdigitalWrite\\b",
+      "highlight": "\\bdigitalWrite\\b",
       "highlight-type": "3"
     },
     {
@@ -455,19 +429,12 @@
       "highlight": "\\bINPUT_PULLUP\\b",
       "highlight-type": "1"
     },
-    {
+        {
       "highlight": "\\bEntrada_PULLUP\\b",
       "arduino": "INPUT_PULLUP",
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bEntrada_PULLUP\\b"
-    },
-    {
-      "highlight": "\\bEntrada\\b",
-      "arduino": "INPUT",
-      "arg": "false",
-      "highlight-type": "1",
-      "translate": "\\bEntrada\\b"
     },
     {
       "highlight": "\\bNumeroLongo\\b",
@@ -571,6 +538,13 @@
     {
       "highlight": "\\bWire\\b",
       "highlight-type": "4"
+    },
+    {
+      "highlight": "\\bMemoria\\b",
+      "arduino": "EEPROM",
+      "arg": "false",
+      "highlight-type": "4",
+      "translate": "\\bMemoria\\b"
     },
     {
       "highlight": "\\bEEPROM\\b",
@@ -1012,7 +986,7 @@
       "highlight-type": "1"
     },
     {
-      "highlight": "\\bMemoria.formatar\\b",
+      "highlight": "\\bformatar\\b",
       "arduino": "for (int i = 0 ; i < EEPROM.length() ; i++) EEPROM.write(i, 0);",
       "arg": "false",
       "highlight-type": "3",
@@ -1251,5 +1225,5 @@
     }
   ],
   "language": "pt-br",
-  "version": "9"
+  "version": "10"
 }
