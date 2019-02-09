@@ -41,7 +41,7 @@ import json
 import os
 import sys
 import webbrowser
-import time
+import functools
 from urllib.request import urlopen
 
 import re
@@ -68,6 +68,7 @@ class Principal(QMainWindow):
         # Define as acoes
         self.acao_novo = QAction('&Novo', self)
         self.acao_abrir = QAction('Abrir', self)
+        self.acao_abrir_arduino = QAction('Abrir Traducao', self)
         self.acao_exemplos = QAction('Exemplos', self)
         self.acao_sair = QAction('Sair', self)
         self.acao_fechar_aba = QAction('Fechar aba', self)
@@ -132,6 +133,10 @@ class Principal(QMainWindow):
         self.acao_abrir.triggered.connect(self.widget_central.abrir)
         self.acao_abrir.setStatusTip("Abrir arquivo")
 
+        self.acao_abrir_arduino.setShortcut('Ctrl+T')
+        self.acao_abrir_arduino.triggered.connect(self.widget_central.abrir_traducao)
+        self.acao_abrir.setStatusTip("Abrir Tradução")
+
         self.acao_salvar.setShortcut('Ctrl+S')
         self.acao_salvar.triggered.connect(self.widget_central.salvar)
         self.acao_salvar.setStatusTip("Salvar arquivo")
@@ -187,6 +192,7 @@ class Principal(QMainWindow):
         menu_arquivo = barra_menu.addMenu('Arquivo')
         menu_arquivo.addAction(self.acao_novo)
         menu_arquivo.addAction(self.acao_abrir)
+        menu_arquivo.addAction(self.acao_abrir_arduino)
         menu_arquivo.addMenu(self.menu_exemplos)
         menu_arquivo.addAction(self.acao_salvar)
         menu_arquivo.addAction(self.acao_salvar_como)

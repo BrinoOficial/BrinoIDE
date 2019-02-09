@@ -201,6 +201,19 @@ class Centro(QWidget):
         # Define que nao eh necessario salvar pois acabou de ser aberto
         editor.set_salvo(True)
 
+    def abrir_traducao(self):
+        """
+        Abrir a traducao auto gerada em uma nova aba
+
+        :return:
+            None
+        """
+        self.compilar()
+        editor = self.widget_abas.widget(self.widget_abas.currentIndex())
+        caminho_traducao = editor.get_caminho()
+        caminho_traducao = caminho_traducao.replace("brpp", "ino")
+        self.abrir(caminho=caminho_traducao, exemplo=True)
+
     def abrir(self, caminho=None, exemplo=True):
         """
         Abrir arquivo .ino ou .brpp em nova aba
