@@ -613,6 +613,7 @@ class Centro(QWidget):
         :return:
             None
         """
+        self.log.insertPlainText("Compilando...")
         self.salvar()
         self.log.clear()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
@@ -631,6 +632,7 @@ class Centro(QWidget):
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:
             self.log.insertPlainText("Não foi possível processar a saída de texto do compilador, é possível que ele tenha compilado corretamente.")
+
     def upload(self):
         """
         Compila e carrega o codigo da aba atual
@@ -638,6 +640,7 @@ class Centro(QWidget):
             None
         """
         self.compilar()
+
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
         # Testa se a aba eh a de boas vindas

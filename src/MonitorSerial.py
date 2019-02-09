@@ -34,6 +34,7 @@ email: victor.pacheco@brino.cc
 """
 
 import serial
+import time
 import threading
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QTextCursor
@@ -51,8 +52,9 @@ class MonitorSerial(QWidget):
         self.linha_envio = QLineEdit(self)
         self.log_monitor = QPlainTextEdit(self)
         self.velocidade = QComboBox(self)
-        self.velocidade.addItem(
-            ("9600"))
+        self.velocidade.addItems(
+            ("300", "600", "1200", "2400", "4800", "9600", "14400", "19200", "28800", "38400", "57600", "115200"))
+        self.velocidade.setCurrentText("9600")
         self.velocidade.currentTextChanged.connect(self.mudar_velocidade)
         self.conexao = None
         self.parar = True
@@ -133,6 +135,7 @@ class MonitorSerial(QWidget):
         """
         try:
             self.conexao = serial.Serial(porta, baud)
+            time.sleep(0.1)
             self.parar = False
             self.thread_monitor.start()
             return True
@@ -162,6 +165,7 @@ class MonitorSerial(QWidget):
         self.thread_monitor.join()
         self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
         self.conexao.close()
+        time.sleep(0.5)
 
     def enviar(self):
         """

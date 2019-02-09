@@ -41,6 +41,7 @@ import json
 import os
 import sys
 import webbrowser
+import time
 from urllib.request import urlopen
 
 import re
@@ -170,7 +171,7 @@ class Principal(QMainWindow):
         self.acao_verificar.setStatusTip("Verificar código")
 
         self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
-        self.acao_verificar_e_carregar.triggered.connect(self.widget_central.upload)
+        self.acao_verificar_e_carregar.triggered.connect(self.enviar_codigo)
         self.acao_verificar_e_carregar.setStatusTip("Verificar e carregar código")
 
     def criar_barra_menu(self):
@@ -221,6 +222,16 @@ class Principal(QMainWindow):
         else:
             QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
                         QMessageBox.NoButton, self).show()
+
+    def enviar_codigo(self):
+        """
+        Fecha o monitor serial, compila e carrega o codigo da aba atual
+        :return:
+            None
+        """
+        monitor.desconectar()
+        self.widget_central.upload()
+        self.abrir_serial()
 
     def closeEvent(self, close_event):
         """

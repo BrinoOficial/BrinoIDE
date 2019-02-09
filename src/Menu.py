@@ -65,7 +65,7 @@ class Menu(QWidget):
         btn_compilar_e_carregar = botaoImagem(QPixmap(os.path.join('recursos', 'carregar.png')),
                                               QPixmap(os.path.join('recursos', 'carregarFoco.png')), self)
         btn_compilar_e_carregar.setFixedSize(50, 70)
-        btn_compilar_e_carregar.clicked.connect(self.parent.upload)
+        btn_compilar_e_carregar.clicked.connect(self.parent.parent.enviar_codigo)
         btn_compilar_e_carregar.setStatusTip("Compilar e carregar código")
 
         btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'novoArquivo.png')),
