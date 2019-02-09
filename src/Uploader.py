@@ -138,7 +138,7 @@ class UploaderSerial():
         cmd = formatar_e_dividir(padrao, prefs, True)
         print("<", cmd, ">")
         # Testar em windows, pode ser necessário ativar a opção de shell
-        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=False)
+        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         output = p.stdout.read()
         output += p.stderr.read()
         if not output:

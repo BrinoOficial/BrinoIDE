@@ -82,8 +82,10 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     # TODO mais preferencias
     cmd += " " + '"' + os.path.dirname(caminho) + '"'
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
     output = p.stdout.read()
     output += p.stderr.read()
+    print(output)
     return output
 
 
