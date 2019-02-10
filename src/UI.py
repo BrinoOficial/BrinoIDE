@@ -221,6 +221,8 @@ class Centro(QWidget):
         Abrir arquivo .ino ou .brpp em nova aba
         :param caminho:
             endereço para abrir
+        :param exemplo:
+            indicacao se o arquivo pode ser sobrescrito
         :return:
             None
         """
