@@ -42,6 +42,7 @@ import os
 import sys
 import webbrowser
 from urllib.request import urlopen
+import uuid
 
 import re
 from PyQt5.QtCore import Qt
@@ -339,4 +340,11 @@ if __name__ == '__main__':
                                       QMessageBox.Ok | QMessageBox.Cancel)
         if atual == QMessageBox.Ok:
             webbrowser.open("http://brino.cc/download.php", 1, True)
+    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e
+":
+        print("não há id")
+        id = uuid.uuid4()
+        print(id);
+        Preferencias.set("id_cliente", str(id))
+        print("id definido como:", Preferencias.get("id_cliente"))
     sys.exit(app.exec_())
