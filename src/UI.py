@@ -38,6 +38,7 @@ import ntpath
 import os
 import sys
 from tempfile import mkdtemp
+from google_measurement_protocol import event, report
 
 import functools
 import serial
@@ -630,6 +631,8 @@ class Centro(QWidget):
         :return:
             None
         """
+        compilar = event('IDE', 'compilou')
+        report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
         self.log.insertPlainText("Compilando...")
         self.salvar()
         self.log.clear()
