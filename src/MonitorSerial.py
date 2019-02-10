@@ -106,7 +106,7 @@ class MonitorSerial(QWidget):
         btn_limpar = QPushButton("Limpar")
         btn_limpar.setObjectName("btn_limpar")
         btn_limpar.setStyleSheet("""#btn_limpar_tag{border-radius:2px;color:#252525;background:#5cb50d;margin:2px;}
-                                            #btn_limpar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
+                                    #btn_limpar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
         btn_limpar.clicked.connect(self.limpar)
 
         self.rolagem_check = QCheckBox(self)

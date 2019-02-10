@@ -325,7 +325,6 @@ if __name__ == '__main__':
                                 f.write(line.decode('utf-8'))
                             print("JSON ", lingua['ling'], " atualizado")
     except:
-
         pass
     monitor = MonitorSerial.MonitorSerial()
     Preferencias.init()

@@ -32,6 +32,7 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+
 class PacoteAlvo:
 
     def __init__(self, id_):
@@ -70,7 +71,7 @@ class PacoteAlvo:
         :return:
             None
         """
-        return self.plataformas.has_key(plataforma.get_id())
+        return plataforma.get_id() in self.plataformas
 
     def get_id(self):
         """

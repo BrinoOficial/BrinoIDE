@@ -51,7 +51,7 @@ class PlacaAlvo:
         menus = MapaUtils.primeiro_nivel(prefs).get('menu')
         if menus:
             self.menu_opcoes = MapaUtils.primeiro_nivel(menus)
-        if not 'build.board' in self.prefs.keys():
+        if 'build.board' not in self.prefs.keys():
             placa = parent.get_id() + "_" + nome
             placa = placa.upper()
             prefs['build.board'] = placa

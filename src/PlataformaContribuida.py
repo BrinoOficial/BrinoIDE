@@ -32,6 +32,7 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+
 class PlataformaContribuida:
     def __init__(self, data, parent):
         self.nome = data['name']

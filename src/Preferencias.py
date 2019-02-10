@@ -99,6 +99,7 @@ def get_mapa():
     """
     return preferencias
 
+
 def gravar_preferencias():
     """
         Salva as preferencias atualizadas no arquivo preferências

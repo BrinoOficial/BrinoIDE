@@ -646,7 +646,9 @@ class Centro(QWidget):
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:
-            self.log.insertPlainText("Não foi possível processar a saída de texto do compilador, é possível que ele tenha compilado corretamente.")
+            self.log.insertPlainText(
+                "Não foi possível processar a saída de texto do compilador,"
+                +" é possível que ele tenha compilado corretamente.")
 
     def upload(self):
         """
@@ -720,7 +722,7 @@ class Centro(QWidget):
         dialogo.setDirectory(get_caminho_padrao())
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedUrls()[0].path()
-            if(caminho.startswith("/") and os.name == 'nt'):
+            if (caminho.startswith("/") and os.name == 'nt'):
                 caminho = caminho[1:]
             # Testa se o arquivo existe
             if os.path.exists(caminho):
@@ -736,7 +738,6 @@ class Centro(QWidget):
                 QMessageBox(QMessageBox.Warning, "Erro", "O arquivo não existe", QMessageBox.NoButton, self).show()
         else:
             return
-
 
 
 class Porta:

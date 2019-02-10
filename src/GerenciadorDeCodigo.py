@@ -35,5 +35,5 @@ email: victor.pacheco@brino.cc
 
 
 def ir_para_linha():
-    #TODO ir para linha
+    # TODO ir para linha
     pass
