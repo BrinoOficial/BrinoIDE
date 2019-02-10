@@ -347,12 +347,12 @@ if __name__ == '__main__':
         if atual == QMessageBox.Ok:
             webbrowser.open("http://brino.cc/download.php", 1, True)
     # Comente essas linhas para teste, descomente para produção
-    # if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
-    #     print("não há id")
-    #     idc = uuid.uuid4()
-    #     print(idc);
-    #     Preferencias.set("id_cliente", str(idc))
-    #     print("id definido como:", Preferencias.get("id_cliente"))
+    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
+        print("não há id")
+        idc = uuid.uuid4()
+        print(idc)
+        Preferencias.set("id_cliente", str(idc))
+        print("id definido como:", Preferencias.get("id_cliente"))
     try:
         abertura = event('IDE', 'abriu_ide')
         report('UA-89373473-3', Preferencias.get("id_cliente"), abertura)
