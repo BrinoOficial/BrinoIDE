@@ -631,8 +631,11 @@ class Centro(QWidget):
         :return:
             None
         """
-        compilar = event('IDE', 'compilou')
-        report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
+        try:
+            compilar = event('IDE', 'compilou')
+            report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
+        except:
+            pass
         self.log.insertPlainText("Compilando...")
         self.salvar()
         self.log.clear()

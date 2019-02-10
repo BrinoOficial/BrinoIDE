@@ -255,8 +255,11 @@ class Principal(QMainWindow):
                 close_event.ignore()
                 return
         monitor.close()
-        fechamento = event('IDE', 'fechou_ide')
-        report('UA-89373473-3', Preferencias.get("id_cliente"), fechamento)
+        try:
+            fechamento = event('IDE', 'fechou_ide')
+            report('UA-89373473-3', Preferencias.get("id_cliente"), fechamento)
+        except:
+            pass
         Preferencias.gravar_preferencias()
         close_event.accept()
 
@@ -350,6 +353,9 @@ if __name__ == '__main__':
     #     print(idc);
     #     Preferencias.set("id_cliente", str(idc))
     #     print("id definido como:", Preferencias.get("id_cliente"))
-    abertura = event('IDE', 'abriu_ide')
-    report('UA-89373473-3', Preferencias.get("id_cliente"), abertura)
+    try:
+        abertura = event('IDE', 'abriu_ide')
+        report('UA-89373473-3', Preferencias.get("id_cliente"), abertura)
+    except:
+        pass
     sys.exit(app.exec_())
