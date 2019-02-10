@@ -253,6 +253,7 @@ class Principal(QMainWindow):
                 close_event.ignore()
                 return
         monitor.close()
+        Preferencias.gravar_preferencias()
         close_event.accept()
 
 
