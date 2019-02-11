@@ -312,46 +312,8 @@ def gerar_id_cliente():
         print("id definido como:", Preferencias.get("id_cliente"))
 
 
-def install_excepthook():
-    def my_excepthook(exctype, value, tb):
-        s = ''.join(traceback.format_exception(exctype, value, tb))
-        dialog = QMessageBox.question(None,
-                                 'Isto é embaraçoso',
-                                 "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
-                                 + " nos enviar o relatório de erros?",
-                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        print(s)
-        sys.exit(-1)
-
-
-    sys.excepthook = my_excepthook
-
-
-if __name__ == '__main__':
-    # Inicializa o aplicativo
-    app = QApplication(sys.argv)
-    # Inicializa a splash screen
-    splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
-    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
-    splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
-    # Mostra a SplashScreen
-    splash.show()
-    app.processEvents()
-    # Inicializa as preferências
-    Preferencias.init()
-    # Gera o ID do cliente
-    gerar_id_cliente()
-    # Reporta a abertura
-    Rastreador.rastrear(Rastreador.ABERTURA)
-    install_excepthook()
-
-
-    with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
-        stilo = arquivo_stilo.read()
-        app.setStyleSheet(stilo)
-
+def verificar_versao():
     versaoOnline = ''
-    deve_atualizar = False
     try:
         with urlopen('http://brino.cc/brino/versao.php') as response:
             for line in response:
@@ -361,25 +323,77 @@ if __name__ == '__main__':
         v = versao.split('.')
         for i in range(0, 3):
             if vOn[i] > v[i]:
-                deve_atualizar = True
-                print("precisa atualizar")
-                i = 4
+                return True
+
     except:
         pass
+    return False
 
 
+def install_excepthook():
+    def my_excepthook(exctype, value, tb):
+        s = ''.join(traceback.format_exception(exctype, value, tb))
+        dialog = QMessageBox.question(None,
+                                 'Isto é embaraçoso',
+                                 "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
+                                 + " nos enviar o relatório de erros?",
+                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if dialog == QMessageBox.Yes:
+            print(s)
+        sys.exit(-1)
+
+
+    sys.excepthook = my_excepthook
+
+
+if __name__ == '__main__':
+    # Inicializa o aplicativo
+    app = QApplication(sys.argv)
+    print("APP Inicializado")
+    # Inicializa a splash screen
+    splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
+    # Mostra a SplashScreen
+    splash.show()
+    print("Mostrando splash")
+    app.processEvents()
+    # Inicializa as preferências
+    Preferencias.init()
+    print("Preferencias carregadas")
+    # Gera o ID do cliente
+    gerar_id_cliente()
+    print("ID gerado")
+    # Inicializa o monitor de erros
+    install_excepthook()
+    print("Gerenciador de erros instalado")
+    # Reporta a abertura
+    Rastreador.rastrear(Rastreador.ABERTURA)
+    print("Enviada Informação de abertura")
+    # Carrega o estilo
+    with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
+        stilo = arquivo_stilo.read()
+        app.setStyleSheet(stilo)
+    print("Estilo Carregado")
+    # Verifica se há atualização
+    deve_atualizar = verificar_versao()
+    # Inicializa o Monitor Serial
     monitor = MonitorSerial.MonitorSerial()
-
+    # Inicializa a tela principal
     principal = Principal()
     principal.show()
+
     if len(sys.argv) > 1:
         principal.widget_central.abrir(sys.argv[1], False)
+
     splash.finish(principal)
+
     if deve_atualizar:
         atual = QMessageBox().warning(None, 'Atualização',
                                       "Existe uma atualização disponível para o Brino!",
                                       QMessageBox.Ok | QMessageBox.Cancel)
         if atual == QMessageBox.Ok:
             webbrowser.open("http://brino.cc/download.php", 1, True)
+
     sys.exit(app.exec_())
 
