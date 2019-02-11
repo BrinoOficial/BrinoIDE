@@ -37,13 +37,14 @@ author: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-import json
+from json import loads, load
 import os
 import sys
 import webbrowser
 from urllib.request import urlopen
 import uuid
-from google_measurement_protocol import event, report
+
+import traceback
 
 import re
 from PyQt5.QtCore import Qt
@@ -55,6 +56,8 @@ import GerenciadorDeLinguas
 import MonitorSerial
 import Preferencias
 import UI
+import UpdateException
+import Rastreador
 
 versao = '3.0.5'
 caminho_padrao = ''
@@ -255,11 +258,7 @@ class Principal(QMainWindow):
                 close_event.ignore()
                 return
         monitor.close()
-        try:
-            fechamento = event('IDE', 'fechou_ide')
-            report('UA-89373473-3', Preferencias.get("id_cliente"), fechamento)
-        except:
-            pass
+        Rastreador.rastrear(Rastreador.FECHAMENTO)
         Preferencias.gravar_preferencias()
         close_event.accept()
 
@@ -278,25 +277,81 @@ def get_caminho_padrao():
     return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 
+def atualizar_linguas():
+    versao_json = ""
+    resultado = ""
+    try:
+        with urlopen('http://brino.cc/brino/lib/ling/version.json') as json_versao:
+            for linha in json_versao:
+                versao_json += linha.decode('utf-8')
+            versoes_linguas = loads(versao_json)
+            arquivos = os.listdir(os.path.abspath('./recursos'))
+            linguas = [nome_arquivo.replace('.json', '') for nome_arquivo in arquivos if nome_arquivo.endswith(".json")]
+            for lingua in versoes_linguas['Linguas']:
+                if lingua['ling'] in linguas:
+                    lingua_local = load(open(os.path.join('recursos', lingua['ling'] + '.json')))
+                    if int(lingua['version']) > int(lingua_local['version']):
+                        with open(os.path.join('recursos', lingua['ling'] + '.json'), 'w') as f, urlopen(
+                                'http://brino.cc/brino/lib/ling/' + lingua['ling'] + "/" + lingua[
+                                    'ling'] + ".json") as json:
+                            for linha in json:
+                                f.write(linha.decode('utf-8'))
+                            resultado += "JSON %s atualizado. " % str(lingua['ling'])
+    except Exception as e:
+        raise UpdateException(e.args)
+    return resultado
+
+
+def gerar_id_cliente():
+    # Comente essas linhas para teste, descomente para produção
+    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
+        print("não há id")
+        idc = uuid.uuid4()
+        print(idc)
+        Preferencias.set("id_cliente", str(idc))
+        print("id definido como:", Preferencias.get("id_cliente"))
+
+
+def install_excepthook():
+    def my_excepthook(exctype, value, tb):
+        s = ''.join(traceback.format_exception(exctype, value, tb))
+        dialog = QMessageBox.question(None,
+                                 'Isto é embaraçoso',
+                                 "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
+                                 + " nos enviar o relatório de erros?",
+                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        print(s)
+        sys.exit(-1)
+
+
+    sys.excepthook = my_excepthook
+
+
 if __name__ == '__main__':
+    # Inicializa o aplicativo
     app = QApplication(sys.argv)
+    # Inicializa a splash screen
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
+    # Mostra a SplashScreen
     splash.show()
     app.processEvents()
-    versaoOnline = ''
-    deve_atualizar = False
+    # Inicializa as preferências
+    Preferencias.init()
+    # Gera o ID do cliente
+    gerar_id_cliente()
+    # Reporta a abertura
+    Rastreador.rastrear(Rastreador.ABERTURA)
+    install_excepthook()
 
-    try:
-        with urlopen('http://brino.cc/brino/rastrear.php') as response:
-            pass
-    except:
-        pass
 
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
+
+    versaoOnline = ''
+    deve_atualizar = False
     try:
         with urlopen('http://brino.cc/brino/versao.php') as response:
             for line in response:
@@ -312,29 +367,9 @@ if __name__ == '__main__':
     except:
         pass
 
-    versaoJSON = ""
-    try:
-        with urlopen('http://brino.cc/brino/lib/ling/version.json') as response:
 
-            for line in response:
-                versaoJSON += line.decode('utf-8')
-            data = json.loads(versaoJSON)
-            files = os.listdir(os.path.abspath('./recursos'))
-            lings = [fi.replace('.json', '') for fi in files if fi.endswith(".json")]
-            for lingua in data['Linguas']:
-                if lingua['ling'] in lings:
-                    data2 = json.load(open(os.path.join('recursos', lingua['ling'] + '.json')))
-                    if int(lingua['version']) > int(data2['version']):
-                        with open(os.path.join('recursos', lingua['ling'] + '.json'), 'w') as f, urlopen(
-                                'http://brino.cc/brino/lib/ling/' + lingua['ling'] + "/" + lingua[
-                                    'ling'] + ".json") as json:
-                            for line in json:
-                                f.write(line.decode('utf-8'))
-                            print("JSON ", lingua['ling'], " atualizado")
-    except:
-        pass
     monitor = MonitorSerial.MonitorSerial()
-    Preferencias.init()
+
     principal = Principal()
     principal.show()
     if len(sys.argv) > 1:
@@ -346,16 +381,5 @@ if __name__ == '__main__':
                                       QMessageBox.Ok | QMessageBox.Cancel)
         if atual == QMessageBox.Ok:
             webbrowser.open("http://brino.cc/download.php", 1, True)
-    # Comente essas linhas para teste, descomente para produção
-    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
-        print("não há id")
-        idc = uuid.uuid4()
-        print(idc)
-        Preferencias.set("id_cliente", str(idc))
-        print("id definido como:", Preferencias.get("id_cliente"))
-    try:
-        abertura = event('IDE', 'abriu_ide')
-        report('UA-89373473-3', Preferencias.get("id_cliente"), abertura)
-    except:
-        pass
     sys.exit(app.exec_())
+
