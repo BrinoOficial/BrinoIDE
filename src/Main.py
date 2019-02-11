@@ -43,6 +43,7 @@ import sys
 import webbrowser
 from urllib.request import urlopen
 import uuid
+import logging
 
 import traceback
 
@@ -347,44 +348,50 @@ def install_excepthook():
 
 
 if __name__ == '__main__':
+    # Inicializa o log
+    log = Rastreador.inicializar_log()
     # Inicializa o aplicativo
     app = QApplication(sys.argv)
-    print("APP Inicializado")
+    log.debug("APP Inicializado")
     # Inicializa a splash screen
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
     # Mostra a SplashScreen
     splash.show()
-    print("Mostrando splash")
+    log.debug("Mostrando splash")
     app.processEvents()
     # Inicializa as preferências
     Preferencias.init()
-    print("Preferencias carregadas")
+    log.debug("Preferencias carregadas")
     # Gera o ID do cliente
     gerar_id_cliente()
-    print("ID gerado")
+    log.debug("ID gerado")
     # Inicializa o monitor de erros
     install_excepthook()
-    print("Gerenciador de erros instalado")
+    log.debug("Gerenciador de erros instalado")
     # Reporta a abertura
     Rastreador.rastrear(Rastreador.ABERTURA)
-    print("Enviada Informação de abertura")
+    log.debug("Enviada Informação de abertura")
     # Carrega o estilo
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
-    print("Estilo Carregado")
+    log.debug("Estilo Carregado")
     # Verifica se há atualização
     deve_atualizar = verificar_versao()
+    log.debug("Verifacado se há atualizações. %s" % deve_atualizar)
     # Inicializa o Monitor Serial
     monitor = MonitorSerial.MonitorSerial()
+    log.debug("Carregado monitor serial")
     # Inicializa a tela principal
     principal = Principal()
+    log.debug("Carregada tela principal")
     principal.show()
-
+    log.debug("Aberta tela principal")
     if len(sys.argv) > 1:
         principal.widget_central.abrir(sys.argv[1], False)
+        log.info("Aberto arquivo %s" % os.path.basename(sys.argv[1]))
 
     splash.finish(principal)
 
@@ -394,6 +401,8 @@ if __name__ == '__main__':
                                       QMessageBox.Ok | QMessageBox.Cancel)
         if atual == QMessageBox.Ok:
             webbrowser.open("http://brino.cc/download.php", 1, True)
+        elif atual == QMessageBox.Cancel:
+            log.info("Atualização Recusada")
 
     sys.exit(app.exec_())
 

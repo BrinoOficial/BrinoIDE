@@ -37,6 +37,7 @@ author: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+import logging
 from google_measurement_protocol import event, report
 
 import Preferencias
@@ -50,3 +51,14 @@ def rastrear(evento):
         report('UA-89373473-3', Preferencias.get("id_cliente"), evento)
     except:
         pass
+
+
+def inicializar_log():
+    log = logging.getLogger("LogBrino")
+    log.setLevel(logging.DEBUG)
+    log_completo = logging.FileHandler('recursos/completo.log')
+    log_completo.setLevel(logging.DEBUG)
+    formatador = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    log_completo.setFormatter(formatador)
+    log.addHandler(log_completo)
+    return log
