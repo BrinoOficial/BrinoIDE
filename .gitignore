@@ -2,3 +2,4 @@
 /venv/
 /.idea/
 .idea/workspace.xml
+/src/builder/preferences.txt
