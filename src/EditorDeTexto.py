@@ -107,7 +107,8 @@ class CodeEditor(QPlainTextEdit):
                         self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
                         if os.path.exists(self.caminho):
                             arq_existe = QMessageBox().warning(None, 'Arquivo existe',
-                                                               "Ao abrir esse arquivo, você apagará um arquivo existente. Gostaria de continuar?",
+                                                               "Ao abrir esse arquivo, você apagará um arquivo "+
+                                                               "existente. Gostaria de continuar?",
                                                                QMessageBox.Ok | QMessageBox.No)
                             if arq_existe == QMessageBox.Ok:
                                 with open(os.path.join('recursos', 'exemplos', 'CodigoMinimo.brpp')) as arquivo:
@@ -313,7 +314,7 @@ class CodeEditor(QPlainTextEdit):
 
     def focusInEvent(self, event):
         if self.completer:
-            self.completer.setWidget(self);
+            self.completer.setWidget(self)
         QPlainTextEdit.focusInEvent(self, event)
 
     def keyPressEvent(self, event):
@@ -387,6 +388,7 @@ class CodeEditor(QPlainTextEdit):
         cr.setWidth(self.completer.popup().sizeHintForColumn(0)
                     + self.completer.popup().verticalScrollBar().sizeHint().width())
         self.completer.complete(cr)  # popup it up!
+
 
 class ContadorDeLinhas(QWidget):
 

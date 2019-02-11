@@ -32,6 +32,10 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+from tempfile import mkstemp
+from shutil import move
+from os import fdopen, remove
+
 
 def carregar(arquivo):
     """
@@ -97,3 +101,21 @@ def sub_tree(dictio, parent, sublevels=-1):
             if sublevels == -1 or key_sub_levels == sublevels:
                 res[nova_chave] = dictio.get(key)
     return res
+
+
+def descarregar(dictio, arquivo):
+    tmp, caminho = mkstemp()
+    with fdopen(tmp, 'w') as novas_preferencias:
+        with open(arquivo, 'r') as velhas_preferencias:
+            for linha in velhas_preferencias:
+                if not (len(linha) < 2 or linha.startswith('#')):
+                    valores = linha.split("=")
+                    if valores[1].strip() != dictio.get(valores[0].strip()):
+                        linha = valores[0]
+                        linha += " = "
+                        linha += dictio.get(valores[0].strip())
+                        linha += "\n"
+                novas_preferencias.write(linha)
+    remove(arquivo)
+    # Move new file
+    move(caminho, arquivo)

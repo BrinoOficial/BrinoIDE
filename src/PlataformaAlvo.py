@@ -93,4 +93,4 @@ class PlataformaAlvo:
         return MapaUtils.sub_tree(MapaUtils.sub_tree(self.get_preferencias(), "tools"), tool)
 
     def get_menus(self):
-        return self.menus;
+        return self.menus

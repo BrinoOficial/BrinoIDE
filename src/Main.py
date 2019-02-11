@@ -42,6 +42,8 @@ import os
 import sys
 import webbrowser
 from urllib.request import urlopen
+import uuid
+from google_measurement_protocol import event, report
 
 import re
 from PyQt5.QtCore import Qt
@@ -253,6 +255,12 @@ class Principal(QMainWindow):
                 close_event.ignore()
                 return
         monitor.close()
+        try:
+            fechamento = event('IDE', 'fechou_ide')
+            report('UA-89373473-3', Preferencias.get("id_cliente"), fechamento)
+        except:
+            pass
+        Preferencias.gravar_preferencias()
         close_event.accept()
 
 
@@ -324,7 +332,6 @@ if __name__ == '__main__':
                                 f.write(line.decode('utf-8'))
                             print("JSON ", lingua['ling'], " atualizado")
     except:
-
         pass
     monitor = MonitorSerial.MonitorSerial()
     Preferencias.init()
@@ -339,4 +346,16 @@ if __name__ == '__main__':
                                       QMessageBox.Ok | QMessageBox.Cancel)
         if atual == QMessageBox.Ok:
             webbrowser.open("http://brino.cc/download.php", 1, True)
+    # Comente essas linhas para teste, descomente para produção
+    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
+        print("não há id")
+        idc = uuid.uuid4()
+        print(idc)
+        Preferencias.set("id_cliente", str(idc))
+        print("id definido como:", Preferencias.get("id_cliente"))
+    try:
+        abertura = event('IDE', 'abriu_ide')
+        report('UA-89373473-3', Preferencias.get("id_cliente"), abertura)
+    except:
+        pass
     sys.exit(app.exec_())

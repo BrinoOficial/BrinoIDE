@@ -32,7 +32,7 @@ email: victor.pacheco@brino.cc
 
 import os
 
-from MapaUtils import carregar
+from MapaUtils import carregar, descarregar
 
 preferencias = dict()
 
@@ -98,3 +98,15 @@ def get_mapa():
     :return:
     """
     return preferencias
+
+
+def gravar_preferencias():
+    """
+        Salva as preferencias atualizadas no arquivo preferências
+
+    :return:
+        None
+    """
+    global preferencias
+    descarregar(preferencias, os.path.join('builder', 'preferences.txt'))
+    pass

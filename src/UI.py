@@ -38,6 +38,7 @@ import ntpath
 import os
 import sys
 from tempfile import mkdtemp
+from google_measurement_protocol import event, report
 
 import functools
 import serial
@@ -221,6 +222,8 @@ class Centro(QWidget):
         Abrir arquivo .ino ou .brpp em nova aba
         :param caminho:
             endereço para abrir
+        :param exemplo:
+            indicacao se o arquivo pode ser sobrescrito
         :return:
             None
         """
@@ -628,6 +631,11 @@ class Centro(QWidget):
         :return:
             None
         """
+        try:
+            compilar = event('IDE', 'compilou')
+            report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
+        except:
+            pass
         self.log.insertPlainText("Compilando...")
         self.salvar()
         self.log.clear()
@@ -646,7 +654,9 @@ class Centro(QWidget):
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:
-            self.log.insertPlainText("Não foi possível processar a saída de texto do compilador, é possível que ele tenha compilado corretamente.")
+            self.log.insertPlainText(
+                "Não foi possível processar a saída de texto do compilador,"
+                +" é possível que ele tenha compilado corretamente.")
 
     def upload(self):
         """
@@ -720,7 +730,7 @@ class Centro(QWidget):
         dialogo.setDirectory(get_caminho_padrao())
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedUrls()[0].path()
-            if(caminho.startswith("/") and os.name == 'nt'):
+            if (caminho.startswith("/") and os.name == 'nt'):
                 caminho = caminho[1:]
             # Testa se o arquivo existe
             if os.path.exists(caminho):
@@ -736,7 +746,6 @@ class Centro(QWidget):
                 QMessageBox(QMessageBox.Warning, "Erro", "O arquivo não existe", QMessageBox.NoButton, self).show()
         else:
             return
-
 
 
 class Porta:

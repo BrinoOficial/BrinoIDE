@@ -79,6 +79,7 @@ def get_words(tipo):
 
     return palavras
 
+
 def traduzir(caminho):
     """
     Traduz as palavras do brino para o arduino
@@ -96,7 +97,6 @@ def traduzir(caminho):
                 linha_sem_espaco = linha.lstrip()
                 if not linha_sem_espaco.startswith("//"):
                     for palavra_chave in data['Keywords']:
-                        if palavra_chave.get(
-                                'translate') is not None: #linha.__contains__(palavra_chave['highlight']) and
+                        if palavra_chave.get('translate') is not None:
                             linha = re.sub(palavra_chave['translate'], palavra_chave['arduino'], linha)
                 novo_arquivo.write(linha)

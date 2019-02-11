@@ -148,7 +148,9 @@ class UploaderSerial():
                 decodificada = output.decode('utf8')
             except UnicodeDecodeError:
                 utf8_string = str(output.decode('latin1').encode('utf-8'))
-                decodificada = utf8_string.replace("b'", "").replace("'", "").replace("\\xc3\\xa3",'ã').replace("\\r", '').replace('\\n', '').replace("\\", '')
+                decodificada = utf8_string.replace("b'", "").replace("'", "")
+                decodificada = decodificada.replace("\\xc3\\xa3", 'ã').replace("\\r",
+                                                                               '').replace('\\n', '').replace("\\", '')
             finally:
                 parent.log.insertPlainText(decodificada)
 
@@ -217,7 +219,7 @@ def separacao_quotes(src, quote_chars, arg_vazios):
             s = s[1:]
             arg_escapado = ""
         if not s.endswith(char_escapador):
-            arg_escapado += s + " ";
+            arg_escapado += s + " "
             continue
         arg_escapado += s[0:len(s) - 1]
         if not len(arg_escapado.strip()) == 0 or arg_vazios:
