@@ -161,11 +161,12 @@ class MonitorSerial(QWidget):
         :return:
             None
         """
-        self.parar = True
-        self.thread_monitor.join()
-        self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
-        self.conexao.close()
-        time.sleep(0.5)
+        if self.parar == False:
+            self.parar = True
+            self.thread_monitor.join()
+            self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
+            self.conexao.close()
+            time.sleep(0.5)
 
     def enviar(self):
         """
