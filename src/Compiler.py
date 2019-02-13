@@ -34,7 +34,6 @@ email: victor.pacheco@brino.cc
 """
 
 import os
-
 from subprocess import Popen, PIPE
 
 import Main

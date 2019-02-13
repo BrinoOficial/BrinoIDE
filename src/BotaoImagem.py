@@ -1,6 +1,5 @@
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QPainter
-from PyQt5.QtWidgets import QAbstractButton
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """
 Br.ino Qt botoes com animacao do menu
@@ -38,10 +37,14 @@ modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QPainter
+from PyQt5.QtWidgets import QAbstractButton
 
-class botaoImagem(QAbstractButton):
+
+class BotaoImagem(QAbstractButton):
     def __init__(self, pixmap, hover_pixmap, parent=None):
-        super(botaoImagem, self).__init__(parent)
+        super(BotaoImagem, self).__init__(parent)
         self.pixmap = pixmap
         self.hover_pixmap = hover_pixmap
         self.installEventFilter(self)

@@ -68,9 +68,9 @@ disponivel em https://stackoverflow.com/questions/28956693/pyqt5-qtextedit-auto-
 
 import ntpath
 import os
-
 import functools
 import re
+
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter, QTextCursor
 from PyQt5.QtWidgets import QPlainTextEdit, QCompleter, QTextEdit, QWidget, QInputDialog, QMessageBox

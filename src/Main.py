@@ -44,10 +44,9 @@ import webbrowser
 from urllib.request import urlopen
 import uuid
 import requests
-
 import traceback
-
 import re
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QSplashScreen, QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel

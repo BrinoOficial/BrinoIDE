@@ -39,10 +39,10 @@ import os
 import sys
 from tempfile import mkdtemp
 from google_measurement_protocol import event, report
-
 import functools
 import serial
 import shutil
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QActionGroup, QPushButton, QFileDialog,

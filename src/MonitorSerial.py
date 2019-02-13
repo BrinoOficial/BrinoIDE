@@ -36,6 +36,7 @@ email: victor.pacheco@brino.cc
 import serial
 import time
 import threading
+
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox, QComboBox
