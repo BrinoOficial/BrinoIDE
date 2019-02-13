@@ -230,9 +230,11 @@ class Principal(QMainWindow):
         """
         if monitor.conectar(Preferencias.get("serial.port")):
             monitor.show()
+            log.info("Monitor Serial aberto")
         else:
             QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
                         QMessageBox.NoButton, self).show()
+            log.error("Porta Serial solicitada não disponível")
 
     def enviar_codigo(self):
         """
@@ -240,15 +242,20 @@ class Principal(QMainWindow):
         :return:
             None
         """
-        monitor.desconectar()
+        log.info("Compilando e Carregando")
+        reconectar = monitor.desconectar()
         self.widget_central.upload()
-        self.abrir_serial()
+        log.info("Fim do upload")
+        if reconectar:
+            log.info("Monitor Serial fechado e reconectando")
+            self.abrir_serial()
+            log.info("Monitor Serial reconectado")
 
     def closeEvent(self, close_event):
         """
-                Fecha o programa, mas antes verifica se os arquivos foram salvos
-                :param close_event:
-                :return:
+        Fecha o programa, mas antes verifica se os arquivos foram salvos
+        :param close_event:
+        :return:
         """
         if self.widget_central.widget_abas.widget(0).caminho == 0:
             num_examinar = 1
@@ -258,9 +265,13 @@ class Principal(QMainWindow):
             if not self.widget_central.remover_aba(num_examinar, True):
                 close_event.ignore()
                 return
+        log.info("Encerrando o Br.ino")
         monitor.close()
+        log.info("Monitor serial encerrado")
         Rastreador.rastrear(Rastreador.FECHAMENTO)
+        log.info("Rastreado fechamento")
         Preferencias.gravar_preferencias()
+        log.info("Preferências registradas, encerrando...")
         close_event.accept()
 
 
@@ -281,6 +292,7 @@ def get_caminho_padrao():
 def atualizar_linguas():
     versao_json = ""
     resultado = ""
+    atualizadas = "Todas as línguas já estão atualizadas."
     try:
         with urlopen('http://brino.cc/brino/lib/ling/version.json') as json_versao:
             for linha in json_versao:
@@ -300,10 +312,16 @@ def atualizar_linguas():
                             resultado += "JSON %s atualizado. " % str(lingua['ling'])
     except Exception as e:
         raise UpdateException(e.args)
-    return resultado
+        return "Houve um erro ao atualizar as línguas"
+    return atualizadas if resultado == "" else resultado
 
 
 def gerar_id_cliente():
+    """
+    Verifica se no arquivo de preferências há um id único para o cliente. Caso contrário, gera um.
+    :return:
+        None
+    """
     # Comente essas linhas para teste, descomente para produção
     if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
         log.info("Não há ID registrado, primeiro uso")
@@ -313,6 +331,12 @@ def gerar_id_cliente():
 
 
 def verificar_versao():
+    """
+    Verifica se ha uma nova versao disponivel no site.
+    :return ha_atualizacao:
+        Se ha ou nao atualizacoes disponiveis
+    """
+    ha_atualizacao = False
     versao_online = ''
     try:
         with urlopen('http://brino.cc/brino/versao.php') as versao_site:
@@ -323,23 +347,24 @@ def verificar_versao():
         versao_local = versao.split('.')
         for i in range(0, 3):
             if versao_online[i] > versao_local[i]:
-                return True
+                ha_atualizacao = True
 
     except Exception as e:
         log.error(e)
-    return False
+    return ha_atualizacao
 
 
 def install_excepthook():
     def my_excepthook(exctype, value, tb):
         s = ''.join(traceback.format_exception(exctype, value, tb))
+        log.error("O Br.ino parou!")
+        log.error(s)
         dialog = QMessageBox.question(None,
                                       'Isto é embaraçoso',
                                       "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
                                       + " nos enviar o relatório de erros?",
                                       QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if dialog == QMessageBox.Yes:
-            log.error(s)
             with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
                 nome_arquivo = '%s.log' % Preferencias.get("id_cliente")
                 r = requests.post('http://httpbin.org/post', files={nome_arquivo: f})

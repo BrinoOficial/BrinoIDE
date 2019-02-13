@@ -429,12 +429,19 @@
       "highlight": "\\bINPUT_PULLUP\\b",
       "highlight-type": "1"
     },
-        {
+    {
       "highlight": "\\bEntrada_PULLUP\\b",
       "arduino": "INPUT_PULLUP",
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bEntrada_PULLUP\\b"
+    },
+    {
+      "highlight": "\\bEntrada\\b",
+      "arduino": "INPUT",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bEntrada\\b"
     },
     {
       "highlight": "\\bNumeroLongo\\b",
@@ -1225,5 +1232,5 @@
     }
   ],
   "language": "pt-br",
-  "version": "10"
+  "version": "11"
 }
