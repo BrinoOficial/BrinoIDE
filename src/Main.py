@@ -367,8 +367,19 @@ def install_excepthook():
         if dialog == QMessageBox.Yes:
             with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
                 nome_arquivo = '%s.log' % Preferencias.get("id_cliente")
-                r = requests.post('http://httpbin.org/post', files={nome_arquivo: f})
-                print(r.text)
+                r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
+                log.info(r.text)
+                if "LOG enviado" in r.text:
+                    QMessageBox.question(None,
+                                         "Obrigado",
+                                         "O relatório foi enviado! Trabalharemos o mais rápido possível"
+                                         + " para resolver este problema!", QMessageBox.Ok, QMessageBox.Ok)
+                else:
+                    QMessageBox.question(None,
+                                         "Poxa...",
+                                         "O relatório não pode ser enviado! Se puder, nos envie o arquivo por email."
+                                         + " O arquivo está dentro da pasta resources do diretório de instalação e se"
+                                         + " chama completo.log", QMessageBox.Ok, QMessageBox.Ok)
         sys.exit(-1)
 
     sys.excepthook = my_excepthook
