@@ -43,7 +43,7 @@ import sys
 import webbrowser
 from urllib.request import urlopen
 import uuid
-import logging
+import requests
 
 import traceback
 
@@ -306,28 +306,27 @@ def atualizar_linguas():
 def gerar_id_cliente():
     # Comente essas linhas para teste, descomente para produção
     if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
-        print("não há id")
+        log.info("Não há ID registrado, primeiro uso")
         idc = uuid.uuid4()
-        print(idc)
         Preferencias.set("id_cliente", str(idc))
-        print("id definido como:", Preferencias.get("id_cliente"))
+        log.info("id definido como:", Preferencias.get("id_cliente"))
 
 
 def verificar_versao():
-    versaoOnline = ''
+    versao_online = ''
     try:
-        with urlopen('http://brino.cc/brino/versao.php') as response:
-            for line in response:
-                versaoOnline += line.decode('utf-8')
+        with urlopen('http://brino.cc/brino/versao.php') as versao_site:
+            for linha in versao_site:
+                versao_online += linha.decode('utf-8')
 
-        vOn = versaoOnline.split('.')
-        v = versao.split('.')
+        versao_online = versao_online.split('.')
+        versao_local = versao.split('.')
         for i in range(0, 3):
-            if vOn[i] > v[i]:
+            if versao_online[i] > versao_local[i]:
                 return True
 
-    except:
-        pass
+    except Exception as e:
+        log.error(e)
     return False
 
 
@@ -335,56 +334,51 @@ def install_excepthook():
     def my_excepthook(exctype, value, tb):
         s = ''.join(traceback.format_exception(exctype, value, tb))
         dialog = QMessageBox.question(None,
-                                 'Isto é embaraçoso',
-                                 "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
-                                 + " nos enviar o relatório de erros?",
-                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                                      'Isto é embaraçoso',
+                                      "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
+                                      + " nos enviar o relatório de erros?",
+                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if dialog == QMessageBox.Yes:
-            print(s)
+            log.error(s)
+            with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
+                nome_arquivo = '%s.log' % Preferencias.get("id_cliente")
+                r = requests.post('http://httpbin.org/post', files={nome_arquivo: f})
+                print(r.text)
         sys.exit(-1)
-
 
     sys.excepthook = my_excepthook
 
 
 if __name__ == '__main__':
-    # Inicializa o log
     log = Rastreador.inicializar_log()
-    # Inicializa o aplicativo
     app = QApplication(sys.argv)
     log.debug("APP Inicializado")
-    # Inicializa a splash screen
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
-    # Mostra a SplashScreen
     splash.show()
     log.debug("Mostrando splash")
     app.processEvents()
-    # Inicializa as preferências
     Preferencias.init()
     log.debug("Preferencias carregadas")
-    # Gera o ID do cliente
     gerar_id_cliente()
     log.debug("ID gerado")
-    # Inicializa o monitor de erros
     install_excepthook()
     log.debug("Gerenciador de erros instalado")
-    # Reporta a abertura
     Rastreador.rastrear(Rastreador.ABERTURA)
     log.debug("Enviada Informação de abertura")
-    # Carrega o estilo
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
     log.debug("Estilo Carregado")
-    # Verifica se há atualização
+    try:
+        log.info(atualizar_linguas())
+    except UpdateException as e:
+        log.error(e)
     deve_atualizar = verificar_versao()
     log.debug("Verifacado se há atualizações. %s" % deve_atualizar)
-    # Inicializa o Monitor Serial
     monitor = MonitorSerial.MonitorSerial()
     log.debug("Carregado monitor serial")
-    # Inicializa a tela principal
     principal = Principal()
     log.debug("Carregada tela principal")
     principal.show()
@@ -394,12 +388,14 @@ if __name__ == '__main__':
         log.info("Aberto arquivo %s" % os.path.basename(sys.argv[1]))
 
     splash.finish(principal)
-
+    log.info("Fim da inicialização")
     if deve_atualizar:
         atual = QMessageBox().warning(None, 'Atualização',
                                       "Existe uma atualização disponível para o Brino!",
                                       QMessageBox.Ok | QMessageBox.Cancel)
+        log.info("Há atualização")
         if atual == QMessageBox.Ok:
+            log.info("Atualização Aceita")
             webbrowser.open("http://brino.cc/download.php", 1, True)
         elif atual == QMessageBox.Cancel:
             log.info("Atualização Recusada")
