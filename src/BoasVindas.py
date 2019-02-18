@@ -69,7 +69,8 @@ class BoasVindas(QWidget):
         """
         novo = Item(self, self.parent.nova_aba, "Rascunho em Branco", "Crie um novo rascunho do zero",
                     os.path.join('recursos', 'novoArquivo.png'))
-        abrir = Item(self, self.parent.abrir, "Abrir", "Abra um rascunho existente", "novoArquivo.png")
+        abrir = Item(self, self.parent.abrir, "Abrir",
+                             "Abra um código local", "novoArquivo.png")
         aprender_mais = Item(self, self.abrir_site, "Não sabe como começar?",
                              "Visite nosso site para ler um de nossos tutoriais!", "")
         self.layout.addLayout(self.itens, 0, 0)
