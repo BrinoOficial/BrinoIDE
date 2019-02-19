@@ -56,7 +56,7 @@ import GerenciadorDeLinguas
 import MonitorSerial
 import Preferencias
 import UI
-import UpdateException
+from exceptions import UpdateException
 import Rastreador
 
 versao = '3.0.5'
@@ -310,8 +310,8 @@ def atualizar_linguas():
                                 f.write(linha.decode('utf-8'))
                             resultado += "JSON %s atualizado. " % str(lingua['ling'])
     except Exception as e:
+        log.error("Houve um erro ao atualizar as línguas");
         raise UpdateException(e.args)
-        return "Houve um erro ao atualizar as línguas"
     return atualizadas if resultado == "" else resultado
 
 
@@ -349,7 +349,7 @@ def verificar_versao():
                 ha_atualizacao = True
 
     except Exception as e:
-        log.error(e)
+        log.error("Houve um erro ao verificar se há uma atualização online\n"+str(e))
     return ha_atualizacao
 
 
