@@ -38,7 +38,7 @@ import os
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSpacerItem, QSizePolicy
 
-from BotaoImagem import botaoImagem
+from BotaoImagem import BotaoImagem
 
 
 class Menu(QWidget):
@@ -56,33 +56,33 @@ class Menu(QWidget):
 
         # Adiciona os botoes e suas acoes ao menu lateral
 
-        btn_compilar = botaoImagem(QPixmap(os.path.join('recursos', 'compilar.png')),
+        btn_compilar = BotaoImagem(QPixmap(os.path.join('recursos', 'compilar.png')),
                                    QPixmap(os.path.join('recursos', 'compilarFoco.png')), self)
         btn_compilar.clicked.connect(self.parent.compilar)
         btn_compilar.setStatusTip("Compilar código")
 
-        btn_compilar_e_carregar = botaoImagem(QPixmap(os.path.join('recursos', 'carregar.png')),
+        btn_compilar_e_carregar = BotaoImagem(QPixmap(os.path.join('recursos', 'carregar.png')),
                                               QPixmap(os.path.join('recursos', 'carregarFoco.png')), self)
         btn_compilar_e_carregar.setFixedSize(50, 70)
         btn_compilar_e_carregar.clicked.connect(self.parent.parent.enviar_codigo)
         btn_compilar_e_carregar.setStatusTip("Compilar e carregar código")
 
-        btn_novo = botaoImagem(QPixmap(os.path.join('recursos', 'novoArquivo.png')),
+        btn_novo = BotaoImagem(QPixmap(os.path.join('recursos', 'novoArquivo.png')),
                                QPixmap(os.path.join('recursos', 'novoArquivoFoco.png')), self)
         btn_novo.clicked.connect(self.parent.nova_aba)
         btn_novo.setStatusTip("Criar novo arquivo Brino")
 
-        btn_abrir = botaoImagem(QPixmap(os.path.join('recursos', 'abrirPasta.png')),
+        btn_abrir = BotaoImagem(QPixmap(os.path.join('recursos', 'abrirPasta.png')),
                                 QPixmap(os.path.join('recursos', 'abrirPastaFoco.png')), self)
         btn_abrir.clicked.connect(self.parent.abrir)
         btn_abrir.setStatusTip("Abrir arquivo")
 
-        btn_salvar = botaoImagem(QPixmap(os.path.join('recursos', 'salvar.png')),
+        btn_salvar = BotaoImagem(QPixmap(os.path.join('recursos', 'salvar.png')),
                                  QPixmap(os.path.join('recursos', 'salvarFoco.png')), self)
         btn_salvar.clicked.connect(self.parent.salvar)
         btn_salvar.setStatusTip("Salvar arquivo")
 
-        btn_monitor_serial = botaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
+        btn_monitor_serial = BotaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
                                          QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
         btn_monitor_serial.setFixedSize(50, 50)
         btn_monitor_serial.clicked.connect(self.parent.abrir_serial)

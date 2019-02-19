@@ -34,7 +34,7 @@ email: mateus.berardo@brino.cc
 modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
-
+import sys
 from subprocess import Popen, PIPE
 
 import Preferencias
@@ -138,7 +138,10 @@ class UploaderSerial():
         cmd = formatar_e_dividir(padrao, prefs, True)
         print("<", cmd, ">")
         # Testar em windows, pode ser necessário ativar a opção de shell
-        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+        if sys.platform.startswith("linux"):
+            p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=False)
+        elif sys.platform.startswith("win"):
+            p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         output = p.stdout.read()
         output += p.stderr.read()
         if not output:
