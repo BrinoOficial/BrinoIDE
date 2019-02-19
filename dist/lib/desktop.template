@@ -5,6 +5,7 @@ GenericName=Brino IDE
 Comment=IDE Open-source em Português para o Arduino
 Exec=<BINARY_LOCATION>
 Icon=<ICON_NAME>
+Path=<EXECUTION_PATH>
 Terminal=false
 Categories=Development;IDE;Electronics;
 MimeType=text/x-brino
