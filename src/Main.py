@@ -37,13 +37,15 @@ author: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
 
-import json
+from json import loads, load
 import os
 import sys
 import webbrowser
 from urllib.request import urlopen
 import uuid
-from google_measurement_protocol import event, report
+import requests
+
+import traceback
 
 import re
 from PyQt5.QtCore import Qt
@@ -55,6 +57,8 @@ import GerenciadorDeLinguas
 import MonitorSerial
 import Preferencias
 import UI
+from exceptions import UpdateException
+import Rastreador
 
 versao = '3.0.5'
 caminho_padrao = ''
@@ -226,9 +230,11 @@ class Principal(QMainWindow):
         """
         if monitor.conectar(Preferencias.get("serial.port")):
             monitor.show()
+            log.info("Monitor Serial aberto")
         else:
             QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
                         QMessageBox.NoButton, self).show()
+            log.error("Porta Serial solicitada não disponível")
 
     def enviar_codigo(self):
         """
@@ -236,15 +242,20 @@ class Principal(QMainWindow):
         :return:
             None
         """
-        monitor.desconectar()
+        log.info("Compilando e Carregando")
+        reconectar = monitor.desconectar()
         self.widget_central.upload()
-        self.abrir_serial()
+        log.info("Fim do upload")
+        if reconectar:
+            log.info("Monitor Serial fechado e reconectando")
+            self.abrir_serial()
+            log.info("Monitor Serial reconectado")
 
     def closeEvent(self, close_event):
         """
-                Fecha o programa, mas antes verifica se os arquivos foram salvos
-                :param close_event:
-                :return:
+        Fecha o programa, mas antes verifica se os arquivos foram salvos
+        :param close_event:
+        :return:
         """
         if self.widget_central.widget_abas.widget(0).caminho == 0:
             num_examinar = 1
@@ -254,13 +265,13 @@ class Principal(QMainWindow):
             if not self.widget_central.remover_aba(num_examinar, True):
                 close_event.ignore()
                 return
+        log.info("Encerrando o Br.ino")
         monitor.close()
-        try:
-            fechamento = event('IDE', 'fechou_ide')
-            report('UA-89373473-3', Preferencias.get("id_cliente"), fechamento)
-        except:
-            pass
+        log.info("Monitor serial encerrado")
+        Rastreador.rastrear(Rastreador.FECHAMENTO)
+        log.info("Rastreado fechamento")
         Preferencias.gravar_preferencias()
+        log.info("Preferências registradas, encerrando...")
         close_event.accept()
 
 
@@ -278,84 +289,152 @@ def get_caminho_padrao():
     return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 
+def atualizar_linguas():
+    versao_json = ""
+    resultado = ""
+    atualizadas = "Todas as línguas já estão atualizadas."
+    try:
+        with urlopen('http://brino.cc/brino/lib/ling/version.json') as json_versao:
+            for linha in json_versao:
+                versao_json += linha.decode('utf-8')
+            versoes_linguas = loads(versao_json)
+            arquivos = os.listdir(os.path.abspath('./recursos'))
+            linguas = [nome_arquivo.replace('.json', '') for nome_arquivo in arquivos if nome_arquivo.endswith(".json")]
+            for lingua in versoes_linguas['Linguas']:
+                if lingua['ling'] in linguas:
+                    lingua_local = load(open(os.path.join('recursos', lingua['ling'] + '.json')))
+                    if int(lingua['version']) > int(lingua_local['version']):
+                        with open(os.path.join('recursos', lingua['ling'] + '.json'), 'w') as f, urlopen(
+                                'http://brino.cc/brino/lib/ling/' + lingua['ling'] + "/" + lingua[
+                                    'ling'] + ".json") as json:
+                            for linha in json:
+                                f.write(linha.decode('utf-8'))
+                            resultado += "JSON %s atualizado. " % str(lingua['ling'])
+    except Exception as e:
+        log.error("Houve um erro ao atualizar as línguas");
+        raise UpdateException(e.args)
+    return atualizadas if resultado == "" else resultado
+
+
+def gerar_id_cliente():
+    """
+    Verifica se no arquivo de preferências há um id único para o cliente. Caso contrário, gera um.
+    :return:
+        None
+    """
+    # Comente essas linhas para teste, descomente para produção
+    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
+        log.info("Não há ID registrado, primeiro uso")
+        idc = uuid.uuid4()
+        Preferencias.set("id_cliente", str(idc))
+        log.info("id definido como:", Preferencias.get("id_cliente"))
+
+
+def verificar_versao():
+    """
+    Verifica se ha uma nova versao disponivel no site.
+    :return ha_atualizacao:
+        Se ha ou nao atualizacoes disponiveis
+    """
+    ha_atualizacao = False
+    versao_online = ''
+    try:
+        with urlopen('http://brino.cc/brino/versao.php') as versao_site:
+            for linha in versao_site:
+                versao_online += linha.decode('utf-8')
+
+        versao_online = versao_online.split('.')
+        versao_local = versao.split('.')
+        for i in range(0, 3):
+            if versao_online[i] > versao_local[i]:
+                ha_atualizacao = True
+
+    except Exception as e:
+        log.error("Houve um erro ao verificar se há uma atualização online\n"+str(e))
+    return ha_atualizacao
+
+
+def install_excepthook():
+    def my_excepthook(exctype, value, tb):
+        s = ''.join(traceback.format_exception(exctype, value, tb))
+        log.error("O Br.ino parou!")
+        log.error(s)
+        dialog = QMessageBox.question(None,
+                                      'Isto é embaraçoso',
+                                      "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
+                                      + " nos enviar o relatório de erros?",
+                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if dialog == QMessageBox.Yes:
+            with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
+                nome_arquivo = '%s.log' % Preferencias.get("id_cliente")
+                r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
+                log.info(r.text)
+                if "LOG enviado" in r.text:
+                    QMessageBox.question(None,
+                                         "Obrigado",
+                                         "O relatório foi enviado! Trabalharemos o mais rápido possível"
+                                         + " para resolver este problema!", QMessageBox.Ok, QMessageBox.Ok)
+                else:
+                    QMessageBox.question(None,
+                                         "Poxa...",
+                                         "O relatório não pode ser enviado! Se puder, nos envie o arquivo por email."
+                                         + " O arquivo está dentro da pasta resources do diretório de instalação e se"
+                                         + " chama completo.log", QMessageBox.Ok, QMessageBox.Ok)
+        sys.exit(-1)
+
+    sys.excepthook = my_excepthook
+
+
 if __name__ == '__main__':
+    log = Rastreador.inicializar_log()
     app = QApplication(sys.argv)
+    log.debug("APP Inicializado")
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
     splash.show()
+    log.debug("Mostrando splash")
     app.processEvents()
-    versaoOnline = ''
-    deve_atualizar = False
-
-    try:
-        with urlopen('http://brino.cc/brino/rastrear.php') as response:
-            pass
-    except:
-        pass
-
+    Preferencias.init()
+    log.debug("Preferencias carregadas")
+    gerar_id_cliente()
+    log.debug("ID gerado")
+    install_excepthook()
+    log.debug("Gerenciador de erros instalado")
+    Rastreador.rastrear(Rastreador.ABERTURA)
+    log.debug("Enviada Informação de abertura")
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
+    log.debug("Estilo Carregado")
     try:
-        with urlopen('http://brino.cc/brino/versao.php') as response:
-            for line in response:
-                versaoOnline += line.decode('utf-8')
-
-        vOn = versaoOnline.split('.')
-        v = versao.split('.')
-        for i in range(0, 3):
-            if vOn[i] > v[i]:
-                deve_atualizar = True
-                print("precisa atualizar")
-                i = 4
-    except:
-        pass
-
-    versaoJSON = ""
-    try:
-        with urlopen('http://brino.cc/brino/lib/ling/version.json') as response:
-
-            for line in response:
-                versaoJSON += line.decode('utf-8')
-            data = json.loads(versaoJSON)
-            files = os.listdir(os.path.abspath('./recursos'))
-            lings = [fi.replace('.json', '') for fi in files if fi.endswith(".json")]
-            for lingua in data['Linguas']:
-                if lingua['ling'] in lings:
-                    data2 = json.load(open(os.path.join('recursos', lingua['ling'] + '.json')))
-                    if int(lingua['version']) > int(data2['version']):
-                        with open(os.path.join('recursos', lingua['ling'] + '.json'), 'w') as f, urlopen(
-                                'http://brino.cc/brino/lib/ling/' + lingua['ling'] + "/" + lingua[
-                                    'ling'] + ".json") as json:
-                            for line in json:
-                                f.write(line.decode('utf-8'))
-                            print("JSON ", lingua['ling'], " atualizado")
-    except:
-        pass
+        log.info(atualizar_linguas())
+    except UpdateException as e:
+        log.error(e)
+    deve_atualizar = verificar_versao()
+    log.debug("Verifacado se há atualizações. %s" % deve_atualizar)
     monitor = MonitorSerial.MonitorSerial()
-    Preferencias.init()
+    log.debug("Carregado monitor serial")
     principal = Principal()
+    log.debug("Carregada tela principal")
     principal.show()
+    log.debug("Aberta tela principal")
     if len(sys.argv) > 1:
         principal.widget_central.abrir(sys.argv[1], False)
+        log.info("Aberto arquivo %s" % os.path.basename(sys.argv[1]))
+
     splash.finish(principal)
+    log.info("Fim da inicialização")
     if deve_atualizar:
         atual = QMessageBox().warning(None, 'Atualização',
                                       "Existe uma atualização disponível para o Brino!",
                                       QMessageBox.Ok | QMessageBox.Cancel)
+        log.info("Há atualização")
         if atual == QMessageBox.Ok:
+            log.info("Atualização Aceita")
             webbrowser.open("http://brino.cc/download.php", 1, True)
-    # Comente essas linhas para teste, descomente para produção
-    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
-        print("não há id")
-        idc = uuid.uuid4()
-        print(idc)
-        Preferencias.set("id_cliente", str(idc))
-        print("id definido como:", Preferencias.get("id_cliente"))
-    try:
-        abertura = event('IDE', 'abriu_ide')
-        report('UA-89373473-3', Preferencias.get("id_cliente"), abertura)
-    except:
-        pass
+        elif atual == QMessageBox.Cancel:
+            log.info("Atualização Recusada")
+
     sys.exit(app.exec_())
+

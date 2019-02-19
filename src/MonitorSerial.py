@@ -167,6 +167,8 @@ class MonitorSerial(QWidget):
             self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))
             self.conexao.close()
             time.sleep(0.5)
+            return True
+        return False
 
     def enviar(self):
         """

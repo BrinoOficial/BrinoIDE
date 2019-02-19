@@ -211,8 +211,8 @@ class Centro(QWidget):
         """
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho_traducao = editor.get_caminho()
-        if caminho_traducao == 0 or caminho_traducao == "":
-            return
+        #if caminho_traducao == 0 or caminho_traducao == "":
+        #    return
         traduzir(caminho_traducao)
         caminho_traducao = caminho_traducao.replace("brpp", "ino")
         self.abrir(caminho=caminho_traducao, exemplo=True)
