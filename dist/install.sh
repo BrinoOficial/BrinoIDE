@@ -15,9 +15,15 @@ RESOURCE_NAME=brino-brinoide
 SCRIPT_PATH=$( cd $(dirname $0) ; pwd )
 cd "${SCRIPT_PATH}"
 
-cp -R ./.lib/.arduino15 $HOME/.arduino15
 sudo cp -R ./lib/brino_udev.conf /etc/udev/rules.d/arduino-usb.rules
-$HOME/.arduino15/packages/odb/tools/micronucleus/2.0a5/config_usb_device
+
+sudo mkdir -p /opt/brino/brino-ide
+
+sudo cp -r * /opt/brino/brino-ide/
+sudo chmod -R 7 /opt/brino/brino-ide
+SCRIPT_PATH=/opt/brino/brino-ide
+cd "${SCRIPT_PATH}"
+echo "${SCRIPT_PATH}"
 
 # Default mode is to install.
 UNINSTALL=false
@@ -36,7 +42,8 @@ xdg_install_f() {
 
   # Create *.desktop file using the existing template file
   sed -e "s,<BINARY_LOCATION>,${SCRIPT_PATH}/Brino,g" \
-      -e "s,<ICON_NAME>,${RESOURCE_NAME},g" "${SCRIPT_PATH}/lib/desktop.template" > "${TMP_DIR}/${RESOURCE_NAME}.desktop"
+      -e "s,<ICON_NAME>,${SCRIPT_PATH}/recursos/logo.png,g" -e "s,<EXECUTION_PATH>,${SCRIPT_PATH},g" "${SCRIPT_PATH}/lib/desktop.template" > "${TMP_DIR}/${RESOURCE_NAME}.desktop"
+
 
   # Install the icon files using name and resolutions
   xdg-icon-resource install --context apps --size 16 "${SCRIPT_PATH}/lib/icons/16x16/apps/logo.png" $RESOURCE_NAME
@@ -88,7 +95,7 @@ simple_install_f() {
 
   # Create *.desktop file using the existing template file
   sed -e "s,<BINARY_LOCATION>,${SCRIPT_PATH}/Brino,g" \
-      -e "s,<ICON_NAME>,${SCRIPT_PATH}/lib/logo.png,g" "${SCRIPT_PATH}/lib/desktop.template" > "${TMP_DIR}/${RESOURCE_NAME}.desktop"
+      -e "s,<ICON_NAME>,${SCRIPT_PATH}/lib/logo.png,g" -e "s,<EXECUTION_PATH>,${SCRIPT_PATH},g" "${SCRIPT_PATH}/lib/desktop.template" "${SCRIPT_PATH}/lib/desktop.template" > "${TMP_DIR}/${RESOURCE_NAME}.desktop"
 
   mkdir -p "${HOME}/.local/share/applications"
   cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" "${HOME}/.local/share/applications/"
