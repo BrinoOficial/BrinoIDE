@@ -229,11 +229,11 @@ class Principal(QMainWindow):
         """
         if monitor.conectar(Preferencias.get("serial.port")):
             monitor.show()
-            log.info("Monitor Serial aberto")
+            Rastreador.log_info("Monitor Serial aberto")
         else:
             QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
                         QMessageBox.NoButton, self).show()
-            log.error("Porta Serial solicitada não disponível")
+            Rastreador.log_error("Porta Serial solicitada não disponível")
 
     def enviar_codigo(self):
         """
@@ -241,14 +241,14 @@ class Principal(QMainWindow):
         :return:
             None
         """
-        log.info("Compilando e Carregando")
+        Rastreador.log_info("Compilando e Carregando")
         reconectar = monitor.desconectar()
         self.widget_central.upload()
-        log.info("Fim do upload")
+        Rastreador.log_info("Fim do upload")
         if reconectar:
-            log.info("Monitor Serial fechado e reconectando")
+            Rastreador.log_info("Monitor Serial fechado e reconectando")
             self.abrir_serial()
-            log.info("Monitor Serial reconectado")
+            Rastreador.log_info("Monitor Serial reconectado")
 
     def closeEvent(self, close_event):
         """
@@ -264,13 +264,13 @@ class Principal(QMainWindow):
             if not self.widget_central.remover_aba(num_examinar, True):
                 close_event.ignore()
                 return
-        log.info("Encerrando o Br.ino")
+        Rastreador.log_info("Encerrando o Br.ino")
         monitor.close()
-        log.info("Monitor serial encerrado")
+        Rastreador.log_info("Monitor serial encerrado")
         Rastreador.rastrear(Rastreador.FECHAMENTO)
-        log.info("Rastreado fechamento")
+        Rastreador.log_info("Rastreado fechamento")
         Preferencias.gravar_preferencias()
-        log.info("Preferências registradas, encerrando...")
+        Rastreador.log_info("Preferências registradas, encerrando...")
         close_event.accept()
 
 
@@ -310,7 +310,7 @@ def atualizar_linguas():
                                 f.write(linha.decode('utf-8'))
                             resultado += "JSON %s atualizado. " % str(lingua['ling'])
     except Exception as e:
-        log.error("Houve um erro ao atualizar as línguas");
+        Rastreador.log_error("Houve um erro ao atualizar as línguas");
         raise UpdateException(e.args)
     return atualizadas if resultado == "" else resultado
 
@@ -323,10 +323,10 @@ def gerar_id_cliente():
     """
     # Comente essas linhas para teste, descomente para produção
     if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
-        log.info("Não há ID registrado, primeiro uso")
+        Rastreador.log_info("Não há ID registrado, primeiro uso")
         idc = uuid.uuid4()
         Preferencias.set("id_cliente", str(idc))
-        log.info("id definido como:", Preferencias.get("id_cliente"))
+        Rastreador.log_info("id definido como:", Preferencias.get("id_cliente"))
 
 
 def verificar_versao():
@@ -349,15 +349,15 @@ def verificar_versao():
                 ha_atualizacao = True
 
     except Exception as e:
-        log.error("Houve um erro ao verificar se há uma atualização online\n"+str(e))
+        Rastreador.log_error("Houve um erro ao verificar se há uma atualização online\n"+str(e))
     return ha_atualizacao
 
 
 def install_excepthook():
     def my_excepthook(exctype, value, tb):
         s = ''.join(traceback.format_exception(exctype, value, tb))
-        log.error("O Br.ino parou!")
-        log.error(s)
+        Rastreador.log_error("O Br.ino parou!")
+        Rastreador.log_error(s)
         dialog = QMessageBox.question(None,
                                       'Isto é embaraçoso',
                                       "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
@@ -367,7 +367,7 @@ def install_excepthook():
             with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
                 nome_arquivo = '%s.log' % Preferencias.get("id_cliente")
                 r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
-                log.info(r.text)
+                Rastreador.log_info(r.text)
                 if "LOG enviado" in r.text:
                     QMessageBox.question(None,
                                          "Obrigado",
@@ -387,53 +387,53 @@ def install_excepthook():
 if __name__ == '__main__':
     log = Rastreador.inicializar_log()
     app = QApplication(sys.argv)
-    log.debug("APP Inicializado")
+    Rastreador.log_debug("APP Inicializado")
     splash_pix = QPixmap(os.path.join("recursos", "splash.png"))
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setGeometry(200, 200, splash_pix.width(), splash_pix.height())
     splash.show()
-    log.debug("Mostrando splash")
+    Rastreador.log_debug("Mostrando splash")
     app.processEvents()
     Preferencias.init()
-    log.debug("Preferencias carregadas")
+    Rastreador.log_debug("Preferencias carregadas")
     gerar_id_cliente()
-    log.debug("ID gerado")
+    Rastreador.log_debug("ID gerado")
     install_excepthook()
-    log.debug("Gerenciador de erros instalado")
+    Rastreador.log_debug("Gerenciador de erros instalado")
     Rastreador.rastrear(Rastreador.ABERTURA)
-    log.debug("Enviada Informação de abertura")
+    Rastreador.log_debug("Enviada Informação de abertura")
     with open(os.path.join("recursos", "stylesheet.txt")) as arquivo_stilo:
         stilo = arquivo_stilo.read()
         app.setStyleSheet(stilo)
-    log.debug("Estilo Carregado")
+    Rastreador.log_debug("Estilo Carregado")
     try:
-        log.info(atualizar_linguas())
+        Rastreador.log_info(atualizar_linguas())
     except UpdateException as e:
-        log.error(e)
+        Rastreador.log_error(e)
     deve_atualizar = verificar_versao()
-    log.debug("Verifacado se há atualizações. %s" % deve_atualizar)
+    Rastreador.log_debug("Verifacado se há atualizações. %s" % deve_atualizar)
     monitor = MonitorSerial.MonitorSerial()
-    log.debug("Carregado monitor serial")
+    Rastreador.log_debug("Carregado monitor serial")
     principal = Principal()
-    log.debug("Carregada tela principal")
+    Rastreador.log_debug("Carregada tela principal")
     principal.show()
-    log.debug("Aberta tela principal")
+    Rastreador.log_debug("Aberta tela principal")
     if len(sys.argv) > 1:
         principal.widget_central.abrir(sys.argv[1], False)
-        log.info("Aberto arquivo %s" % os.path.basename(sys.argv[1]))
+        Rastreador.log_info("Aberto arquivo %s" % os.path.basename(sys.argv[1]))
 
     splash.finish(principal)
-    log.info("Fim da inicialização")
+    Rastreador.log_info("Fim da inicialização")
     if deve_atualizar:
         atual = QMessageBox().warning(None, 'Atualização',
                                       "Existe uma atualização disponível para o Brino!",
                                       QMessageBox.Ok | QMessageBox.Cancel)
-        log.info("Há atualização")
+        Rastreador.log_info("Há atualização")
         if atual == QMessageBox.Ok:
-            log.info("Atualização Aceita")
+            Rastreador.log_info("Atualização Aceita")
             webbrowser.open("http://brino.cc/download.php", 1, True)
         elif atual == QMessageBox.Cancel:
-            log.info("Atualização Recusada")
+            Rastreador.log_info("Atualização Recusada")
 
     sys.exit(app.exec_())
 

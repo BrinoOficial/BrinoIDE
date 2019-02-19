@@ -42,6 +42,7 @@ from google_measurement_protocol import event, report
 
 import Preferencias
 
+log = 'registro'
 ABERTURA = event('IDE', 'abriu_ide')
 FECHAMENTO = event('IDE', 'fechou_ide')
 
@@ -53,7 +54,20 @@ def rastrear(evento):
         pass
 
 
+def log_info(m):
+    log.info(m)
+
+
+def log_error(m):
+    log.error(m)
+
+
+def log_debug(m):
+    log.debug(m)
+
+
 def inicializar_log():
+    global log
     log = logging.getLogger("LogBrino")
     log.setLevel(logging.DEBUG)
     log_completo = logging.FileHandler('recursos/completo.log')

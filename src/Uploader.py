@@ -34,10 +34,12 @@ email: mateus.berardo@brino.cc
 modificado por: Victor Rodrigues Pacheco
 email: victor.pacheco@brino.cc
 """
+
 import sys
 from subprocess import Popen, PIPE
 
 import Preferencias
+import Rastreador
 
 
 def novo_uploader(placa_alvo, porta, nao_existe_porta):
@@ -108,7 +110,7 @@ class UploaderSerial():
             plataforma_alvo = parent.get_plataforma_alvo_do_pacote(separado[0])
             tool = separado[1]
         prefs.update(plataforma_alvo.get_ferramenta(tool))
-        # TODO upload com programador]
+        # TODO upload com programador
         if self.nao_existe_porta:
             prefs["build.path"] = caminho_temp
             prefs["build.project_name"] = nome
@@ -136,14 +138,18 @@ class UploaderSerial():
         # TODO verbose, verify upload
         padrao = prefs["upload.pattern"]
         cmd = formatar_e_dividir(padrao, prefs, True)
-        print("<", cmd, ">")
+        Rastreador.log_debug("Comando de upload <" + str(cmd) + ">")
         # Testar em windows, pode ser necessário ativar a opção de shell
         if sys.platform.startswith("linux"):
             p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=False)
         elif sys.platform.startswith("win"):
             p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         output = p.stdout.read()
-        output += p.stderr.read()
+        Rastreador.log_info(output)
+        output_error = p.stderr.read()
+        if output_error is not None:
+            Rastreador.log_error(output_error)
+        output += output_error
         if not output:
             parent.log.insertPlainText("Carregado!")
         else:
@@ -166,7 +172,6 @@ def formatar_e_dividir(src, dictio, recursivo):
     :param recursivo:
     :return:
     """
-    res = ""
     for i in range(10):
 
         res = substituir_do_mapa(src, dictio)
