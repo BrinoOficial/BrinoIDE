@@ -1,16 +1,16 @@
 definir diametro 4.3344		//Define o diametro das rodas
 
-usar Stepper				//Chama a biblioteca externa do motor de passo
+usar MotorDePasso				//Chama a biblioteca externa do motor de passo
 
 Constante Numero PPR = 512;	//Total de passos por rotação
 
-Stepper dir( PPR, 8, 10, 9, 11);	//Define as portas de conexão do motor esquerdo
-Stepper esq( PPR, 2, 4, 3, 5);	//Define as portas de conexão do motor direito
+MotorDePasso esq( PPR, 8, 10, 9, 11);	//Define as portas de conexão do motor esquerdo
+MotorDePasso dir( PPR, 2, 4, 3, 5);	//Define as portas de conexão do motor direito
 
 Configuracao(){
-	esq.setSpeed(60);		//define a velocidade do motor esquerdo
-	dir.setSpeed(60);		//Define a velocidade do motor direito
-	
+	esq.definirVelocidade(60);		//define a velocidade do motor esquerdo
+	dir.definirVelocidade(60);		//Define a velocidade do motor direito
+
 }
 
 Principal(){
@@ -23,8 +23,8 @@ SemRetorno andarFrente(NumeroDecimal distancia){	//Define a função andarFrente
 	NumeroDecimal voltas = distancia/comp;
 	Numero passos = voltas*2048;
 	para(Numero i = 0; i < passos; i++){
-		dir.step(-1);
-		esq.step(1);
+		dir.passo(-1);
+		esq.passo(1);
 		esperar(2);
 	}
 }
@@ -35,8 +35,8 @@ SemRetorno andarDireita(NumeroDecimal angulo){	//Define a função andarDireita
 	NumeroDecimal voltas = comp/(3.14159265*diametro);
 	Numero passos = voltas*2048;
 	para(Numero i = 0; i < passos; i++){
-		dir.step(1);
-		esq.step(1);
+		dir.passo(1);
+		esq.passo(1);
 		esperar(2);
 	}
 }
