@@ -1229,8 +1229,30 @@
     {
       "highlight": "\\bmilis\\b",
       "highlight-type": "3"
+    },
+    {
+      "highlight": "\\geradorAleatorio\\b",
+      "arduino": "randomSeed",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\geradorAleatorio\\b"
+    },
+    {
+      "highlight": "\\randomSeed\\b",
+      "highlight-type": "3"
+    },
+     {
+      "highlight": "\\numeroAleatorio\\b",
+      "arduino": "random",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\numeroAleatorio\\b"
+    },
+    {
+      "highlight": "\\random\\b",
+      "highlight-type": "3"
     }
   ],
   "language": "pt-br",
-  "version": "11"
+  "version": "12"
 }
