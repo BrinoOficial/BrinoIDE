@@ -216,6 +216,8 @@ class Centro(QWidget):
             None
         """
         Rastreador.log_debug("Abrindo tradução")
+        self.salvar()
+
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho_traducao = editor.get_caminho()
         if caminho_traducao == 0 or caminho_traducao == "":

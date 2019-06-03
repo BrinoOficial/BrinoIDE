@@ -1231,28 +1231,28 @@
       "highlight-type": "3"
     },
     {
-      "highlight": "\\geradorAleatorio\\b",
+      "highlight": "\\bgeradorAleatorio\\b",
       "arduino": "randomSeed",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "\\geradorAleatorio\\b"
+      "translate": "\\bgeradorAleatorio\\b"
     },
     {
-      "highlight": "\\randomSeed\\b",
+      "highlight": "\\brandomSeed\\b",
       "highlight-type": "3"
     },
      {
-      "highlight": "\\numeroAleatorio\\b",
+      "highlight": "\\bnumeroAleatorio\\b",
       "arduino": "random",
       "arg": "false",
       "highlight-type": "3",
-      "translate": "\\numeroAleatorio\\b"
+      "translate": "\\bnumeroAleatorio\\b"
     },
     {
-      "highlight": "\\random\\b",
+      "highlight": "\\brandom\\b",
       "highlight-type": "3"
     }
   ],
   "language": "pt-br",
-  "version": "12"
+  "version": "13"
 }

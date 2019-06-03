@@ -102,6 +102,10 @@ class Principal(QMainWindow):
 
     def init_ui(self):
         self.setStatusBar(self.barra_de_status)
+        if Preferencias.get("board") is None:
+            Preferencias.set("board", "uno")
+        if Preferencias.get("serial.port") is None:
+            Preferencias.set("serial.port", "COM1")
         self.placa_porta_label = QLabel(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
         self.barra_de_status.addPermanentWidget(self.placa_porta_label)
 
