@@ -227,7 +227,7 @@ run.present.exclusive.macosx = true
 # ARDUINO PREFERENCES
 target_package = arduino
 target_platform = avr
-board  = yun
+board   = uno
 software=ARDUINO
 # Warn when data segment uses greater than this percentage
 build.warn_data_percentage = 75
@@ -235,9 +235,9 @@ build.warn_data_percentage = 75
 programmer = arduino:avrispmkii
 
 upload.using = bootloader
-upload.verify = true
+upload.verify  = 
 
-serial.port=COM1
+serial.port = /dev/ttyACM0
 serial.databits=8
 serial.stopbits=1
 serial.parity=N

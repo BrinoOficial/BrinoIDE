@@ -53,6 +53,7 @@ import Main
 import Menu
 import Preferencias
 import Uploader
+import Rastreador
 from BoasVindas import BoasVindas
 from Compiler import compilar_arduino_builder
 from GerenciadorDeKeywords import traduzir
@@ -119,6 +120,7 @@ class Centro(QWidget):
         # Adiciona a aba de boas vindas
         self.widget_abas.addTab(BoasVindas(self), "Bem-Vindo")
         self.show()
+        Rastreador.log_info("WidgetCentral Carregado")
 
     def init_pacotes(self):
         """
@@ -133,6 +135,7 @@ class Centro(QWidget):
         self.carregar_hardware(pasta_hardware)
         self.carregar_hardware_contribuido(self.indexer)
         self.carregar_hardware(os.path.join(Main.get_caminho_padrao(), 'hardware'))
+        Rastreador.log_info("Pacotes de hardware carregados")
 
     def remover_aba(self, index, fechando=False):
         """
@@ -145,6 +148,7 @@ class Centro(QWidget):
         :return:
             None
         """
+        Rastreador.log_debug("Removendo uma aba")
         if self.widget_abas.count() > 1 or fechando:
             # Se o index for argumento padrao do sinal (QT)
             if type(index) is not int:
@@ -182,6 +186,7 @@ class Centro(QWidget):
         :return:
             None
         """
+        Rastreador.log_debug("Criando nova aba")
         if self.widget_abas.count() == 0 or path:
             editor = EditorDeTexto.CodeEditor(self.widget_abas, False, path=path, salvar_caminho=salvar_caminho)
         else:
@@ -195,6 +200,7 @@ class Centro(QWidget):
         # Adiciona a aba se o arquivo tiver nome
         if editor.get_nome():
             self.widget_abas.addTab(editor, identificador_aba)
+            Rastreador.log_info("Aberta aba %s"%editor.get_nome())
         if editor.get_nome() == "":
             self.remover_aba(self.widget_abas.count() - 1)
         else:
@@ -209,12 +215,15 @@ class Centro(QWidget):
         :return:
             None
         """
+        Rastreador.log_debug("Abrindo tradução")
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho_traducao = editor.get_caminho()
-        #if caminho_traducao == 0 or caminho_traducao == "":
-        #    return
+        if caminho_traducao == 0 or caminho_traducao == "":
+            Rastreador.log_error("Erro ao carregar caminho da tradução. Caminho é "+str(caminho_traducao))
+            return
         traduzir(caminho_traducao)
         caminho_traducao = caminho_traducao.replace("brpp", "ino")
+        Rastreador.log_debug("Tradução carregada, abrindo tradução")
         self.abrir(caminho=caminho_traducao, exemplo=True)
 
     def abrir(self, caminho=None, exemplo=True):
@@ -227,6 +236,7 @@ class Centro(QWidget):
         :return:
             None
         """
+        Rastreador.log_debug("Abrindo arquivo")
         if caminho is None or not caminho:
             salvar_caminho = True
             dialogo = self.criar_dialogo_arquivo("Abrir arquivo", "Abrir")
@@ -237,7 +247,11 @@ class Centro(QWidget):
                     self.nova_aba(caminho, salvar_caminho)
                 else:
                     QMessageBox(QMessageBox.Warning, "Erro", "O arquivo não existe", QMessageBox.NoButton, self).show()
+                    Rastreador.log_error("Arquivo inexistente")
         else:
+            if not os.path.exists(caminho):
+                Rastreador.log_error("Arquivo não existe")
+                return
             self.nova_aba(caminho)
             widget = self.widget_abas.widget(self.widget_abas.currentIndex())
             if exemplo:

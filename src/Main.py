@@ -285,6 +285,8 @@ def get_caminho_padrao():
     docu = re.compile("Documen.*")
     pastas = os.listdir(caminho_padrao)
     documentos = list(filter(docu.match, pastas))
+    if documentos is None:
+        documentos[0] = "Documentos"
     return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 
@@ -310,7 +312,7 @@ def atualizar_linguas():
                                 f.write(linha.decode('utf-8'))
                             resultado += "JSON %s atualizado. " % str(lingua['ling'])
     except Exception as e:
-        Rastreador.log_error("Houve um erro ao atualizar as línguas");
+        Rastreador.log_error("Houve um erro ao atualizar as línguas")
         raise UpdateException(e.args)
     return atualizadas if resultado == "" else resultado
 
