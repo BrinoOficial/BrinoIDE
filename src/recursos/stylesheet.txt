@@ -26,6 +26,7 @@ QPlainTextEdit{
    border: None;
    color: '#efefef';
    selection-background-color: '#454545';
+   font-size: 15px;
 }
 QScrollBar:vertical {
    width: '10px';
