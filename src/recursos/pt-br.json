@@ -152,11 +152,10 @@
     },
     {
       "highlight": "\\benviarln\\b",
-      "highlight-type": "3"
-    },
-    {
-      "highlight": "\\bprintln\\b",
-      "highlight-type": "3"
+      "arduino": "Serial.println",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bUSB.enviarln\\b"
     },
     {
       "highlight": "\\bler\\b",
@@ -1254,5 +1253,5 @@
     }
   ],
   "language": "pt-br",
-  "version": "13"
+  "version": "14"
 }

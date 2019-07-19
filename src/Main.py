@@ -231,11 +231,15 @@ class Principal(QMainWindow):
         :return:
             None
         """
+
+        # Verifica se jah hah um monitor aberto e o fecha
+        if monitor.isVisible():
+            monitor.close()
         if monitor.conectar(Preferencias.get("serial.port")):
             monitor.show()
             Rastreador.log_info("Monitor Serial aberto")
         else:
-            QMessageBox(QMessageBox.Warning, "Erro", "A porta selecionada não está disponível",
+            QMessageBox("Erro", QMessageBox.Warning, "A porta selecionada não está disponível",
                         QMessageBox.NoButton, self).show()
             Rastreador.log_error("Porta Serial solicitada não disponível")
 
