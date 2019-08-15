@@ -376,7 +376,10 @@ def install_excepthook():
         if dialog == QMessageBox.Yes:
             with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
                 nome_arquivo = '%s.log' % Preferencias.get("id_cliente")
-                r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
+                try:
+                    r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
+                except requests.exceptions.RequestException as e:
+                    print(e)
                 Rastreador.log_info(r.text)
                 if "LOG enviado" in r.text:
                     QMessageBox.question(None,
