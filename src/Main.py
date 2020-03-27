@@ -59,7 +59,7 @@ import UI
 from exceptions import UpdateException
 import Rastreador
 
-versao = '3.0.6'
+versao = '3.0.7'
 caminho_padrao = ''
 monitor = 3
 

@@ -485,6 +485,7 @@ class Centro(QWidget):
         for item in pastas:
             plataforma_alvo = PlataformaAlvo(item, os.path.join(pasta, item), pacote_alvo)
             pacote_alvo.get_plataformas()[item] = plataforma_alvo
+            return
 
     def criar_menu_placas(self):
         """

@@ -14,10 +14,10 @@ library_names=''
 old_library='libusb-1.0.a'
 
 # Linker flags that can not go in dependency_libs.
-inherited_linker_flags=' -pthread'
+inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -lrt'
+dependency_libs=''
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/jenkins/workspace/avrdude/label/debian7-x86_64/objdir/lib'
+libdir='/home/jenkins-mingw32/workspace/avrdude/label/Ubuntu14.04x64-mingw32/objdir/lib'
