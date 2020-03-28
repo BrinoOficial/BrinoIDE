@@ -41,6 +41,13 @@
       "translate": "\\bSemRetorno\\b"
     },
     {
+      "highlight": "\\bsemRetorno\\b",
+      "arduino": "void",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bsemRetorno\\b"
+    },
+    {
       "highlight": "\\bProcedimento\\b",
       "arduino": "void",
       "arg": "false",
@@ -238,6 +245,13 @@
       "translate": "\\bescrever\\("
     },
     {
+      "highlight": "\\bescreverDigital\\b",
+      "arduino": "digitalWrite(",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bescreverDigital\\("
+    },
+    {
       "highlight": "\\bdigitalWrite\\b",
       "highlight-type": "3"
     },
@@ -247,6 +261,13 @@
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\b.conectar\\(Digital."
+    },
+    {
+      "highlight": "\\bconectarServo\\b",
+      "arduino": "attach",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bconectarServo\\b."
     },
     {
       "highlight": "\\battach\\b",
@@ -269,6 +290,13 @@
       "arg": "false",
       "highlight-type": "3",
       "translate": "\\bler\\b"
+    },
+    {
+      "highlight": "\\blerDigital\\b",
+      "arduino": "digitalRead",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\blerDigital\\b"
     },
     {
       "highlight": "\\bdigitalRead\\b",
@@ -348,6 +376,13 @@
       "translate": "\\bLigado\\b"
     },
     {
+      "highlight": "\\bLIGADO\\b",
+      "arduino": "HIGH",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bLIGADO\\b"
+    },
+    {
       "highlight": "\\bHIGH\\b",
       "highlight-type": "1"
     },
@@ -357,6 +392,13 @@
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bDesligado\\b"
+    },
+    {
+      "highlight": "\\bDESLIGADO\\b",
+      "arduino": "LOW",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bDESLIGADO\\b"
     },
     {
       "highlight": "\\bLOW\\b",
@@ -421,6 +463,13 @@
       "translate": "\\bSaida\\b"
     },
     {
+      "highlight": "\\bSAIDA\\b",
+      "arduino": "OUTPUT",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bSAIDA\\b"
+    },
+    {
       "highlight": "\\bOUTPUT\\b",
       "highlight-type": "1"
     },
@@ -436,11 +485,39 @@
       "translate": "\\bEntrada_PULLUP\\b"
     },
     {
+      "highlight": "\\bENTRADA_PULLUP\\b",
+      "arduino": "INPUT_PULLUP",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bENTRADA_PULLUP\\b"
+    },
+    {
+      "highlight": "\\bEntrada_PULLDOWN\\b",
+      "arduino": "INPUT_PULLDOWN",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bEntrada_PULLDOWN\\b"
+    },
+    {
+      "highlight": "\\bENTRADA_PULLDOWN\\b",
+      "arduino": "INPUT_PULLDOWN",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bENTRADA_PULLDOWN\\b"
+    },
+    {
       "highlight": "\\bEntrada\\b",
       "arduino": "INPUT",
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bEntrada\\b"
+    },
+    {
+      "highlight": "\\bENTRADA\\b",
+      "arduino": "INPUT",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bENTRADA\\b"
     },
     {
       "highlight": "\\bNumeroLongo\\b",
@@ -593,6 +670,13 @@
       "translate": "\\bEsquerdo\\b"
     },
     {
+      "highlight": "\\bESQUERDO\\b",
+      "arduino": "MSBFIRST",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bESQUERDO\\b"
+    },
+    {
       "highlight": "\\bMSBFIRST\\b",
       "highlight-type": "1"
     },
@@ -602,6 +686,13 @@
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bDireito\\b"
+    },
+    {
+      "highlight": "\\bDIREITO\\b",
+      "arduino": "LSBFIRST",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bDIREITO\\b"
     },
     {
       "highlight": "\\bLSBFIRST\\b",
@@ -648,6 +739,13 @@
       "translate": "\\bLigando\\b"
     },
     {
+      "highlight": "\\bLIGANDO\\b",
+      "arduino": "RISING",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bLIGANDO\\b"
+    },
+    {
       "highlight": "\\bRISING\\b",
       "highlight-type": "1"
     },
@@ -657,6 +755,13 @@
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bDesligando\\b"
+    },
+    {
+      "highlight": "\\bDESLIGANDO\\b",
+      "arduino": "FALLING",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bDESLIGANDO\\b"
     },
     {
       "highlight": "\\bFALLING\\b",
@@ -751,17 +856,6 @@
       "highlight-type": "3"
     },
     {
-      "highlight": "\\bArquivo\\b",
-      "arduino": "File",
-      "arg": "false",
-      "highlight-type": "4",
-      "translate": "\\bArquivo\\b"
-    },
-    {
-      "highlight": "\\bFile\\b",
-      "highlight-type": "4"
-    },
-    {
       "highlight": "\\bfechar\\b",
       "arduino": "close",
       "arg": "false",
@@ -791,6 +885,17 @@
       "highlight-type": "3"
     },
     {
+      "highlight": "\\bArquivo\\b",
+      "arduino": "File",
+      "arg": "false",
+      "highlight-type": "4",
+      "translate": "\\bArquivo\\b"
+    },
+    {
+      "highlight": "\\bFile\\b",
+      "highlight-type": "4"
+    },
+    {
       "highlight": "\\bArquivoGravar\\b",
       "arduino": "FILE_WRITE",
       "arg": "false",
@@ -801,6 +906,29 @@
       "highlight": "\\bFILE_WRITE\\b",
       "highlight-type": "1"
     },
+    {
+      "highlight": "\\bespiar\\b",
+      "arduino": "peek",
+      "arg": "false",
+      "highlight-type": "2",
+      "translate": "\\bespiar\\b"
+    },
+    {
+      "highlight": "\\bpeek\\b",
+      "highlight-type": "1"
+    },
+    {
+      "highlight": "\\blerArquivo\\b",
+      "arduino": "read",
+      "arg": "false",
+      "highlight-type": "2",
+      "translate": "\\blerArquivo\\b"
+    },
+    {
+      "highlight": "\\bread\\b",
+      "highlight-type": "1"
+    },
+
     {
       "highlight": "\\bescreverAngulo\\b",
       "arduino": "write",
@@ -831,6 +959,13 @@
       "translate": "\\bServo.frente\\b"
     },
     {
+      "highlight": "\\bSERVOFRENTE\\b",
+      "arduino": "1700",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bServo.SERVOFRENTE\\b"
+    },
+    {
       "highlight": "\\bServo\\b",
       "arduino": "Servo",
       "arg": "false",
@@ -845,11 +980,25 @@
       "translate": "\\bServo.tras\\b"
     },
     {
+      "highlight": "\\bSERVOTRAS\\b",
+      "arduino": "1300",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bServo.SERVOTRAS\\b"
+    },
+    {
       "highlight": "\\bparar\\b",
       "arduino": "1500",
       "arg": "false",
       "highlight-type": "3",
       "translate": "\\bServo.parar\\b"
+    },
+    {
+      "highlight": "\\bSERVOPARAR\\b",
+      "arduino": "1500",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bServo.SERVOPARAR\\b"
     },
     {
       "highlight": "\\bconectar\\b",
@@ -961,13 +1110,6 @@
       "arg": "false",
       "highlight-type": "3",
       "translate": "\\benviarln\\b"
-    },
-        {
-      "highlight": "\\benviarf\\b",
-      "arduino": "print",
-      "arg": "false",
-      "highlight-type": "3",
-      "translate": "\\benviarf\\b"
     },
     {
       "highlight": "\\bposicao\\b",
