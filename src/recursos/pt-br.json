@@ -1351,7 +1351,7 @@
     },
     {
       "highlight": "\\bterminaCom\\b",
-      "arduino": "endsWtih",
+      "arduino": "endsWith",
       "arg": "false",
       "highlight-type": "3",
       "translate": "\\bterminaCom\\b"
@@ -1366,6 +1366,13 @@
       "arg": "false",
       "highlight-type": "3",
       "translate": "\\bmilissegundos\\b"
+    },
+    {
+      "highlight": "\\bcronometro\\b",
+      "arduino": "milis",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bcronometro\\b"
     },
     {
       "highlight": "\\bmilis\\b",
@@ -1395,5 +1402,5 @@
     }
   ],
   "language": "pt-br",
-  "version": "14"
+  "version": "15"
 }
