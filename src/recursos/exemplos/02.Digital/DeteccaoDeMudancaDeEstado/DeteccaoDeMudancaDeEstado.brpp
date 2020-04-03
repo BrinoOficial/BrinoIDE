@@ -10,33 +10,35 @@
     http://www.arduino.cc/en/Tutorial/ButtonStateChange
  */
 
+
+
 //Essas sao as constantes, como o nome sugere, elas nao mudam
-Constante Numero  botao = 2;    // porta em que o botao deve ser conectado
-Constante Numero LED = 13;      // porta em que o LED deve ser conectado
+Constante numero  botao = 2;    // porta em que o botao deve ser conectado
+Constante numero LED = 13;      // porta em que o LED deve ser conectado
 
 // Essas sao as variaveis, como o nome sugere, elas irao mudar
-Numero contadorBotao = 0;   //conta quantas vezes o botão foi acionado
-Numero estadoBotao = 0;         // verifica se o estado do botao (ligado/deligado)
-Numero ultimoEstado = 0;     // armazena o ultimo estado do botao (ligado/deligado)
+numero contadorBotao = 0;   //conta quantas vezes o botão foi acionado
+numero estadoBotao = 0;         // verifica se o estado do botao (ligado/deligado)
+numero ultimoEstado = 0;     // armazena o ultimo estado do botao (ligado/deligado)
 
-Configuracao() {
+configuracao() {
     // Define o botao como uma entrada:
-    Pino.definirModo(botao, Entrada);
+    definirModo(botao, ENTRADA);
     // Define o LED como uma saida:
-    Pino.definirModo(LED, Saida);
+    definirModo(LED, SAIDA);
     // Inicia uma comunicacao serial:
     USB.conectar(9600);
 }
 
 
-Principal() {
+principal() {
     // le a entrada do botao:
-    estadoBotao = Pino.ler(botao);
+    estadoBotao = lerDigital(botao);
 
     // compara o estado do botao com o seu ultimo estado
     se (estadoBotao != ultimoEstado){
         // Se o estado ter mudado, soma um ao medidor)
-        se (estadoBotao == Ligado){
+        se (estadoBotao == LIGADO){
             // Se o estado do botao for ligado ele
             // muda do "desligado" pro "ligado"
             contadorBotao++;
@@ -59,8 +61,8 @@ Principal() {
     // Liga o LED a cada 4 vezes que o botao for precionado 
     // verificando o modulo do contador do botao
     se (contadorBotao % 4 == 0) {
-        Pino.escrever(LED, Ligado);
+        escreverDigital(LED, LIGADO);
     } senao {
-        Pino.escrever(LED, Desligado);
+        escreverDigital(LED, DESLIGADO);
     }
 }

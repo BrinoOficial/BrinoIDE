@@ -8,29 +8,31 @@
     http://www.arduino.cc/en/Tutorial/AnalogWriteMega
 */
 
+
+
 // Constantes
-Constante Numero menorPino = 2;
-Constante Numero maiorPino = 13;
+Constante numero menorPino = 2;
+Constante numero maiorPino = 13;
 
 
-Configuracao() {
+configuracao() {
     // Configuras as portas, da 2 ate a 13
-    para (Numero essePino = menorPino; essePino <= maiorPino; essePino++) {
-        Pino.definirModo(essePino, Saida);
+    para (numero essePino = menorPino; essePino <= maiorPino; essePino++) {
+        definirModo(essePino, SAIDA);
     }
 }
 
-Principal() {
+principal() {
     // Atua em todos os pinos, um de cada vez
-    para (Numero essePino = menorPino; essePino <= maiorPino; essePino++) {
+    para (numero essePino = menorPino; essePino <= maiorPino; essePino++) {
         // Aumenta gradativamente o brilho do LED
-        para (Numero brilho = 0; brilho < 255; brilho++) {
-            Pino.escreverAnalogico(essePino, brilho);
+        para (numero brilho = 0; brilho < 255; brilho++) {
+            escreverAnalogico(essePino, brilho);
             esperar(2);
         }
         // Diminui gradativamente o brilho do LED
-        para (Numero brilho = 255; brilho >= 0; brilho--) {
-            Pino.escreverAnalogico(essePino, brilho);
+        para (numero brilho = 255; brilho >= 0; brilho--) {
+            escreverAnalogico(essePino, brilho);
             esperar(2);
         }
     // Pausa entre os LEDs

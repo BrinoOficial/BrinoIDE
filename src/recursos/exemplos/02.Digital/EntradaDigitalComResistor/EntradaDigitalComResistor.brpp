@@ -11,22 +11,24 @@
    http://www.arduino.cc/en/Tutorial/InputPullupSerial
  */
 
-// Porta em que o botao esta conectado
-Constante Numero BOTAO = 2;   
-// Porta do LED
-Constante Numero LED =  13;
 
-Configuracao() {
+
+// Porta em que o botao esta conectado
+Constante numero BOTAO = 2;   
+// Porta do LED
+Constante numero LED =  13;
+
+configuracao() {
     //inicia a comunicacao serial
     USB.conectar(9600);
     //define a porta 2 como uma entrada e habilita seu resistor
-    Pino.definirModo(BOTAO, Entrada_PULLUP);
-    Pino.definirModo(LED, Saida);
+    definirModo(BOTAO, ENTRADA_PULLUP);
+    definirModo(LED, SAIDA);
 }
 
-Principal() {
+principal() {
     //Le o estado do botao
-    Numero leitura = Pino.ler(BOTAO);
+    numero leitura = lerDigital(BOTAO);
     //Apresenta a leitura no monitor serial
     USB.enviarln(leitura);
 
@@ -34,10 +36,10 @@ Principal() {
     // isso quer dizer que ele estara ligado normalmente,
     // e desligado quando for apertado.
     // Controle do LED em funcao disso:
-    se (leitura == Ligado){
-        Pino.desligar(LED);
+    se (leitura == LIGADO){
+        desligar(LED);
     }
     senao {
-        Pino.ligar(LED);
+        ligar(LED);
     }
 }

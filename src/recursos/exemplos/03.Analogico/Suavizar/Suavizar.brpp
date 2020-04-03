@@ -3,50 +3,52 @@
 
     O circuito:
     - Sensor analogico (como por exemplo um potenciometro) conectado a porta analogica 0
-  
+
     Exemplo original do Arduino:
     http://www.arduino.cc/en/Tutorial/Smoothing
 */
 
-// Defini o numero de medidas que devem ser feitas. Quanto maior esse numero mais estavel deve ser a saida
-Constante Numero numeroDeMedidas = 10;
 
-Numero leituras[numeroDeMedidas];
-Numero indiceLeitura = 0;
-Numero total = 0;
-Numero media = 0;
 
-Numero pinoEntrada = A0;
+// Define o numero de medidas que devem ser feitas. Quanto maior esse numero mais estavel deve ser a saida
+Constante numero numeroDeMedidas = 10;
 
-Configuracao() {
-    // Inicializa a comunicacao serial
-    USB.conectar(9600);
-    // Inicializa as medidas em 0
-    para (Numero esssaLeitura = 0; esssaLeitura < numeroDeMedidas; esssaLeitura++) {
-        leituras[esssaLeitura] = 0;
-    }
+numero leituras[numeroDeMedidas];
+numero indiceLeitura = 0;
+numero total = 0;
+numero media = 0;
+
+numero pinoEntrada = A0;
+
+configuracao() {
+  // Inicializa a comunicacao serial
+  USB.conectar(9600);
+  // Inicializa as medidas em 0
+  para (numero esssaLeitura = 0; esssaLeitura < numeroDeMedidas; esssaLeitura++) {
+    leituras[esssaLeitura] = 0;
+  }
 }
 
-Principal() {
-    // Subtrai a ultima medida
-    total = total - leituras[indiceLeitura];
-    // Faz a leitura do sensor
-    leituras[indiceLeitura] = Pino.lerAnalogico(pinoEntrada);
-    // Soma a leitura ao total
-    total = total + leituras[indiceLeitura];
-    // Passa pra proxima posicao do vetor
-    indiceLeitura = indiceLeitura + 1;
+principal() {
+  // Subtrai a ultima medida
+  total = total - leituras[indiceLeitura];
+  // Faz a leitura do sensor
+  leituras[indiceLeitura] = lerAnalogico(pinoEntrada);
+  // Soma a leitura ao total
+  total = total + leituras[indiceLeitura];
+  // Passa pra proxima posicao do vetor
+  indiceLeitura = indiceLeitura + 1;
 
-    // Quando atingimos o final do vetor
-    se (indiceLeitura >= numeroDeMedidas) {
+  // Quando atingimos o final do vetor
+  se (indiceLeitura >= numeroDeMedidas) {
     // Recomeca o indice
-        indiceLeitura = 0;
-    }
+    indiceLeitura = 0;
+  }
 
-    // Calcular a media
-    media = total / numeroDeMedidas;
-    // Manda o resultado para o monitor serial
-    USB.enviarln(media);
-    // Esperar entre as medidas para estabiliza-las
-    esperar(1);
+  // Calcular a media
+  media = total / numeroDeMedidas;
+  // Manda o resultado para o monitor serial
+  USB.enviarln(media);
+  // Esperar entre as medidas para estabiliza-las
+  esperar(1);
 }

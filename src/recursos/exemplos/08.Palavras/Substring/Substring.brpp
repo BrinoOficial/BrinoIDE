@@ -7,7 +7,7 @@
     http://www.arduino.cc/en/Tutorial/StringSubstring
 */
 
-Configuracao() {
+configuracao() {
     // Inicia a comunicacao com o computador
     USB.conectar(9600);
     enquanto (!USB) {
@@ -17,7 +17,7 @@ Configuracao() {
     USB.enviarln("Palavra - substring():\n");
 }
 
-Principal() {
+principal() {
     // Declara uma Palavra
     Palavra fraseUm = "Tipo de arquivo: text/html";
     USB.enviarln(fraseUm);

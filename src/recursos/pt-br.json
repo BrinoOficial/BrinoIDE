@@ -8,6 +8,13 @@
       "translate": "\\bConfiguracao\\b"
     },
     {
+      "highlight": "\\bconfiguracao\\b",
+      "arduino": "void setup",
+      "arg": "false",
+      "highlight-type": "2",
+      "translate": "\\bconfiguracao\\b"
+    },
+    {
       "highlight": "\\bsetup\\b",
       "highlight-type": "2"
     },
@@ -17,6 +24,13 @@
       "arg": "false",
       "highlight-type": "2",
       "translate": "\\bPrincipal\\b"
+    },
+    {
+      "highlight": "\\bprincipal\\b",
+      "arduino": "void loop",
+      "arg": "false",
+      "highlight-type": "2",
+      "translate": "\\bprincipal\\b"
     },
     {
       "highlight": "\\bloop\\b",
@@ -147,6 +161,13 @@
       "highlight-type": "3"
     },
     {
+      "highlight": "\\bescrever\\b",
+      "arduino": "Serial.write",
+      "arg": "false",
+      "highlight-type": "3",
+      "translate": "\\bUSB.escrever\\b"
+    },
+    {
       "highlight": "\\benviar\\b",
       "arduino": "Serial.print",
       "arg": "false",
@@ -264,7 +285,7 @@
     },
     {
       "highlight": "\\bconectarServo\\b",
-      "arduino": "attach",
+      "arduino": "attach(",
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bconectarServo\\b."
@@ -310,6 +331,13 @@
       "translate": "\\bNumero\\b"
     },
     {
+      "highlight": "\\bnumero\\b",
+      "arduino": "int ",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bnumero\\b"
+    },
+    {
       "highlight": "\\bint\\b",
       "highlight-type": "1"
     },
@@ -319,6 +347,13 @@
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bNumeroDecimal\\b"
+    },
+    {
+      "highlight": "\\bnumeroDecimal\\b",
+      "arduino": "float",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bnumeroDecimal\\b"
     },
     {
       "highlight": "\\bfloat\\b",
@@ -354,6 +389,13 @@
       "translate": "\\bVerdadeiro\\b"
     },
     {
+      "highlight": "\\bVERDADEIRO\\b",
+      "arduino": "true",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bVERDADEIRO\\b"
+    },
+    {
       "highlight": "\\btrue\\b",
       "highlight-type": "1"
     },
@@ -363,6 +405,13 @@
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bFalso\\b"
+    },
+    {
+      "highlight": "\\bFALSO\\b",
+      "arduino": "false",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bFALSO\\b"
     },
     {
       "highlight": "\\bfalse\\b",
@@ -525,6 +574,13 @@
       "arg": "false",
       "highlight-type": "1",
       "translate": "\\bNumeroLongo\\b"
+    },
+    {
+      "highlight": "\\bnumeroLongo\\b",
+      "arduino": "long",
+      "arg": "false",
+      "highlight-type": "1",
+      "translate": "\\bnumeroLongo\\b"
     },
     {
       "highlight": "\\blong\\b",
@@ -1362,14 +1418,14 @@
     },
     {
       "highlight": "\\bmilissegundos\\b",
-      "arduino": "milis",
+      "arduino": "millis",
       "arg": "false",
       "highlight-type": "3",
       "translate": "\\bmilissegundos\\b"
     },
     {
       "highlight": "\\bcronometro\\b",
-      "arduino": "milis",
+      "arduino": "millis",
       "arg": "false",
       "highlight-type": "3",
       "translate": "\\bcronometro\\b"

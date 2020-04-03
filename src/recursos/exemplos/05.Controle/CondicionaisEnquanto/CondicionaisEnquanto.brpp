@@ -1,8 +1,13 @@
 /*
-    CondicionaisEnquanto - Esse exemplo demonstra o uso do laco enquanto(). Enquanto um botao estiver pressionado ele entra em um codigo de calibracao que busca valores minimos e maximos de leitura. No resto do tempo ele aplica esses parametros e a leitura do sensor para controlar um LED.
+    CondicionaisEnquanto - Esse exemplo demonstra o uso do laco
+    enquanto(). Enquanto um botao estiver pressionado ele entra
+    em um codigo de calibracao que busca valores minimos e maximos
+    de leitura. No resto do tempo ele aplica esses parametros e a
+    leitura do sensor para controlar um LED.
 
     O circuito:
-    - Sensor analogico (como por exemplo um LDR) conectado a porta analogica 0
+    - Sensor analogico (como por exemplo um LDR) conectado a porta
+    analogica 0
     -LED conectado a porta 9 e ao GND
     -Botao conectado a porta 2 e ao 5V
     -Resistor de 10K Conectado a porta 2 e ao GND
@@ -11,65 +16,67 @@
     http://www.arduino.cc/en/Tutorial/WhileLoop
 */
 
+
+
 // Constantes
 // Porta em que o sensor esta conectado
-Constante Numero SENSOR = A0;
+Constante numero SENSOR = A0;
 // Porta em que o LED esta conectado
-Constante Numero LED = 9;
+Constante numero LED = 9;
 // Porta em que o LED que indica que ele esta calibrando esta conectado
-Constante Numero LEDDEINDICACAO = 13;
+Constante numero LEDDEINDICACAO = 13;
 // Porta em que o botao esta conectado
-Constante Numero BOTAO = 2;
+Constante numero BOTAO = 2;
 
 // Variaveis
 // variavel para guardar a menor leitura do sensor
-Numero leituraMin = 1023;
+numero leituraMin = 1023;
 // variavel para guardar a maior leitura do sensor
-Numero leituraMax = 0;
+numero leituraMax = 0;
 // variavel para guardar a leitura do sensor
-Numero leitura = 0;
+numero leitura = 0;
 
-Configuracao() {
-    // Configura as portas
-    Pino.definirModo(LEDDEINDICACAO, Saida);
-    Pino.definirModo(LED, Saida);
-    Pino.definirModo(BOTAO, Entrada);
+configuracao() {
+  // Configura as portas
+  definirModo(LEDDEINDICACAO, SAIDA);
+  definirModo(LED, SAIDA);
+  definirModo(BOTAO, ENTRADA);
 }
 
-Principal() {
-    // Enquanto o botao estiver pressionado ele entra na funcao calibrar() que foi declarada mais adiante
-    enquanto (Pino.ler(BOTAO) == Ligado) {
-        calibrar();
-    }
-    // Apaga o LED indicando o fim da calibracao
-    Pino.desligar(LEDDEINDICACAO);
+principal() {
+  // Enquanto o botao estiver pressionado ele entra na funcao calibrar() que foi declarada mais adiante
+  enquanto (lerDigital(BOTAO) == LIGADO) {
+    calibrar();
+  }
+  // Apaga o LED indicando o fim da calibracao
+  desligar(LEDDEINDICACAO);
 
-    // Efetua a leitura do sensor e guarda o valor em "leitura"
-    leitura = Pino.lerAnalogico(SENSOR);
+  // Efetua a leitura do sensor e guarda o valor em "leitura"
+  leitura = lerAnalogico(SENSOR);
 
-    // Aplica a calibracao
-    leitura = proporcionar(leitura, leituraMin, leituraMax, 0, 255);
+  // Aplica a calibracao
+  leitura = proporcionar(leitura, leituraMin, leituraMax, 0, 255);
 
-    // Obriga o valor a estar dentro dos parametros
-    leitura = Constanterain(leitura, 0, 255);
+  // Obriga o valor a estar dentro dos parametros
+  leitura = constrain(leitura, 0, 255);
 
-    // Ajusta o brilho do LED
-    Pino.escreverAnalogico(LED, leitura);
+  // Ajusta o brilho do LED
+  escreverAnalogico(LED, leitura);
 }
 
-Procedimento calibrar() {
-    // Liga o LED para indicar que esta acontecendo a calibracao
-    Pino.ligar(LEDDEINDICACAO);
-    // Executa a leitura do sensor e armazena em "leitura"
-    leitura = Pino.lerAnalogico(SENSOR);
+semRetorno calibrar() {
+  // Liga o LED para indicar que esta acontecendo a calibracao
+  ligar(LEDDEINDICACAO);
+  // Executa a leitura do sensor e armazena em "leitura"
+  leitura = lerAnalogico(SENSOR);
 
-    // Salva a maior leitura
-    se (leitura > leituraMax) {
-        leituraMax = leitura;
-    }
+  // Salva a maior leitura
+  se (leitura > leituraMax) {
+    leituraMax = leitura;
+  }
 
-    // Salva a menor leitura 
-    se (leitura < leituraMin) {
-        leituraMin = leitura;
-    }
+  // Salva a menor leitura
+  se (leitura < leituraMin) {
+    leituraMin = leitura;
+  }
 }

@@ -10,7 +10,7 @@
 // declare three Strings:
 Palavra fraseUm, fraseDois, fraseTres;
 
-Configuracao() {
+configuracao() {
     // Inicia a comunicacao com o computador
     USB.conectar(9600);
     enquanto (!USB) {
@@ -23,13 +23,13 @@ Configuracao() {
     USB.enviarln("Somando frases\n");
 }
 
-Principal() {
-    // Soma um numero inteiro (Numero) a uma frase:
+principal() {
+    // Soma um numero inteiro (numero) a uma frase:
     fraseTres =  fraseUm + 123;
     USB.enviarln(fraseTres);
     // Resultado "Voce somou 123"
 
-    // Soma um numero longo (NumeroLongo) a uma frase:
+    // Soma um numero longo (numeroLongo) a uma frase:
     fraseTres = fraseUm + 123456789;
     USB.enviarln(fraseTres);
     // Resultado "Voce somou 123456789"
@@ -49,18 +49,18 @@ Principal() {
     USB.enviarln(fraseTres);
     // Resultado "Voce somou essa frase"
 
-    // Adiciona um numero variavel (Numero) a uma frase
-    Numero sensorValue = Pino.lerAnalogico(A0);
+    // Adiciona um numero variavel (numero) a uma frase
+    numero sensorValue = Pino.lerAnalogico(A0);
     fraseUm = "Leitura sensor: ";
     fraseTres = fraseUm  + sensorValue;
     USB.enviarln(fraseTres);
     // Resultado "Leitura sensor: 504" ou quaquer valor lido
 
-    // Adiciona um numero longo variavel (NumeroLongo) a uma frase
-    fraseUm = "Valor do millis(): ";
-    fraseTres = fraseUm + millis();
+    // Adiciona um numero longo variavel (numeroLongo) a uma frase
+    fraseUm = "Valor do cronometro(): ";
+    fraseTres = fraseUm + cronometro();
     USB.enviarln(fraseTres);
-    // Resultado "Valor do millis(): 67" ou qualquer que seja o valor dele
+    // Resultado "Valor do cronometro(): 67" ou qualquer que seja o valor dele
 
     // Para o codigo
     enquanto (Verdadeiro);

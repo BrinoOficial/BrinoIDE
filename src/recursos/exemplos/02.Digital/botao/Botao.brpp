@@ -11,31 +11,33 @@
     http://www.arduino.cc/en/Tutorial/Button
 */
 
+
+
 // Porta em que o botao esta conectado
-Constante Numero BOTAO = 2;   
+Constante numero BOTAO = 2;   
 // Porta em que o LED esta conectado 
-Constante Numero LED =  13;  
+Constante numero LED =  13;  
 
 // Variavel para o estado do botao
-Numero estadoBotao = 0; 
+numero estadoBotao = 0; 
 
-Configuracao() {
+configuracao() {
     // Defini a porta "LED" como uma saida
-    Pino.definirModo(LED, Saida);
+    definirModo(LED, SAIDA);
     // Define a porta "BOTAO" como uma entrada
-    Pino.definirModo(BOTAO, Entrada);
+    definirModo(BOTAO, ENTRADA);
 }
 
-Principal() {
+principal() {
     // Le o estado do botao e salva na variavel "estadoBotao"
-    estadoBotao = Pino.ler(BOTAO);
+    estadoBotao = lerDigital(BOTAO);
 
     // Verifica se o botao foi pressionado
-    se (estadoBotao == Ligado) {
+    se (estadoBotao == LIGADO) {
         // Liga o LED
-        Pino.ligar(LED);
+        ligar(LED);
     } senao {
         // Desliga o LED
-        Pino.desligar(LED);
+        desligar(LED);
     }
 }

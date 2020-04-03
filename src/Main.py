@@ -61,7 +61,7 @@ import Rastreador
 
 versao = '3.0.7'
 caminho_padrao = ''
-monitor = 3
+s = 3
 
 
 class Principal(QMainWindow):
