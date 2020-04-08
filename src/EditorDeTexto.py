@@ -88,6 +88,7 @@ class CodeEditor(QPlainTextEdit):
         self.highlight = None
         self.contador_de_linhas = ContadorDeLinhas(self)
         self.largura_contador = 38
+        self.setTabStopWidth(16)
         self.blockCountChanged.connect(self.atualizar_largura_contador)
         self.updateRequest.connect(self.atualizar_area_contador)
         self.cursorPositionChanged.connect(self.marcar_linha_atual)
