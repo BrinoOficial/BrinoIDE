@@ -1,6 +1,0 @@
-*.pyc
-/venv/
-/.idea/
-.idea/workspace.xml
-/src/builder/preferences.txt
-src/recursos/completo.log
