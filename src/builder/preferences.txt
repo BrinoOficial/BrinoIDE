@@ -235,9 +235,9 @@ build.warn_data_percentage = 75
 programmer = arduino:avrispmkii
 
 upload.using = bootloader
-upload.verify  = 
+upload.verify = true
 
-serial.port = COM5
+serial.port=COM1
 serial.databits=8
 serial.stopbits=1
 serial.parity=N
@@ -246,7 +246,7 @@ serial.debug_rate=9600
 # I18 Preferences
 
 # default chosen language (none for none)
-editor.languages.current =
+editor.languages.current = 
 
 # Debugging/Development Preferences
 # ---------------------------------

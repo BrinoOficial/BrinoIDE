@@ -22,32 +22,84 @@
           "checksum": "SHA-256:61f3d59a2ab2e9191230e91e79ee91c05f32b32c33129d34d76ef87e56d257e1",
           "size": "4897949",
           "boards": [
-            {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
-            {"name": "Arduino Uno WiFi"},
-            {"name": "Arduino Diecimila"},
-            {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
-            {"name": "Arduino MegaADK"},
-            {"name": "Arduino Leonardo"},
-            {"name": "Arduino Leonardo Ethernet"},
-            {"name": "Arduino/Genuino Micro"},
-            {"name": "Arduino Esplora"},
-            {"name": "Arduino Mini"},
-            {"name": "Arduino Ethernet"},
-            {"name": "Arduino Fio"},
-            {"name": "Arduino BT"},
-            {"name": "Arduino LilyPadUSB"},
-            {"name": "Arduino Lilypad"},
-            {"name": "Arduino Pro"},
-            {"name": "Arduino ATMegaNG"},
-            {"name": "Arduino Robot Control"},
-            {"name": "Arduino Robot Motor"},
-            {"name": "Arduino Gemma"},
-            {"name": "Adafruit Circuit Playground"},
-            {"name": "Arduino Yún Mini"},
-            {"name": "Arduino Industrial 101"},
-            {"name": "Linino One"}
+            {
+              "name": "Arduino Yún"
+            },
+            {
+              "name": "Arduino/Genuino Uno"
+            },
+            {
+              "name": "Arduino Uno WiFi"
+            },
+            {
+              "name": "Arduino Diecimila"
+            },
+            {
+              "name": "Arduino Nano"
+            },
+            {
+              "name": "Arduino/Genuino Mega"
+            },
+            {
+              "name": "Arduino MegaADK"
+            },
+            {
+              "name": "Arduino Leonardo"
+            },
+            {
+              "name": "Arduino Leonardo Ethernet"
+            },
+            {
+              "name": "Arduino/Genuino Micro"
+            },
+            {
+              "name": "Arduino Esplora"
+            },
+            {
+              "name": "Arduino Mini"
+            },
+            {
+              "name": "Arduino Ethernet"
+            },
+            {
+              "name": "Arduino Fio"
+            },
+            {
+              "name": "Arduino BT"
+            },
+            {
+              "name": "Arduino LilyPadUSB"
+            },
+            {
+              "name": "Arduino Lilypad"
+            },
+            {
+              "name": "Arduino Pro"
+            },
+            {
+              "name": "Arduino ATMegaNG"
+            },
+            {
+              "name": "Arduino Robot Control"
+            },
+            {
+              "name": "Arduino Robot Motor"
+            },
+            {
+              "name": "Arduino Gemma"
+            },
+            {
+              "name": "Adafruit Circuit Playground"
+            },
+            {
+              "name": "Arduino Yún Mini"
+            },
+            {
+              "name": "Arduino Industrial 101"
+            },
+            {
+              "name": "Linino One"
+            }
           ],
           "toolsDependencies": [
             {
