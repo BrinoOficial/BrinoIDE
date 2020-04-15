@@ -1,5 +1,6 @@
 # BrinoPy
 Versão em PyQt5 da IDE do Br.ino! Mais rápida e eficiente
+Para download do executável e mais documentações acesse: [brino.cc](https://brino.cc)
 
 ## Erros na instalação? Confira a nossa página: [Correção de erros](https://github.com/BrinoOficial/BrinoPy/wiki/Corre%C3%A7%C3%A3o-de-erros)!
 
@@ -11,10 +12,11 @@ Versão em PyQt5 da IDE do Br.ino! Mais rápida e eficiente
 
 ## Versão
 
-* **Pycharm** - *2018.1.2*
-* **PyQt5** - *5.10*
-* **Python** - *3.5*
+* **Pycharm** - *2020.1*
+* **PyQt5** - *5.14.2*
+* **Python** - *3*
 * **Ubuntu** - *16.04*
+* **Windows 10 Home Single Language** - *1909* 
 
 ## Autores
 
