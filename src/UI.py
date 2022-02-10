@@ -56,6 +56,7 @@ import Uploader
 import Rastreador
 from BoasVindas import BoasVindas
 from Compiler import compilar_arduino_builder
+from Compiler import compilar_arduino_cli
 from GerenciadorDeKeywords import traduzir
 from IndexadorContribuicao import IndexadorContribuicao
 from Main import get_caminho_padrao
@@ -666,8 +667,19 @@ class Centro(QWidget):
         pacote_alvo = plataforma_alvo.get_pacote()
         # Transforma o codigo brpp em ino
         traduzir(caminho)
-        resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build,
-                                             self.temp_cache)
+        # TODO Adicionar os parametros corretos do compilar_arduino_cli
+        plataforma_alvo_cli = "arduino:samd:mkr1000"
+        caminho_cli = "C:/Users/grani/Documents/RascunhosBrino/Amortecer"
+        resultado = compilar_arduino_cli(caminho_cli, plataforma_alvo_cli)
+        print("PRINTS DE DEBUG")
+        print(f"caminho: {caminho}")
+        print(f"placa_alvo: {placa_alvo}")
+        print(f"plataforma_alvo: {plataforma_alvo}")
+        print(f"pacote_alvo: {pacote_alvo}")
+        print(f"self.temp_build: {self.temp_build}")
+        print(f"self.temp_cache: {self.temp_cache}")
+        print("FIM DE PRINTS DE DEBUG")
+        # resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build, self.temp_cache)
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:

@@ -40,6 +40,27 @@ import Main
 import Preferencias
 
 
+def compilar_arduino_cli(caminho, plataforma_alvo):
+    """
+    usa o arduino cli para compilar
+    :param caminho:
+        Caminho do codigo a ser compilado
+    :param plataforma_alvo:
+        Placa arduino para a qual o codigo deve ser compilado
+    :return output:
+        resultado do comando de compilacao
+    """
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
+    output = p.stdout.read()
+    output += p.stderr.read()
+    print(output)
+    return output
+
+
+
 def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, temp, cache):
     """
     usa o arduino builder para compilar
@@ -58,8 +79,14 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     :return output:
         resultado do comando de compilacao
     """
-    pacotes_instalados = '"'+os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages'))+'"'
-    cmd = '"'+os.path.abspath(os.path.join('.', 'builder', 'arduino-builder'))+'"'
+    print(f"caminho: {caminho}")
+    print(f"placa_alvo: {placa_alvo}")
+    print(f"plataforma_alvo: {plataforma_alvo}")
+    print(f"pacote_alvo: {pacote_alvo}")
+    print(f"temp: {temp}")
+    print(f"cache: {cache}")
+    pacotes_instalados = '"' + os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages')) + '"'
+    cmd = '"' + os.path.abspath(os.path.join('.', 'builder', 'arduino-builder')) + '"'
     cmd += " -compile"
     cmd += " -logger=human"
     cmd = adicionar_hardware_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'hardware')))
@@ -84,6 +111,7 @@ def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, 
     print(cmd)
     output = p.stdout.read()
     output += p.stderr.read()
+    print("Código compilado:")
     print(output)
     return output
 
