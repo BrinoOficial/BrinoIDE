@@ -18,6 +18,18 @@ Para download do executável e mais documentações acesse: [brino.cc](https://b
 * **Ubuntu** - *16.04*
 * **Windows 10 Home Single Language** - *1909* 
 
+## Preparo da plataforma de desenvolvimento
+### Windows
+Instale o python 3.6
+Realize o download do pip em - https://bootstrap.pypa.io/get-pip.py
+Na pasta en que foi realizado o download execute - python get-pip.py
+
+Instale as seguintes dependências:
+* **PyQt5** - [python -m pip install PyQt5]
+* **PySerial** - [python -m pip install pyserial]
+
+### Linux
+
 ## Autores
 
 * **Mateus Berardo** - *Autor* - [MatTerra](https://github.com/MatTerra)

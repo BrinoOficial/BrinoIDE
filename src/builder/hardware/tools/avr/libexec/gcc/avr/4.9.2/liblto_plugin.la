@@ -5,10 +5,10 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='liblto_plugin.so.0'
+dlname='liblto_plugin-0.dll'
 
 # Names of this library.
-library_names='liblto_plugin.so.0.0.0 liblto_plugin.so.0 liblto_plugin.so'
+library_names='liblto_plugin.dll.a'
 
 # The name of the static archive.
 old_library=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/jenkins/workspace/avr-gcc/label/debian7-x86_64/objdir/libexec/gcc/avr/4.9.2'
+libdir='/c/jenkins/workspace/avr-gcc/label/winxp-32-mingw/objdir/libexec/gcc/avr/4.9.2'

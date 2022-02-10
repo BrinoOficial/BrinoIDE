@@ -1,4 +1,4 @@
-prefix=/home/jenkins/workspace/avrdude/label/debian7-x86_64/objdir
+prefix=/home/jenkins-mingw32/workspace/avrdude/label/Ubuntu14.04x64-mingw32/objdir
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

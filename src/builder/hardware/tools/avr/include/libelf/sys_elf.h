@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 /* Define to `<elf.h>' or `<sys/elf.h>' if one of them is present */
-#define __LIBELF_HEADER_ELF_H <elf.h>
+/* #undef __LIBELF_HEADER_ELF_H */
 
 /* Define if Elf32_Dyn is declared in <link.h> */
 /* #undef __LIBELF_NEED_LINK_H */
@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 /* #undef __LIBELF_NEED_SYS_LINK_H */
 
 /* Define if you want 64-bit support (and your system supports it) */
-#define __LIBELF64 1
+/* #undef __LIBELF64 */
 
 /* Define if you want 64-bit support, and are running IRIX */
 /* #undef __LIBELF64_IRIX */
@@ -46,10 +46,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 #define __LIBELF_SYMBOL_VERSIONS 1
 
 /* Define to a 64-bit signed integer type if one exists */
-#define __libelf_i64_t long
+/* #undef __libelf_i64_t */
 
 /* Define to a 64-bit unsigned integer type if one exists */
-#define __libelf_u64_t unsigned long
+/* #undef __libelf_u64_t */
 
 /* Define to a 32-bit signed integer type if one exists */
 #define __libelf_i32_t int
