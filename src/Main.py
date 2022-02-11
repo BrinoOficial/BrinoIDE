@@ -7,10 +7,6 @@ Br.ino Qt Main
 Codigo da janela principal da IDE Br.ino
 em PyQt5 (python 3.6)
 
-    Icones made by Dave Gandy
-    Site: https://www.flaticon.com/authors/dave-gandy
-    is licensed by: http://creativecommons.org/licenses/by/3.0/"
-
     IDE do Br.ino  Copyright (C) 2018  Br.ino
 
     Este arquivo e parte da IDE do Br.ino.
@@ -30,11 +26,11 @@ em PyQt5 (python 3.6)
     GNU junto com este programa. Caso contrario, veja 
     <https://www.gnu.org/licenses/>
      
-website: brino.cc
+website: https://brino.cc
+github: https://github.com/BrinoOficial/BrinoIDE
 author: Mateus Berardo
-email: mateus.berardo@brino.cc
 author: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
+author: Gabriel Rodrigues Pacheco
 """
 
 from json import loads, load

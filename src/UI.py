@@ -11,7 +11,7 @@ em PyQt5 (python 3.6)
 
     Este arquivo e parte da IDE do Br.ino.
 
-    A IDE do Br.ino e um software livre: voce pode redistribui-lo
+    A IDE do Br.ino eh um software livre: voce pode redistribui-lo
     e / ou modifica-lo de acordo com os termos da Licenca Publica
     Geral GNU, conforme publicado pela Free Software Foundation,
     seja a versao 3 da Licenca , ou (na sua opcao) qualquer
@@ -26,11 +26,11 @@ em PyQt5 (python 3.6)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-website: brino.cc
+website: https://brino.cc
+github: https://github.com/BrinoOficial/BrinoIDE
 author: Mateus Berardo
-email: mateus.berardo@brino.cc
-contributor: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
+author: Victor Rodrigues Pacheco
+author: Gabriel Rodrigues Pacheco
 """
 
 import glob
