@@ -27,6 +27,8 @@ Na pasta en que foi realizado o download execute - python get-pip.py
 Instale as seguintes dependências:
 * **PyQt5** - [python -m pip install PyQt5]
 * **PySerial** - [python -m pip install pyserial]
+* **requests** - [python -m pip install requests]
+* **google_measurement_protocol** - [python -m pip install google_measurement_protocol]
 
 ### Linux
 
