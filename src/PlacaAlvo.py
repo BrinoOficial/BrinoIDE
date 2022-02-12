@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# TODO Apagar arquivo
+
 """
 Br.ino Qt placa alvo
 

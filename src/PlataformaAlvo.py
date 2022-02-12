@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# TODO Matar arquivo
+
 """
 Br.ino Qt plataforma alvo
 

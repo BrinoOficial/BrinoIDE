@@ -38,13 +38,12 @@ import os
 import sys
 import webbrowser
 from urllib.request import urlopen
-import uuid
 import requests
 import traceback
 import re
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QSplashScreen, QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
 
 import GerenciadorDeCodigo
@@ -52,230 +51,14 @@ import GerenciadorDeLinguas
 import MonitorSerial
 import Preferencias
 import UI
+import Compiler
 from exceptions import UpdateException
 import Rastreador
 
+# TODO Duplicado, resolver isso
 versao = '3.0.7'
 caminho_padrao = ''
 s = 3
-
-
-class Principal(QMainWindow):
-
-    def __init__(self):
-        super(Principal, self).__init__()
-
-        # Define as acoes
-        self.acao_novo = QAction('&Novo', self)
-        self.acao_abrir = QAction('Abrir', self)
-        self.acao_abrir_arduino = QAction('Abrir Traducao', self)
-        self.acao_exemplos = QAction('Exemplos', self)
-        self.acao_sair = QAction('Sair', self)
-        self.acao_fechar_aba = QAction('Fechar aba', self)
-        self.acao_salvar = QAction('&Salvar', self)
-        self.acao_salvar_como = QAction('Salvar como', self)
-        self.acao_comentar_linha = QAction('Comentar linha', self)
-        self.acao_achar = QAction('Achar...', self)
-        self.acao_achar_e_substituir = QAction('Achar e substituir', self)
-        self.acao_ir_para_linha = QAction('Ir para linha', self)
-        self.acao_placa = QAction('Placa', self)
-        self.acao_porta = QAction('Porta', self)
-        self.acao_lingua = QAction('Lingua', self)
-        self.acao_instalar_biblioteca = QAction('Instalar biblioteca', self)
-        self.acao_monitor_serial = QAction('Monitor serial', self)
-        self.acao_verificar = QAction('Verificar', self)
-        self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
-        self.menu_placas = QMenu('Placa')
-        self.menu_portas = QMenu('Porta')
-        self.menu_exemplos = QMenu('Exemplos')
-        self.barra_de_status = QStatusBar()
-
-        self.widget_central = UI.Centro(self)
-
-        self.criar_barra_menu()
-
-        self.init_ui()
-
-    def init_ui(self):
-        self.setStatusBar(self.barra_de_status)
-        if Preferencias.get("board") is None:
-            Preferencias.set("board", "uno")
-        if Preferencias.get("serial.port") is None:
-            Preferencias.set("serial.port", "COM1")
-        self.placa_porta_label = QLabel(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
-        self.barra_de_status.addPermanentWidget(self.placa_porta_label)
-
-        self.setCentralWidget(self.widget_central)
-
-        self.setGeometry(100, 50, 500, 550)
-        self.setMinimumSize(500, 520)
-        self.setWindowTitle('Br.ino ' + versao)
-        self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
-
-        self.show()
-
-    def criar_acoes(self):
-        """
-        Define as funcoes de resposta as acoes e conecta elas. Define atalhos de teclado
-        :return:
-            None
-        """
-        self.acao_sair.setShortcut('Ctrl+Q')
-        self.acao_sair.setStatusTip('Sair da IDE do Br.ino')
-        self.acao_sair.triggered.connect(self.close)
-        self.acao_sair.triggered.connect(monitor.close)
-
-        self.acao_fechar_aba.setShortcut('Ctrl+W')
-        self.acao_fechar_aba.setStatusTip('Fechar aba atual')
-        self.acao_fechar_aba.triggered.connect(self.widget_central.remover_aba)
-
-        self.acao_novo.setShortcut("Ctrl+N")
-        self.acao_novo.triggered.connect(self.widget_central.nova_aba)
-        self.acao_novo.setStatusTip("Criar novo arquivo")
-
-        self.acao_abrir.setShortcut('Ctrl+O')
-        self.acao_abrir.triggered.connect(self.widget_central.abrir)
-        self.acao_abrir.setStatusTip("Abrir arquivo")
-
-        self.acao_abrir_arduino.setShortcut('Ctrl+T')
-        self.acao_abrir_arduino.triggered.connect(self.widget_central.abrir_traducao)
-        self.acao_abrir.setStatusTip("Abrir Tradução")
-
-        self.acao_salvar.setShortcut('Ctrl+S')
-        self.acao_salvar.triggered.connect(self.widget_central.salvar)
-        self.acao_salvar.setStatusTip("Salvar arquivo")
-
-        self.acao_salvar_como.setShortcut('Ctrl+Shift+S')
-        self.acao_salvar_como.triggered.connect(self.widget_central.salvar_como)
-        self.acao_salvar_como.setStatusTip("Salvar arquivo como")
-
-        self.acao_comentar_linha.setShortcut('Ctrl+/')
-        self.acao_comentar_linha.triggered.connect(self.widget_central.comentar_linha)
-        self.acao_comentar_linha.setStatusTip("Comentar linha")
-
-        self.acao_achar.setShortcut('Ctrl+F')
-        self.acao_achar.triggered.connect(self.widget_central.achar)
-        self.acao_achar.setStatusTip("Achar...")
-
-        self.acao_achar_e_substituir.setShortcut('Ctrl+H')
-        self.acao_achar_e_substituir.triggered.connect(self.widget_central.achar_e_substituir)
-        self.acao_achar_e_substituir.setStatusTip("Achar e substituir...")
-
-        self.acao_ir_para_linha.setShortcut('Ctrl+L')
-        self.acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
-        self.acao_ir_para_linha.setStatusTip("Ir para linha...")
-
-        self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
-        self.acao_lingua.setStatusTip("Opções de língua")
-
-        self.acao_instalar_biblioteca.triggered.connect(self.widget_central.instalar_biblioteca)
-        self.acao_instalar_biblioteca.setStatusTip("Instalar bilioteca")
-
-        self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
-        self.acao_monitor_serial.triggered.connect(self.abrir_serial)
-        self.acao_monitor_serial.setStatusTip("Abrir monitor serial")
-
-        self.acao_verificar.setShortcut('Ctrl+R')
-        self.acao_verificar.triggered.connect(self.widget_central.compilar)
-        self.acao_verificar.setStatusTip("Verificar código")
-
-        self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
-        self.acao_verificar_e_carregar.triggered.connect(self.enviar_codigo)
-        self.acao_verificar_e_carregar.setStatusTip("Verificar e carregar código")
-
-    def criar_barra_menu(self):
-        """
-        Cria a barra menu e adiciona as funcoes nela
-        :return:
-            None
-        """
-        self.criar_acoes()
-
-        barra_menu = self.menuBar()
-        barra_menu.setNativeMenuBar(False)
-        menu_arquivo = barra_menu.addMenu('Arquivo')
-        menu_arquivo.addAction(self.acao_novo)
-        menu_arquivo.addAction(self.acao_abrir)
-        menu_arquivo.addAction(self.acao_abrir_arduino)
-        menu_arquivo.addMenu(self.menu_exemplos)
-        menu_arquivo.addAction(self.acao_salvar)
-        menu_arquivo.addAction(self.acao_salvar_como)
-        menu_arquivo.addAction(self.acao_fechar_aba)
-        menu_arquivo.addAction(self.acao_sair)
-
-        menu_editar = barra_menu.addMenu('Editar')
-        menu_editar.addAction(self.acao_comentar_linha)
-        menu_editar.addAction(self.acao_achar)
-        menu_editar.addAction(self.acao_achar_e_substituir)
-        menu_editar.addAction(self.acao_ir_para_linha)
-
-        self.menu_ferramentas = barra_menu.addMenu('Ferramentas')
-        self.menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
-        self.menu_ferramentas.addMenu(self.menu_placas)
-        self.menu_ferramentas.addMenu(self.menu_portas)
-        self.menu_ferramentas.addAction(self.acao_lingua)
-        self.menu_ferramentas.addAction(self.acao_monitor_serial)
-        self.menu_ferramentas.addAction(self.acao_instalar_biblioteca)
-
-        menu_rascunho = barra_menu.addMenu('Rascunho')
-        menu_rascunho.addAction(self.acao_verificar)
-        menu_rascunho.addAction(self.acao_verificar_e_carregar)
-
-    def abrir_serial(self):
-        """
-        Abre o monitor serial ou indica que a porta nao esta disponivel
-        :return:
-            None
-        """
-
-        # Verifica se jah hah um monitor aberto e o fecha
-        if monitor.isVisible():
-            monitor.close()
-        if monitor.conectar(Preferencias.get("serial.port")):
-            monitor.show()
-            Rastreador.log_info("Monitor Serial aberto")
-        else:
-            QMessageBox("Erro", QMessageBox.Warning, "A porta selecionada não está disponível",
-                        QMessageBox.NoButton, self).show()
-            Rastreador.log_error("Porta Serial solicitada não disponível")
-
-    def enviar_codigo(self):
-        """
-        Fecha o monitor serial, compila e carrega o codigo da aba atual
-        :return:
-            None
-        """
-        Rastreador.log_info("Compilando e Carregando")
-        reconectar = monitor.desconectar()
-        self.widget_central.upload()
-        Rastreador.log_info("Fim do upload")
-        if reconectar:
-            Rastreador.log_info("Monitor Serial fechado e reconectando")
-            self.abrir_serial()
-            Rastreador.log_info("Monitor Serial reconectado")
-
-    def closeEvent(self, close_event):
-        """
-        Fecha o programa, mas antes verifica se os arquivos foram salvos
-        :param close_event:
-        :return:
-        """
-        if self.widget_central.widget_abas.widget(0).caminho == 0:
-            num_examinar = 1
-        else:
-            num_examinar = 0
-        for num_arquivo in range(self.widget_central.widget_abas.count() - num_examinar):
-            if not self.widget_central.remover_aba(num_examinar, True):
-                close_event.ignore()
-                return
-        Rastreador.log_info("Encerrando o Br.ino")
-        monitor.close()
-        Rastreador.log_info("Monitor serial encerrado")
-        Rastreador.rastrear(Rastreador.FECHAMENTO)
-        Rastreador.log_info("Rastreado fechamento")
-        Preferencias.gravar_preferencias()
-        Rastreador.log_info("Preferências registradas, encerrando...")
-        close_event.accept()
 
 
 def get_caminho_padrao():
@@ -321,20 +104,6 @@ def atualizar_linguas():
     return atualizadas if resultado == "" else resultado
 
 
-def gerar_id_cliente():
-    """
-    Verifica se no arquivo de preferências há um id único para o cliente. Caso contrário, gera um.
-    :return:
-        None
-    """
-    # Comente essas linhas para teste, descomente para produção
-    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
-        Rastreador.log_info("Não há ID registrado, primeiro uso")
-        idc = uuid.uuid4()
-        Preferencias.set("id_cliente", str(idc))
-        Rastreador.log_info("id definido como:", Preferencias.get("id_cliente"))
-
-
 def verificar_versao():
     """
     Verifica se ha uma nova versao disponivel no site.
@@ -344,7 +113,7 @@ def verificar_versao():
     ha_atualizacao = False
     versao_online = ''
     try:
-        with urlopen('http://brino.cc/brino/versao.php') as versao_site:
+        with urlopen('https://brino.cc/brino/versao.php') as versao_site:
             for linha in versao_site:
                 versao_online += linha.decode('utf-8')
 
@@ -405,7 +174,7 @@ if __name__ == '__main__':
     app.processEvents()
     Preferencias.init()
     Rastreador.log_debug("Preferencias carregadas")
-    gerar_id_cliente()
+    Rastreador.gerar_id_cliente()
     Rastreador.log_debug("ID gerado")
     install_excepthook()
     Rastreador.log_debug("Gerenciador de erros instalado")
@@ -421,9 +190,8 @@ if __name__ == '__main__':
         Rastreador.log_error(e)
     deve_atualizar = verificar_versao()
     Rastreador.log_debug("Verifacado se há atualizações. %s" % deve_atualizar)
-    monitor = MonitorSerial.MonitorSerial()
-    Rastreador.log_debug("Carregado monitor serial")
-    principal = Principal()
+
+    principal = UI.Principal()
     Rastreador.log_debug("Carregada tela principal")
     principal.show()
     Rastreador.log_debug("Aberta tela principal")

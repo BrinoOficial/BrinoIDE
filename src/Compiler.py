@@ -38,9 +38,9 @@ from subprocess import Popen, PIPE
 
 import Main
 import Preferencias
+from GerenciadorDeKeywords import traduzir
 
-
-def compilar_arduino_cli(caminho, plataforma_alvo):
+def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False):
     """
     usa o arduino cli para compilar
     :param caminho:
@@ -50,17 +50,47 @@ def compilar_arduino_cli(caminho, plataforma_alvo):
     :return output:
         resultado do comando de compilacao
     """
+    # Traduz o codigo
+    traduzir(caminho)
+    caminho = caminho.replace("brpp", "ino")
+    # Compila o codigo
     arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     output = p.stdout.read()
     output += p.stderr.read()
-    print(output)
     return output
 
+def listar_todas_placas_compativeis_cli():
+    """
+    Funcao para listar as placas compativeis com o arduino cli
+    :return output:
+        resultado do comando de listar palcas (Uma lista de strings com as placas (nome e codigo FQBN dela)
+    """
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    cmd = arn_cli + " board listall"
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
+    lista_de_placas = p.stdout.read()
+    lista_de_placas += p.stderr.read()
+    return lista_de_placas.decode()
 
+def listar_todas_placas_conectadas_cli():
+    """
+    Funcao para listar as placas Arduino conectadas ao computador
+    :return output:
+        resultado do comando de listar palcas conectadas (Uma lista de strings com as placas (nome e codigo FQBN dela)
+    """
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    cmd = arn_cli + " board list"
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
+    lista_de_placas_conectadas = p.stdout.read()
+    # lista_de_placas_conectadas += p.stderr.read()
+    return lista_de_placas_conectadas.decode()
 
+# TODO Remover função compilar_arduino_builder
 def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, temp, cache):
     """
     usa o arduino builder para compilar

@@ -38,6 +38,7 @@ email: victor.pacheco@brino.cc
 """
 
 import logging
+import uuid
 from google_measurement_protocol import event, report
 
 import Preferencias
@@ -53,6 +54,18 @@ def rastrear(evento):
     except:
         pass
 
+def gerar_id_cliente():
+    """
+    Verifica se no arquivo de preferências há um id único para o cliente. Caso contrário, gera um.
+    :return:
+        None
+    """
+    # Comente essas linhas para teste, descomente para produção
+    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
+        log_info("Não há ID registrado, primeiro uso")
+        idc = uuid.uuid4()
+        Preferencias.set("id_cliente", str(idc))
+        log_info("id definido como:", Preferencias.get("id_cliente"))
 
 def log_info(m):
     log.info(m)

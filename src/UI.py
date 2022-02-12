@@ -55,14 +55,38 @@ import Preferencias
 import Uploader
 import Rastreador
 from BoasVindas import BoasVindas
-from Compiler import compilar_arduino_builder
-from Compiler import compilar_arduino_cli
+from Compiler import *
 from GerenciadorDeKeywords import traduzir
 from IndexadorContribuicao import IndexadorContribuicao
 from Main import get_caminho_padrao
 from PacoteAlvo import PacoteAlvo
 from PlataformaAlvo import PlataformaAlvo
 
+import os
+import sys
+import webbrowser
+from urllib.request import urlopen
+import uuid
+import requests
+import traceback
+import re
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QSplashScreen, QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
+
+import GerenciadorDeCodigo
+import GerenciadorDeLinguas
+import MonitorSerial
+import Preferencias
+import UI
+from exceptions import UpdateException
+import Rastreador
+
+# TODO Duplicado, resolver isso
+versao = '3.0.7'
+caminho_padrao = ''
+s = 3
 
 class Centro(QWidget):
 
@@ -73,6 +97,7 @@ class Centro(QWidget):
         self.indexer = None
         self.parent = parent
         self.pacotes = dict()
+        # TODO Remover arquivos temporarios
         self.temp_build = mkdtemp('build')
         self.temp_cache = mkdtemp('cache')
         self.log = None
@@ -82,8 +107,8 @@ class Centro(QWidget):
     def init_ui(self):
         # Define grid
         layout = QGridLayout(self)
-        layout.setRowStretch(0, 7.5)
-        layout.setRowStretch(1, 2.5)
+        layout.setRowStretch(0, 7)
+        layout.setRowStretch(1, 2)
         layout.setColumnMinimumWidth(0, 60)
         layout.setSpacing(5)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -494,23 +519,40 @@ class Centro(QWidget):
         :return:
             None
         """
-        self.menus_personalizados = list()
-        titulos_menus_personalizados = list()
-        for pacote_alvo in self.pacotes.values():
-            for plataforma_alvo in pacote_alvo.get_lista_plataformas():
-                titulos_menus_personalizados += plataforma_alvo.get_menus().values()
-        for titulo_menu_personalizado in titulos_menus_personalizados:
-            menu = QMenu(titulo_menu_personalizado)
-            self.menus_personalizados.append(menu)
-        placas = QActionGroup(self.parent)
-        placas.setExclusive(True)
-        for pacote_alvo in self.pacotes.values():
-            for plataforma_alvo in pacote_alvo.get_lista_plataformas():
-                nome = plataforma_alvo.get_preferencias().get("name")
-                self.parent.menu_placas.addAction(QAction(nome, self))
-                for placa in plataforma_alvo.get_placas().values():
-                    if not placa.get_preferencias().get('hide'):
-                        self.parent.menu_placas.addAction(placa.criar_acao(self))
+
+        # Pega uma grande string contendo as placas
+        placas_compativeis = listar_todas_placas_compativeis_cli()
+        # Divide a string para criar uma lista
+        placas_compativeis = placas_compativeis.split("\n")
+        placas_compativeis_nomes = list()
+        letra_corte = placas_compativeis[0].find("F")-1
+        for placa in placas_compativeis:
+            if placa[:int(letra_corte)].rstrip() != "":
+                placas_compativeis_nomes.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
+        placas_compativeis_nomes.pop(0)
+        for placa in placas_compativeis_nomes:
+            self.parent.menu_placas.addAction(QAction(placa[0], self))
+
+        # TODO remover função
+
+        # self.menus_personalizados = list()
+        # titulos_menus_personalizados = list()
+        # for pacote_alvo in self.pacotes.values():
+        #     for plataforma_alvo in pacote_alvo.get_lista_plataformas():
+        #         titulos_menus_personalizados += plataforma_alvo.get_menus().values()
+        # for titulo_menu_personalizado in titulos_menus_personalizados:
+        #     menu = QMenu(titulo_menu_personalizado)
+        #     self.menus_personalizados.append(menu)
+        # placas = QActionGroup(self.parent)
+        # placas.setExclusive(True)
+        # for pacote_alvo in self.pacotes.values():
+        #     for plataforma_alvo in pacote_alvo.get_lista_plataformas():
+        #         nome = plataforma_alvo.get_preferencias().get("name")
+        #         self.parent.menu_placas.addAction(QAction(nome, self))
+        #         self.parent.menu_placas.addAction(QAction("boi tata", self))
+        #         for placa in plataforma_alvo.get_placas().values():
+        #             if not placa.get_preferencias().get('hide'):
+        #                 self.parent.menu_placas.addAction(placa.criar_acao(self))
 
     def criar_menu_portas(self):
         """
@@ -518,19 +560,39 @@ class Centro(QWidget):
         :return:
             None
         """
-        for acao in self.parent.menu_portas.actions():
-            self.parent.menu_portas.removeAction(acao)
-        portas = QActionGroup(self.parent)
-        portas.setExclusive(True)
-        n_portas = len(self.serial_ports())
-        if n_portas > 0:
-            for porta in self.serial_ports():
-                porta_acao = Porta.criar_acao(porta, self)
-                self.parent.menu_portas.addAction(porta_acao)
-                if n_portas == 1:
-                    Preferencias.set('serial.port', porta)
-        else:
-            self.parent.menu_portas.addAction(QAction("Não há portas disponíveis", self))
+
+        # TODO Lidar com o resto da string, pegamos apenas o numero da serial para criar a lista
+
+        # Pega uma grande string contendo as placas conectadas
+        placas_conectadas = listar_todas_placas_conectadas_cli()
+        # Divide a string para criar uma lista
+        placas_conectadas = placas_conectadas.split("\n")
+        print(placas_conectadas)
+        placas_conectadas_nomes = list()
+        letra_corte = placas_conectadas[0].find("T") - 1
+        for placa in placas_conectadas:
+            if placa[:int(letra_corte)].rstrip() != "":
+                placas_conectadas_nomes.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
+        placas_conectadas_nomes.pop(0)
+        print(placas_conectadas_nomes)
+        for placa in placas_conectadas_nomes:
+            self.parent.menu_portas.addAction(QAction(placa[0], self))
+
+        # TODO Remover função
+
+        # for acao in self.parent.menu_portas.actions():
+        #     self.parent.menu_portas.removeAction(acao)
+        # portas = QActionGroup(self.parent)
+        # portas.setExclusive(True)
+        # n_portas = len(self.serial_ports())
+        # if n_portas > 0:
+        #     for porta in self.serial_ports():
+        #         porta_acao = Porta.criar_acao(porta, self)
+        #         self.parent.menu_portas.addAction(porta_acao)
+        #         if n_portas == 1:
+        #             Preferencias.set('serial.port', porta)
+        # else:
+        #     self.parent.menu_portas.addAction(QAction("Não há portas disponíveis", self))
 
     def criar_menu_exemplos(self):
         """
@@ -650,13 +712,14 @@ class Centro(QWidget):
             None
         """
         try:
+            # Rastreio compilar
             compilar = event('IDE', 'compilou')
             report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
         except:
             pass
+        self.log.clear()
         self.log.insertPlainText("Compilando...")
         self.salvar()
-        self.log.clear()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
         # Testa se a aba eh a de boas vindas
@@ -669,15 +732,12 @@ class Centro(QWidget):
         traduzir(caminho)
         # TODO Adicionar os parametros corretos do compilar_arduino_cli
         plataforma_alvo_cli = "arduino:samd:mkr1000"
-        caminho_cli = "C:/Users/grani/Documents/RascunhosBrino/Amortecer"
-        resultado = compilar_arduino_cli(caminho_cli, plataforma_alvo_cli)
+        resultado = compilar_arduino_cli(caminho, plataforma_alvo_cli, False)
         print("PRINTS DE DEBUG")
         print(f"caminho: {caminho}")
         print(f"placa_alvo: {placa_alvo}")
         print(f"plataforma_alvo: {plataforma_alvo}")
         print(f"pacote_alvo: {pacote_alvo}")
-        print(f"self.temp_build: {self.temp_build}")
-        print(f"self.temp_cache: {self.temp_cache}")
         print("FIM DE PRINTS DE DEBUG")
         # resultado = compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, self.temp_build, self.temp_cache)
         try:
@@ -687,13 +747,13 @@ class Centro(QWidget):
                 "Não foi possível processar a saída de texto do compilador,"
                 +" é possível que ele tenha compilado corretamente.")
 
+    # TODO Apagar funcao
     def upload(self):
         """
         Compila e carrega o codigo da aba atual
         :return:
             None
         """
-        self.compilar()
 
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
@@ -806,3 +866,224 @@ class Porta:
         """
         Preferencias.set('serial.port', porta)
         parent_.parent.placa_porta_label.setText(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
+
+class Principal(QMainWindow):
+
+    def __init__(self):
+        super(Principal, self).__init__()
+
+        # Cria o objeto monitor serial
+        self.monitor = MonitorSerial.MonitorSerial()
+
+        # Define as acoes
+        self.acao_novo = QAction('&Novo', self)
+        self.acao_abrir = QAction('Abrir', self)
+        self.acao_abrir_arduino = QAction('Abrir Traducao', self)
+        self.acao_exemplos = QAction('Exemplos', self)
+        self.acao_sair = QAction('Sair', self)
+        self.acao_fechar_aba = QAction('Fechar aba', self)
+        self.acao_salvar = QAction('&Salvar', self)
+        self.acao_salvar_como = QAction('Salvar como', self)
+        self.acao_comentar_linha = QAction('Comentar linha', self)
+        self.acao_achar = QAction('Achar...', self)
+        self.acao_achar_e_substituir = QAction('Achar e substituir', self)
+        self.acao_ir_para_linha = QAction('Ir para linha', self)
+        self.acao_placa = QAction('Placa', self)
+        self.acao_porta = QAction('Porta', self)
+        self.acao_lingua = QAction('Lingua', self)
+        self.acao_instalar_biblioteca = QAction('Instalar biblioteca', self)
+        self.acao_monitor_serial = QAction('Monitor serial', self)
+        self.acao_verificar = QAction('Verificar', self)
+        self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
+        self.menu_placas = QMenu('Placa')
+        self.menu_portas = QMenu('Porta')
+        self.menu_exemplos = QMenu('Exemplos')
+        self.barra_de_status = QStatusBar()
+
+        self.widget_central = UI.Centro(self)
+
+        self.criar_barra_menu()
+
+        self.init_ui()
+
+    def init_ui(self):
+        self.setStatusBar(self.barra_de_status)
+        if Preferencias.get("board") is None:
+            Preferencias.set("board", "uno")
+        if Preferencias.get("serial.port") is None:
+            Preferencias.set("serial.port", "COM1")
+        self.placa_porta_label = QLabel(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
+        self.barra_de_status.addPermanentWidget(self.placa_porta_label)
+
+        self.setCentralWidget(self.widget_central)
+
+        self.setGeometry(100, 50, 500, 550)
+        self.setMinimumSize(500, 520)
+        self.setWindowTitle('Br.ino ' + versao)
+        self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
+
+        self.show()
+
+
+    def criar_acoes(self):
+        """
+        Define as funcoes de resposta as acoes e conecta elas. Define atalhos de teclado
+        :return:
+            None
+        """
+        self.acao_sair.setShortcut('Ctrl+Q')
+        self.acao_sair.setStatusTip('Sair da IDE do Br.ino')
+        self.acao_sair.triggered.connect(self.close)
+        self.acao_sair.triggered.connect(self.monitor.close)
+
+        self.acao_fechar_aba.setShortcut('Ctrl+W')
+        self.acao_fechar_aba.setStatusTip('Fechar aba atual')
+        self.acao_fechar_aba.triggered.connect(self.widget_central.remover_aba)
+
+        self.acao_novo.setShortcut("Ctrl+N")
+        self.acao_novo.triggered.connect(self.widget_central.nova_aba)
+        self.acao_novo.setStatusTip("Criar novo arquivo")
+
+        self.acao_abrir.setShortcut('Ctrl+O')
+        self.acao_abrir.triggered.connect(self.widget_central.abrir)
+        self.acao_abrir.setStatusTip("Abrir arquivo")
+
+        self.acao_abrir_arduino.setShortcut('Ctrl+T')
+        self.acao_abrir_arduino.triggered.connect(self.widget_central.abrir_traducao)
+        self.acao_abrir.setStatusTip("Abrir Tradução")
+
+        self.acao_salvar.setShortcut('Ctrl+S')
+        self.acao_salvar.triggered.connect(self.widget_central.salvar)
+        self.acao_salvar.setStatusTip("Salvar arquivo")
+
+        self.acao_salvar_como.setShortcut('Ctrl+Shift+S')
+        self.acao_salvar_como.triggered.connect(self.widget_central.salvar_como)
+        self.acao_salvar_como.setStatusTip("Salvar arquivo como")
+
+        self.acao_comentar_linha.setShortcut('Ctrl+/')
+        self.acao_comentar_linha.triggered.connect(self.widget_central.comentar_linha)
+        self.acao_comentar_linha.setStatusTip("Comentar linha")
+
+        self.acao_achar.setShortcut('Ctrl+F')
+        self.acao_achar.triggered.connect(self.widget_central.achar)
+        self.acao_achar.setStatusTip("Achar...")
+
+        self.acao_achar_e_substituir.setShortcut('Ctrl+H')
+        self.acao_achar_e_substituir.triggered.connect(self.widget_central.achar_e_substituir)
+        self.acao_achar_e_substituir.setStatusTip("Achar e substituir...")
+
+        self.acao_ir_para_linha.setShortcut('Ctrl+L')
+        self.acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
+        self.acao_ir_para_linha.setStatusTip("Ir para linha...")
+
+        self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
+        self.acao_lingua.setStatusTip("Opções de língua")
+
+        self.acao_instalar_biblioteca.triggered.connect(self.widget_central.instalar_biblioteca)
+        self.acao_instalar_biblioteca.setStatusTip("Instalar bilioteca")
+
+        self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
+        self.acao_monitor_serial.triggered.connect(self.abrir_serial)
+        self.acao_monitor_serial.setStatusTip("Abrir monitor serial")
+
+        self.acao_verificar.setShortcut('Ctrl+R')
+        self.acao_verificar.triggered.connect(self.widget_central.compilar)
+        self.acao_verificar.setStatusTip("Verificar código")
+
+        self.acao_verificar_e_carregar.setShortcut('Ctrl+U')
+        self.acao_verificar_e_carregar.triggered.connect(self.enviar_codigo)
+        self.acao_verificar_e_carregar.setStatusTip("Verificar e carregar código")
+
+    def criar_barra_menu(self):
+        """
+        Cria a barra menu e adiciona as funcoes nela
+        :return:
+            None
+        """
+        self.criar_acoes()
+
+        barra_menu = self.menuBar()
+        barra_menu.setNativeMenuBar(False)
+        menu_arquivo = barra_menu.addMenu('Arquivo')
+        menu_arquivo.addAction(self.acao_novo)
+        menu_arquivo.addAction(self.acao_abrir)
+        menu_arquivo.addAction(self.acao_abrir_arduino)
+        menu_arquivo.addMenu(self.menu_exemplos)
+        menu_arquivo.addAction(self.acao_salvar)
+        menu_arquivo.addAction(self.acao_salvar_como)
+        menu_arquivo.addAction(self.acao_fechar_aba)
+        menu_arquivo.addAction(self.acao_sair)
+
+        menu_editar = barra_menu.addMenu('Editar')
+        menu_editar.addAction(self.acao_comentar_linha)
+        menu_editar.addAction(self.acao_achar)
+        menu_editar.addAction(self.acao_achar_e_substituir)
+        menu_editar.addAction(self.acao_ir_para_linha)
+
+        self.menu_ferramentas = barra_menu.addMenu('Ferramentas')
+        self.menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
+        self.menu_ferramentas.addMenu(self.menu_placas)
+        self.menu_ferramentas.addMenu(self.menu_portas)
+        self.menu_ferramentas.addAction(self.acao_lingua)
+        self.menu_ferramentas.addAction(self.acao_monitor_serial)
+        self.menu_ferramentas.addAction(self.acao_instalar_biblioteca)
+
+        menu_rascunho = barra_menu.addMenu('Rascunho')
+        menu_rascunho.addAction(self.acao_verificar)
+        menu_rascunho.addAction(self.acao_verificar_e_carregar)
+
+    def abrir_serial(self):
+        """
+        Abre o monitor serial ou indica que a porta nao esta disponivel
+        :return:
+            None
+        """
+
+        # Verifica se jah hah um monitor aberto e o fecha
+        if self.monitor.isVisible():
+            self.monitor.close()
+        if self.monitor.conectar(Preferencias.get("serial.port")):
+            self.monitor.show()
+            Rastreador.log_info("Monitor Serial aberto")
+        else:
+            QMessageBox("Erro", QMessageBox.Warning, "A porta selecionada não está disponível",
+                        QMessageBox.NoButton, self).show()
+            Rastreador.log_error("Porta Serial solicitada não disponível")
+
+    def enviar_codigo(self):
+        """
+        Fecha o monitor serial, compila e carrega o codigo da aba atual
+        :return:
+            None
+        """
+        Rastreador.log_info("Compilando e Carregando")
+        reconectar = self.monitor.desconectar()
+        self.widget_central.upload()
+        Rastreador.log_info("Fim do upload")
+        if reconectar:
+            Rastreador.log_info("Monitor Serial fechado e reconectando")
+            self.abrir_serial()
+            Rastreador.log_info("Monitor Serial reconectado")
+
+    def closeEvent(self, close_event):
+        """
+        Fecha o programa, mas antes verifica se os arquivos foram salvos
+        :param close_event:
+        :return:
+        """
+        if self.widget_central.widget_abas.widget(0).caminho == 0:
+            num_examinar = 1
+        else:
+            num_examinar = 0
+        for num_arquivo in range(self.widget_central.widget_abas.count() - num_examinar):
+            if not self.widget_central.remover_aba(num_examinar, True):
+                close_event.ignore()
+                return
+        Rastreador.log_info("Encerrando o Br.ino")
+        self.monitor.close()
+        Rastreador.log_info("Monitor serial encerrado")
+        Rastreador.rastrear(Rastreador.FECHAMENTO)
+        Rastreador.log_info("Rastreado fechamento")
+        Preferencias.gravar_preferencias()
+        Rastreador.log_info("Preferências registradas, encerrando...")
+        close_event.accept()

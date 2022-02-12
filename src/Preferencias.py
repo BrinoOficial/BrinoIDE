@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# TODO Atualizar ou apagar arquivo
+
 """
 Br.ino Qt preferencias
 
@@ -28,9 +30,7 @@ em PyQt5 (python 3.6)
 
 website: brino.cc
 modificado por: Mateus Berardo
-email: mateus.berardo@brino.cc
 modificado por: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
 """
 
 import os
