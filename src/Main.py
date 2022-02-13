@@ -44,14 +44,10 @@ import re
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QSplashScreen, QMainWindow, QApplication, QAction, QMenu, QStatusBar, QMessageBox, QLabel
+from PyQt5.QtWidgets import QSplashScreen, QApplication, QMessageBox
 
-import GerenciadorDeCodigo
-import GerenciadorDeLinguas
-import MonitorSerial
 import Preferencias
 import UI
-import Compiler
 from exceptions import UpdateException
 import Rastreador
 
