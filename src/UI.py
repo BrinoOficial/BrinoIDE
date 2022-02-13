@@ -600,16 +600,6 @@ class Centro(QWidget):
             Preferencias.set(prefix + tool.get_nome() + "-" + tool.get_versao() + ".path", caminho)
         return prefs
 
-    def get_placa_alvo(self):
-        """
-        Retorna uma string informando qual e o codigo da placa alvo (FQBN)
-        :return:
-            str contendo o FQBN
-        """
-        print("Pegando placa alvo")
-        print(self.placas_compativeis_nomes)
-
-
     def compilar(self):
         """
         Compila o codigo da aba atual
@@ -991,3 +981,13 @@ class Principal(QMainWindow):
         Preferencias.gravar_preferencias()
         Rastreador.log_info("Preferências registradas, encerrando...")
         close_event.accept()
+
+    def get_placa_alvo(self):
+        """
+        Retorna uma string informando qual e o codigo da placa alvo (FQBN)
+        :return:
+            str contendo o FQBN
+        """
+        print("Pegando placa alvo")
+        print(self.placas_compativeis_nomes)
+        self.widget_central.menu.
