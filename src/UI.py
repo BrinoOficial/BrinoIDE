@@ -454,7 +454,10 @@ class Centro(QWidget):
             None
         """
         self.placa_alvo = placa
-        self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + "self.porta_alvo")
+        try:
+            self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo[0])
+        except:
+            self.parent.placa_porta_label.setText(self.placa_alvo[0] + ", selecione a porta")
 
     def criar_menu_portas(self):
         """
@@ -469,19 +472,31 @@ class Centro(QWidget):
         placas_conectadas = listar_todas_placas_conectadas_cli()
         # Divide a string para criar uma lista
         placas_conectadas = placas_conectadas.split("\n")
-        print(placas_conectadas)
+
         placas_conectadas_nomes = list()
-        letra_corte = placas_conectadas[0].find("T") - 1
+        letra_corte = placas_conectadas[0].find(" ")
         for placa in placas_conectadas:
             if placa[:int(letra_corte)].rstrip() != "":
                 placas_conectadas_nomes.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
         placas_conectadas_nomes.pop(0)
-        print(placas_conectadas_nomes)
         # Limpa a lista atual de portas e adiciona a nova leitura de portas conectadas
         self.parent.menu_portas.clear()
-        for placa in placas_conectadas_nomes:
-            self.parent.menu_portas.addAction(QAction(placa[0], self))
+        for porta in placas_conectadas_nomes:
+            action = QAction(porta[0], self)
+            action.triggered.connect(lambda chk, porta=porta: self.define_porta_alvo(porta))
+            self.parent.menu_portas.addAction(action)
 
+    def define_porta_alvo(self, porta):
+        """
+        Acao que e chamada quando uma porta e selecionada no menu "menu_portas". Ela pega a placa selecionada (nome) e salva como porta_alvo
+        :return:
+            None
+        """
+        self.porta_alvo = porta
+        try:
+            self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo[0])
+        except:
+            self.parent.placa_porta_label.setText("Selecione a placa conectada na " + self.porta_alvo[0])
 
     def criar_menu_exemplos(self):
         """
@@ -541,7 +556,7 @@ class Centro(QWidget):
         # Transforma o codigo brpp em ino
         traduzir(caminho)
         # TODO Adicionar os parametros corretos do compilar_arduino_cli
-        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], False)
+        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], False, "None")
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:
@@ -549,7 +564,6 @@ class Centro(QWidget):
                 "Não foi possível processar a saída de texto do compilador,"
                 +" é possível que ele tenha compilado corretamente.")
 
-    # TODO Apagar funcao
     def upload(self):
         """
         Compila e carrega o codigo da aba atual
@@ -557,22 +571,23 @@ class Centro(QWidget):
             None
         """
 
+        self.log.clear()
+        self.log.insertPlainText("Compilando e carregando...")
+        self.salvar()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
         # Testa se a aba eh a de boas vindas
         if caminho == 0 or caminho == '':
             return None
-        caminho = editor.get_caminho()
-        # Ajustes do Arduino
-        # TODO Terminar ajustes
-        caminho_temp = self.temp_build
-        uploader = None
-        if uploader is None:
-            uploader = Uploader.get_uploader_por_preferencias()
-            uploader = Uploader.UploaderSerial(False)
-        sucesso = False
-        nome = os.path.basename(caminho).replace("brpp", "ino")
-        sucesso = uploader.upload_usando_preferencias(self, caminho_temp, os.path.basename(nome))
+        # Transforma o codigo brpp em ino
+        traduzir(caminho)
+        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], True, self.porta_alvo[0])
+        try:
+            self.log.insertPlainText(str(resultado, sys.stdout.encoding))
+        except UnicodeDecodeError:
+            self.log.insertPlainText(
+                "Não foi possível processar a saída de texto do compilador,"
+                + " é possível que ele tenha compilado corretamente.")
 
     @staticmethod
     def serial_ports():

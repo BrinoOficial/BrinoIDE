@@ -49,8 +49,9 @@ FECHAMENTO = event('IDE', 'fechou_ide')
 
 def rastrear(evento):
     try:
+        pass
         # TODO Salvar o id do cliente em um lugar viavel
-        report('UA-89373473-3', Preferencias.get("id_cliente"), evento)
+        # report('UA-89373473-3', Preferencias.get("id_cliente"), evento)
     except:
         pass
 

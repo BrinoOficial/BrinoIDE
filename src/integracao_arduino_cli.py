@@ -39,7 +39,7 @@ from subprocess import Popen, PIPE
 import Main
 from GerenciadorDeKeywords import traduzir
 
-def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False):
+def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False, porta_alvo:"None"):
     """
     usa o arduino cli para compilar
     :param caminho:
@@ -52,11 +52,16 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False):
     # Traduz o codigo
     traduzir(caminho)
     caminho = caminho.replace("brpp", "ino")
-    # Compila o codigo
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-    cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho
-    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    if carregar:
+        # Compila e carrega o codigo
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + porta_alvo + " -u"
+    else:
+        # Compila o codigo
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho
     print(cmd)
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     output = p.stdout.read()
     output += p.stderr.read()
     return output
