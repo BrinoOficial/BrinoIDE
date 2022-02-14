@@ -498,9 +498,20 @@ class Centro(QWidget):
                 placas_compativeis_nomes.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
         placas_compativeis_nomes.pop(0)
         self.placas_compativeis_nomes = placas_compativeis_nomes
+        self.parent.menu_placas.clear()
         for placa in placas_compativeis_nomes:
-            self.parent.menu_placas.addAction(QAction(placa[0], self))
+            action = QAction(placa[0], self)
+            action.triggered.connect(lambda chk, placa=placa: self.define_placa_alvo(placa))
+            self.parent.menu_placas.addAction(action)
 
+    def define_placa_alvo(self, placa):
+        """
+        Acao que e chamada quando uma placa e selecionada no menu "menu_placas". Ela pega a placa selecionada (nome e codigo) e salva como placa alvo
+        :return:
+            None
+        """
+        self.placa_alvo = placa
+        self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + "self.porta_alvo")
 
     def criar_menu_portas(self):
         """
@@ -523,6 +534,8 @@ class Centro(QWidget):
                 placas_conectadas_nomes.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
         placas_conectadas_nomes.pop(0)
         print(placas_conectadas_nomes)
+        # Limpa a lista atual de portas e adiciona a nova leitura de portas conectadas
+        self.parent.menu_portas.clear()
         for placa in placas_conectadas_nomes:
             self.parent.menu_portas.addAction(QAction(placa[0], self))
 
@@ -558,47 +571,47 @@ class Centro(QWidget):
         pastas_bibliotecas.append(os.path.join(pasta_plataforma, 'libraries'))
         pastas_bibliotecas.append(os.path.join(get_caminho_padrao(), 'bibliotecas'))
 
-    def get_preferencias_placa(self):
-        """
-        Busca as preferencias da palca que esta sendo utilizada
-        :return prefs:
-            Retorna as preferencias
-        """
-        placa_alvo = self.get_placa_alvo()
-        if placa_alvo is None:
-            return None
-        id_placa = placa_alvo.get_id()
-        prefs = placa_alvo.get_preferencias()
-        nome_extendido = prefs.get("name")
-        for id_menu in placa_alvo.get_ids_menus():
-            if not placa_alvo.tem_menu(id_menu):
-                continue
-            entrada = Preferencias.get("custom_" + id_menu)
-            if entrada is not None and entrada.startswith(id_placa):
-                id_selecao = entrada[len(id_placa) + 1:]
-                prefs.update(placa_alvo.get_preferencias_menu(id_menu, id_selecao))
-                nome_extendido += ", " + placa_alvo.get_label_menu(id_menu, id_selecao)
-        prefs['name'] = nome_extendido
-        ferramentas = list()
-        plataforma = self.indexer.get_plataforma_contribuida(self.get_plataforma_alvo())
-        if plataforma is not None:
-            ferramentas.extend(plataforma.get_ferramentas_resolvidas())
-
-        core = prefs.get("build.core")
-        if core is not None and core.__contains__(":"):
-            separado = core.split(":")
-            referenciada = self.get_plataforma_atual_do_pacote(separado[0])
-            if referenciada is not None:
-                plat_referenciada = self.indexer.get_plataforma_contribuida(referenciada)
-                ferramentas.extend(plat_referenciada.get_ferramentas_resolvidas())
-        prefix = "runtime.tools."
-        for tool in ferramentas:
-            pasta = tool.get_pasta_instalada()
-            caminho = os.path.abspath(pasta)
-            prefs[(prefix + tool.get_nome() + ".path")] = caminho
-            Preferencias.set(prefix + tool.get_nome() + ".path", caminho)
-            Preferencias.set(prefix + tool.get_nome() + "-" + tool.get_versao() + ".path", caminho)
-        return prefs
+    # def get_preferencias_placa(self):
+    #     """
+    #     Busca as preferencias da palca que esta sendo utilizada
+    #     :return prefs:
+    #         Retorna as preferencias
+    #     """
+    #     placa_alvo = self.get_placa_alvo()
+    #     if placa_alvo is None:
+    #         return None
+    #     id_placa = placa_alvo.get_id()
+    #     prefs = placa_alvo.get_preferencias()
+    #     nome_extendido = prefs.get("name")
+    #     for id_menu in placa_alvo.get_ids_menus():
+    #         if not placa_alvo.tem_menu(id_menu):
+    #             continue
+    #         entrada = Preferencias.get("custom_" + id_menu)
+    #         if entrada is not None and entrada.startswith(id_placa):
+    #             id_selecao = entrada[len(id_placa) + 1:]
+    #             prefs.update(placa_alvo.get_preferencias_menu(id_menu, id_selecao))
+    #             nome_extendido += ", " + placa_alvo.get_label_menu(id_menu, id_selecao)
+    #     prefs['name'] = nome_extendido
+    #     ferramentas = list()
+    #     plataforma = self.indexer.get_plataforma_contribuida(self.get_plataforma_alvo())
+    #     if plataforma is not None:
+    #         ferramentas.extend(plataforma.get_ferramentas_resolvidas())
+    #
+    #     core = prefs.get("build.core")
+    #     if core is not None and core.__contains__(":"):
+    #         separado = core.split(":")
+    #         referenciada = self.get_plataforma_atual_do_pacote(separado[0])
+    #         if referenciada is not None:
+    #             plat_referenciada = self.indexer.get_plataforma_contribuida(referenciada)
+    #             ferramentas.extend(plat_referenciada.get_ferramentas_resolvidas())
+    #     prefix = "runtime.tools."
+    #     for tool in ferramentas:
+    #         pasta = tool.get_pasta_instalada()
+    #         caminho = os.path.abspath(pasta)
+    #         prefs[(prefix + tool.get_nome() + ".path")] = caminho
+    #         Preferencias.set(prefix + tool.get_nome() + ".path", caminho)
+    #         Preferencias.set(prefix + tool.get_nome() + "-" + tool.get_versao() + ".path", caminho)
+    #     return prefs
 
     def compilar(self):
         """
@@ -620,20 +633,10 @@ class Centro(QWidget):
         # Testa se a aba eh a de boas vindas
         if caminho == 0 or caminho == '':
             return None
-        placa_alvo = self.get_placa_alvo()
-        plataforma_alvo = placa_alvo.get_plataforma()
-        pacote_alvo = plataforma_alvo.get_pacote()
         # Transforma o codigo brpp em ino
         traduzir(caminho)
         # TODO Adicionar os parametros corretos do compilar_arduino_cli
-        plataforma_alvo_cli = "arduino:samd:mkr1000"
-        resultado = compilar_arduino_cli(caminho, plataforma_alvo_cli, False)
-        print("PRINTS DE DEBUG")
-        print(f"caminho: {caminho}")
-        print(f"placa_alvo: {placa_alvo}")
-        print(f"plataforma_alvo: {plataforma_alvo}")
-        print(f"pacote_alvo: {pacote_alvo}")
-        print("FIM DE PRINTS DE DEBUG")
+        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], False)
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:
@@ -730,36 +733,6 @@ class Centro(QWidget):
         else:
             return
 
-
-class Porta:
-
-    @staticmethod
-    def criar_acao(porta, parent):
-        """
-        Cria a acao para o menu
-        :param porta:
-            Porta serial
-        :param parent:
-            widget pai
-        :return acao_porta:
-            Acao para o menu
-        """
-        acao_porta = QAction(porta, parent)
-        acao_porta.triggered.connect(functools.partial(Porta.selecionar_porta, porta, parent))
-        return acao_porta
-
-    @staticmethod
-    def selecionar_porta(porta, parent_):
-        """
-        Seleciona a porta serial
-        :param porta:
-            Porta serial
-        :param parent_:
-            widget pai
-        :return: None
-        """
-        Preferencias.set('serial.port', porta)
-        parent_.parent.placa_porta_label.setText(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
 
 class Principal(QMainWindow):
 
@@ -989,5 +962,5 @@ class Principal(QMainWindow):
             str contendo o FQBN
         """
         print("Pegando placa alvo")
-        print(self.placas_compativeis_nomes)
-        self.widget_central.menu.
+        print(self.widget_central.placas_compativeis_nomes)
+        print(self.widget_central.criar_menu_placas())
