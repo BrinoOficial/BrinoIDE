@@ -52,8 +52,6 @@ from BoasVindas import BoasVindas
 from integracao_arduino_cli import *
 from GerenciadorDeKeywords import traduzir
 from Main import get_caminho_padrao
-from PacoteAlvo import PacoteAlvo
-from PlataformaAlvo import PlataformaAlvo
 
 import os
 import sys
@@ -66,7 +64,6 @@ from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QStatusBar, QMessageBox
 import GerenciadorDeCodigo
 import GerenciadorDeLinguas
 import MonitorSerial
-import Preferencias
 import Rastreador
 
 # TODO Duplicado, resolver isso
@@ -426,60 +423,6 @@ class Centro(QWidget):
         """
         self.parent.abrir_serial()
 
-    def carregar_hardware(self, pasta):
-        """
-        Carrega as opcoes de hardware do Arduino
-        :param pasta:
-            Diretorio do hardware
-        :return:
-            None
-        """
-        if not os.path.isdir(pasta):
-            return
-        lista = [os.path.join(pasta, pasta_) for pasta_ in os.listdir(pasta) if
-                 os.path.isdir(os.path.join(pasta, pasta_))]
-        if len(lista) == 0:
-            return
-        lista = sorted(lista, key=str.lower)
-        lista.remove(os.path.join(pasta, "tools"))
-        for item in lista:
-            nome_item = os.path.basename(item)
-            if nome_item in self.pacotes:
-                pacote_alvo = self.pacotes.get(nome_item)
-            else:
-                pacote_alvo = PacoteAlvo(nome_item)
-                self.pacotes[nome_item] = pacote_alvo
-            self.carregar_pacote_alvo(pacote_alvo, item)
-
-    def carregar_hardware_contribuido(self, indexer):
-        """
-        :param indexer:
-            Indexador de contribuicoes
-        :return:
-            None
-        """
-        for pacote in indexer.criar_pacotes_alvo():
-            if self.pacotes.get(pacote.get_id(), False):
-                self.pacotes[pacote.get_id()] = pacote
-
-    @staticmethod
-    def carregar_pacote_alvo(pacote_alvo, pasta):
-        """
-        Carrega o pacote alvo
-        :param pacote_alvo:
-            Pacote de hardware
-        :param pasta:
-            Diretorio do pacote
-        :return:
-            None
-        """
-        pastas = os.listdir(pasta)
-        if len(pastas) == 0:
-            return
-        for item in pastas:
-            plataforma_alvo = PlataformaAlvo(item, os.path.join(pasta, item), pacote_alvo)
-            pacote_alvo.get_plataformas()[item] = plataforma_alvo
-            return
 
     def criar_menu_placas(self):
         """
@@ -571,47 +514,6 @@ class Centro(QWidget):
         pastas_bibliotecas.append(os.path.join(pasta_plataforma, 'libraries'))
         pastas_bibliotecas.append(os.path.join(get_caminho_padrao(), 'bibliotecas'))
 
-    # def get_preferencias_placa(self):
-    #     """
-    #     Busca as preferencias da palca que esta sendo utilizada
-    #     :return prefs:
-    #         Retorna as preferencias
-    #     """
-    #     placa_alvo = self.get_placa_alvo()
-    #     if placa_alvo is None:
-    #         return None
-    #     id_placa = placa_alvo.get_id()
-    #     prefs = placa_alvo.get_preferencias()
-    #     nome_extendido = prefs.get("name")
-    #     for id_menu in placa_alvo.get_ids_menus():
-    #         if not placa_alvo.tem_menu(id_menu):
-    #             continue
-    #         entrada = Preferencias.get("custom_" + id_menu)
-    #         if entrada is not None and entrada.startswith(id_placa):
-    #             id_selecao = entrada[len(id_placa) + 1:]
-    #             prefs.update(placa_alvo.get_preferencias_menu(id_menu, id_selecao))
-    #             nome_extendido += ", " + placa_alvo.get_label_menu(id_menu, id_selecao)
-    #     prefs['name'] = nome_extendido
-    #     ferramentas = list()
-    #     plataforma = self.indexer.get_plataforma_contribuida(self.get_plataforma_alvo())
-    #     if plataforma is not None:
-    #         ferramentas.extend(plataforma.get_ferramentas_resolvidas())
-    #
-    #     core = prefs.get("build.core")
-    #     if core is not None and core.__contains__(":"):
-    #         separado = core.split(":")
-    #         referenciada = self.get_plataforma_atual_do_pacote(separado[0])
-    #         if referenciada is not None:
-    #             plat_referenciada = self.indexer.get_plataforma_contribuida(referenciada)
-    #             ferramentas.extend(plat_referenciada.get_ferramentas_resolvidas())
-    #     prefix = "runtime.tools."
-    #     for tool in ferramentas:
-    #         pasta = tool.get_pasta_instalada()
-    #         caminho = os.path.abspath(pasta)
-    #         prefs[(prefix + tool.get_nome() + ".path")] = caminho
-    #         Preferencias.set(prefix + tool.get_nome() + ".path", caminho)
-    #         Preferencias.set(prefix + tool.get_nome() + "-" + tool.get_versao() + ".path", caminho)
-    #     return prefs
 
     def compilar(self):
         """
@@ -620,11 +522,14 @@ class Centro(QWidget):
             None
         """
         try:
+            pass
             # Rastreio compilar
-            compilar = event('IDE', 'compilou')
-            report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
+            # TODO Arrumar variavel rastreio
+            # compilar = event('IDE', 'compilou')
+            # report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
         except:
             pass
+
         self.log.clear()
         self.log.insertPlainText("Compilando...")
         self.salvar()
@@ -775,11 +680,7 @@ class Principal(QMainWindow):
 
     def init_ui(self):
         self.setStatusBar(self.barra_de_status)
-        if Preferencias.get("board") is None:
-            Preferencias.set("board", "uno")
-        if Preferencias.get("serial.port") is None:
-            Preferencias.set("serial.port", "COM1")
-        self.placa_porta_label = QLabel(Preferencias.get("board") + " na " + Preferencias.get("serial.port"))
+        self.placa_porta_label = QLabel("Selecione sua placa e porta")
         self.barra_de_status.addPermanentWidget(self.placa_porta_label)
 
         self.setCentralWidget(self.widget_central)
@@ -909,7 +810,8 @@ class Principal(QMainWindow):
         # Verifica se jah hah um monitor aberto e o fecha
         if self.monitor.isVisible():
             self.monitor.close()
-        if self.monitor.conectar(Preferencias.get("serial.port")):
+        # TODO Resolver porta serial
+        if self.monitor.conectar("COM1"):
             self.monitor.show()
             Rastreador.log_info("Monitor Serial aberto")
         else:
@@ -951,16 +853,4 @@ class Principal(QMainWindow):
         Rastreador.log_info("Monitor serial encerrado")
         Rastreador.rastrear(Rastreador.FECHAMENTO)
         Rastreador.log_info("Rastreado fechamento")
-        Preferencias.gravar_preferencias()
-        Rastreador.log_info("Preferências registradas, encerrando...")
         close_event.accept()
-
-    def get_placa_alvo(self):
-        """
-        Retorna uma string informando qual e o codigo da placa alvo (FQBN)
-        :return:
-            str contendo o FQBN
-        """
-        print("Pegando placa alvo")
-        print(self.widget_central.placas_compativeis_nomes)
-        print(self.widget_central.criar_menu_placas())

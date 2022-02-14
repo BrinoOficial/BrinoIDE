@@ -46,7 +46,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QSplashScreen, QApplication, QMessageBox
 
-import Preferencias
 import UI
 from exceptions import UpdateException
 import Rastreador
@@ -136,7 +135,6 @@ def install_excepthook():
                                       QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if dialog == QMessageBox.Yes:
             with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
-                nome_arquivo = '%s.log' % Preferencias.get("id_cliente")
                 try:
                     r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
                 except requests.exceptions.RequestException as e:
@@ -168,8 +166,6 @@ if __name__ == '__main__':
     splash.show()
     Rastreador.log_debug("Mostrando splash")
     app.processEvents()
-    Preferencias.init()
-    Rastreador.log_debug("Preferencias carregadas")
     Rastreador.gerar_id_cliente()
     Rastreador.log_debug("ID gerado")
     install_excepthook()

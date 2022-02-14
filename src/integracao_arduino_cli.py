@@ -37,7 +37,6 @@ import os
 from subprocess import Popen, PIPE
 
 import Main
-import Preferencias
 from GerenciadorDeKeywords import traduzir
 
 def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False):
@@ -89,77 +88,6 @@ def listar_todas_placas_conectadas_cli():
     lista_de_placas_conectadas = p.stdout.read()
     # lista_de_placas_conectadas += p.stderr.read()
     return lista_de_placas_conectadas.decode()
-
-# TODO Remover função compilar_arduino_builder
-def compilar_arduino_builder(caminho, placa_alvo, plataforma_alvo, pacote_alvo, temp, cache):
-    """
-    usa o arduino builder para compilar
-    :param caminho:
-        Caminho do codigo a ser compilado
-    :param placa_alvo:
-        Placa alvo
-    :param plataforma_alvo:
-        Plataforma alvo
-    :param pacote_alvo:
-        Pacote alvo
-    :param temp:
-        Pasta temporaria para salvar os .hex
-    :param cache:
-        Pasta para fazer cache do nucleo compilado
-    :return output:
-        resultado do comando de compilacao
-    """
-    print(f"caminho: {caminho}")
-    print(f"placa_alvo: {placa_alvo}")
-    print(f"plataforma_alvo: {plataforma_alvo}")
-    print(f"pacote_alvo: {pacote_alvo}")
-    print(f"temp: {temp}")
-    print(f"cache: {cache}")
-    pacotes_instalados = '"' + os.path.abspath(os.path.join('.', 'builder', '.arduino15', 'packages')) + '"'
-    cmd = '"' + os.path.abspath(os.path.join('.', 'builder', 'arduino-builder')) + '"'
-    cmd += " -compile"
-    cmd += " -logger=human"
-    cmd = adicionar_hardware_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'hardware')))
-    cmd = adicionar_hardware_se_existe(cmd, pacotes_instalados)
-    cmd = adicionar_hardware_se_existe(cmd, os.path.abspath(os.path.join(caminho, 'hardware')))
-    cmd = adicionar_ferramenta_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'tools-builder')))
-    cmd = adicionar_ferramenta_se_existe(cmd, os.path.abspath(os.path.join('.', 'builder', 'hardware', 'tools', 'avr')))
-    cmd = adicionar_ferramenta_se_existe(cmd, pacotes_instalados)
-    cmd = adicionar_se_existe(cmd, ' -built-in-libraries ', os.path.abspath(os.path.join('.', 'builder', 'libraries')))
-    cmd = adicionar_se_existe(cmd, ' -libraries ', os.path.join(Main.get_caminho_padrao(), 'bibliotecas'))
-    fqbn = pacote_alvo.get_id() + ":" + plataforma_alvo.get_id() + ":" + placa_alvo.get_id() + opcoes_da_placa(
-        placa_alvo)
-    cmd += " -fqbn=" + fqbn
-    # TODO vidpid
-    cmd += " -ide-version=10805"
-    cmd += " -build-path " + temp
-    # TODO warning level
-    cmd += " -build-cache " + cache
-    # TODO mais preferencias
-    cmd += " " + '"' + os.path.dirname(caminho) + '"'
-    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
-    print(cmd)
-    output = p.stdout.read()
-    output += p.stderr.read()
-    print("Código compilado:")
-    print(output)
-    return output
-
-
-def opcoes_da_placa(placa):
-    """
-    opcoes de placa
-    :param placa:
-    :return "":
-        ""
-    """
-    opcoes = ":"
-    for menu_id in placa.menu_opcoes.keys():
-        opcoes += menu_id + "="
-        opcoes += Preferencias.get("custom_" + menu_id)[len(placa.get_id()) + 1:]
-        opcoes += ","
-
-    return opcoes[:len(opcoes) - 1]
 
 
 def adicionar_hardware_se_existe(string, arquivo):

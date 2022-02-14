@@ -41,7 +41,6 @@ import logging
 import uuid
 from google_measurement_protocol import event, report
 
-import Preferencias
 
 log = 'registro'
 ABERTURA = event('IDE', 'abriu_ide')
@@ -50,6 +49,7 @@ FECHAMENTO = event('IDE', 'fechou_ide')
 
 def rastrear(evento):
     try:
+        # TODO Salvar o id do cliente em um lugar viavel
         report('UA-89373473-3', Preferencias.get("id_cliente"), evento)
     except:
         pass
@@ -61,11 +61,12 @@ def gerar_id_cliente():
         None
     """
     # Comente essas linhas para teste, descomente para produção
-    if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
-        log_info("Não há ID registrado, primeiro uso")
-        idc = uuid.uuid4()
-        Preferencias.set("id_cliente", str(idc))
-        log_info("id definido como:", Preferencias.get("id_cliente"))
+    # TODO Arrumar onde o id eh salvo
+    # if Preferencias.get("id_cliente") == "5ecd82bd-bea5-461e-b153-023626168f8e":
+    #     log_info("Não há ID registrado, primeiro uso")
+    #     idc = uuid.uuid4()
+    #     Preferencias.set("id_cliente", str(idc))
+    #     log_info("id definido como:", Preferencias.get("id_cliente"))
 
 def log_info(m):
     log.info(m)

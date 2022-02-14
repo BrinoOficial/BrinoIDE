@@ -41,8 +41,6 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPlainTextEdit, QLineEdit, QPushButton, QCheckBox, QComboBox
 
-import Preferencias
-
 
 class MonitorSerial(QWidget):
     _sinal_recebido_ = pyqtSignal(str)
@@ -123,7 +121,7 @@ class MonitorSerial(QWidget):
 
     def mudar_velocidade(self):
         self.desconectar()
-        self.conectar(Preferencias.get("serial.port"), baud=int(self.velocidade.currentText()))
+        self.conectar(9600, baud=int(self.velocidade.currentText()))
 
     def conectar(self, porta, baud=9600):
         """
