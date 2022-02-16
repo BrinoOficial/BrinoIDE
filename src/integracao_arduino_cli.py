@@ -34,9 +34,10 @@ email: victor.pacheco@brino.cc
 """
 
 import os
+import time
 from subprocess import Popen, PIPE
+from PyQt5.QtCore import QRunnable
 
-import Main
 from GerenciadorDeKeywords import traduzir
 
 def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False, porta_alvo:"None"):
@@ -136,3 +137,45 @@ def adicionar_se_existe(string, opcao, arquivo):
     if os.path.exists(arquivo):
         return string + opcao + '"' + arquivo + '"'
     return string
+
+def acompanha_portas_conectadas(objeto_principal):
+    """
+    Verifica constantemente se um dispositivo USB foi conectado ou desconectado para atualizar a lista.
+    :return none:
+    """
+    # Pega uma grande string contendo as placas
+    placas_conectadas_anterior = listar_todas_placas_conectadas_cli()
+    print("--------")
+    print(placas_conectadas_anterior)
+    # objeto_principal.widget_central.criar_menu_portas()
+    while 1:
+        placas_conectadas = listar_todas_placas_conectadas_cli()
+        if placas_conectadas_anterior != placas_conectadas:
+            print("Portas atualizadas")
+            objeto_principal.widget_central.criar_menu_portas()
+            placas_conectadas_anterior = placas_conectadas
+            # time.sleep(5)
+
+class acompanha_portas_conectadas(QRunnable):
+
+    def __init__(self, objeto_principal):
+        super().__init__()
+        self.objeto_principal = objeto_principal
+
+    def run(self):
+        """
+            Verifica constantemente se um dispositivo USB foi conectado ou desconectado para atualizar a lista.
+            :return none:
+            """
+        # Pega uma grande string contendo as placas
+        placas_conectadas_anterior = listar_todas_placas_conectadas_cli()
+        print("--------")
+        print(placas_conectadas_anterior)
+        self.objeto_principal.widget_central.criar_menu_portas()
+        while 1:
+            placas_conectadas = listar_todas_placas_conectadas_cli()
+            if placas_conectadas_anterior != placas_conectadas:
+                print("Portas atualizadas")
+                self.objeto_principal.widget_central.criar_menu_portas()
+                placas_conectadas_anterior = placas_conectadas
+                # time.sleep(5)

@@ -47,7 +47,6 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, Q
 
 import EditorDeTexto
 import Menu
-import Uploader
 from BoasVindas import BoasVindas
 from integracao_arduino_cli import *
 from GerenciadorDeKeywords import traduzir
@@ -465,24 +464,25 @@ class Centro(QWidget):
         :return:
             None
         """
-
+        print("Atualizando as portas no menu")
         # TODO Lidar com o resto da string, pegamos apenas o numero da serial para criar a lista
 
         # Pega uma grande string contendo as placas conectadas
-        placas_conectadas = listar_todas_placas_conectadas_cli()
+        portas_conectadas = listar_todas_placas_conectadas_cli()
         # Divide a string para criar uma lista
-        placas_conectadas = placas_conectadas.split("\n")
+        portas_conectadas = portas_conectadas.split("\n")
 
-        placas_conectadas_nomes = list()
-        letra_corte = placas_conectadas[0].find(" ")
-        for placa in placas_conectadas:
-            if placa[:int(letra_corte)].rstrip() != "":
-                placas_conectadas_nomes.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
-        placas_conectadas_nomes.pop(0)
+        portas_conectadas_nomes = list()
+        letra_corte = portas_conectadas[0].find(" ")
+        for porta in portas_conectadas:
+            if porta[:int(letra_corte)].rstrip() != "":
+                portas_conectadas_nomes.append([porta[:int(letra_corte)].rstrip(), porta[int(letra_corte):].rstrip()])
+        portas_conectadas_nomes.pop(0)
         # Limpa a lista atual de portas e adiciona a nova leitura de portas conectadas
         self.parent.menu_portas.clear()
-        for porta in placas_conectadas_nomes:
+        for porta in portas_conectadas_nomes:
             action = QAction(porta[0], self)
+            print(f"Acao porta definida{porta}")
             action.triggered.connect(lambda chk, porta=porta: self.define_porta_alvo(porta))
             self.parent.menu_portas.addAction(action)
 
@@ -492,6 +492,7 @@ class Centro(QWidget):
         :return:
             None
         """
+        print("Porta alvo definida")
         self.porta_alvo = porta
         try:
             self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo[0])
@@ -804,7 +805,7 @@ class Principal(QMainWindow):
         menu_editar.addAction(self.acao_ir_para_linha)
 
         self.menu_ferramentas = barra_menu.addMenu('Ferramentas')
-        self.menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
+        # self.menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
         self.menu_ferramentas.addMenu(self.menu_placas)
         self.menu_ferramentas.addMenu(self.menu_portas)
         self.menu_ferramentas.addAction(self.acao_lingua)

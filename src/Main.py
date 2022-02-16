@@ -42,13 +42,14 @@ import requests
 import traceback
 import re
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThreadPool
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QSplashScreen, QApplication, QMessageBox
 
 import UI
 from exceptions import UpdateException
 import Rastreador
+from integracao_arduino_cli import acompanha_portas_conectadas
 
 # TODO Duplicado, resolver isso
 versao = '3.0.7'
@@ -122,7 +123,6 @@ def verificar_versao():
         Rastreador.log_error("Houve um erro ao verificar se há uma atualização online\n"+str(e))
     return ha_atualizacao
 
-
 def install_excepthook():
     def my_excepthook(exctype, value, tb):
         s = ''.join(traceback.format_exception(exctype, value, tb))
@@ -193,6 +193,19 @@ if __name__ == '__main__':
 
     splash.finish(principal)
     Rastreador.log_info("Fim da inicialização")
+
+    # Cria e inicia um processo paralelo para acompanhar quando uma porta e conectada ou desconectada
+    # processo_acompanhar_portas_conectadas = threading.Thread(target=acompanha_portas_conectadas, args=(principal,))
+    # processo_acompanhar_portas_conectadas.start()
+    # principal.widget_central.criar_menu_portas()
+
+    pool = QThreadPool.globalInstance()
+    processo_acompanhar_portas_conectadas = acompanha_portas_conectadas(principal)
+    pool.start(processo_acompanhar_portas_conectadas)
+
+
+
+
     if deve_atualizar:
         atual = QMessageBox().warning(None, 'Atualização',
                                       "Existe uma atualização disponível para o Brino!",
