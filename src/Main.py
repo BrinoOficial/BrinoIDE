@@ -41,6 +41,7 @@ from urllib.request import urlopen
 import requests
 import traceback
 import re
+import threading
 
 from PyQt5.QtCore import Qt, QThreadPool
 from PyQt5.QtGui import QPixmap
@@ -195,13 +196,9 @@ if __name__ == '__main__':
     Rastreador.log_info("Fim da inicialização")
 
     # Cria e inicia um processo paralelo para acompanhar quando uma porta e conectada ou desconectada
-    # processo_acompanhar_portas_conectadas = threading.Thread(target=acompanha_portas_conectadas, args=(principal,))
-    # processo_acompanhar_portas_conectadas.start()
-    # principal.widget_central.criar_menu_portas()
-
-    pool = QThreadPool.globalInstance()
-    processo_acompanhar_portas_conectadas = acompanha_portas_conectadas(principal)
-    pool.start(processo_acompanhar_portas_conectadas)
+    processo_acompanhar_portas_conectadas = threading.Thread(target=acompanha_portas_conectadas, args=(principal,))
+    processo_acompanhar_portas_conectadas.start()
+    principal.widget_central.criar_menu_portas()
 
 
 

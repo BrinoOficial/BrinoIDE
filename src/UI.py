@@ -40,11 +40,19 @@ from google_measurement_protocol import event, report
 import functools
 import serial
 import shutil
+import os
+import sys
 
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPlainTextEdit, QTabWidget, QPushButton, QFileDialog,
-                             QInputDialog)
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QTextCursor, QIcon
+from PyQt5.QtWidgets import (QMainWindow, QAction, QMenu, QStatusBar, QMessageBox, QLabel, QWidget, QGridLayout,
+                             QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QInputDialog, QComboBox, QToolBar,
+                             QToolButton, QHBoxLayout, QApplication)
 
+import GerenciadorDeCodigo
+import GerenciadorDeLinguas
+import MonitorSerial
+import Rastreador
 import EditorDeTexto
 import Menu
 from BoasVindas import BoasVindas
@@ -52,18 +60,6 @@ from integracao_arduino_cli import *
 from GerenciadorDeKeywords import traduzir
 from Main import get_caminho_padrao
 
-import os
-import sys
-
-
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QAction, QMenu, QStatusBar, QMessageBox, QLabel
-
-import GerenciadorDeCodigo
-import GerenciadorDeLinguas
-import MonitorSerial
-import Rastreador
 
 # TODO Duplicado, resolver isso
 versao = '3.0.7'
@@ -454,7 +450,7 @@ class Centro(QWidget):
         """
         self.placa_alvo = placa
         try:
-            self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo[0])
+            self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo)
         except:
             self.parent.placa_porta_label.setText(self.placa_alvo[0] + ", selecione a porta")
 
@@ -479,12 +475,9 @@ class Centro(QWidget):
                 portas_conectadas_nomes.append([porta[:int(letra_corte)].rstrip(), porta[int(letra_corte):].rstrip()])
         portas_conectadas_nomes.pop(0)
         # Limpa a lista atual de portas e adiciona a nova leitura de portas conectadas
-        self.parent.menu_portas.clear()
+        self.parent.menu_selecao_porta.clear()
         for porta in portas_conectadas_nomes:
-            action = QAction(porta[0], self)
-            print(f"Acao porta definida{porta}")
-            action.triggered.connect(lambda chk, porta=porta: self.define_porta_alvo(porta))
-            self.parent.menu_portas.addAction(action)
+            self.parent.menu_selecao_porta.addItem(porta[0])
 
     def define_porta_alvo(self, porta):
         """
@@ -495,9 +488,9 @@ class Centro(QWidget):
         print("Porta alvo definida")
         self.porta_alvo = porta
         try:
-            self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo[0])
+            self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo)
         except:
-            self.parent.placa_porta_label.setText("Selecione a placa conectada na " + self.porta_alvo[0])
+            self.parent.placa_porta_label.setText("Selecione a placa conectada na " + self.porta_alvo)
 
     def criar_menu_exemplos(self):
         """
@@ -780,12 +773,19 @@ class Principal(QMainWindow):
 
     def criar_barra_menu(self):
         """
-        Cria a barra menu e adiciona as funcoes nela
+        Cria a barra do menu superior e adiciona as funcoes nela
         :return:
             None
         """
         self.criar_acoes()
 
+        # Cria a QToolBar que engloba todas as funcionalidades do menu superior
+        self.barra_superior = QToolBar()
+        self.barra_superior.setMovable(False)
+        self.barra_superior.setContentsMargins(0, 0, 0, 0)
+
+
+        # Cria a barra de menu que ira ser adicionada a barra_superior
         barra_menu = self.menuBar()
         barra_menu.setNativeMenuBar(False)
         menu_arquivo = barra_menu.addMenu('Arquivo')
@@ -815,6 +815,19 @@ class Principal(QMainWindow):
         menu_rascunho = barra_menu.addMenu('Rascunho')
         menu_rascunho.addAction(self.acao_verificar)
         menu_rascunho.addAction(self.acao_verificar_e_carregar)
+
+        self.barra_superior.addWidget(barra_menu)
+
+
+        self.menu_selecao_porta = QComboBox()
+        # TODO Resolver placeholder n funcionando
+        self.menu_selecao_porta.setPlaceholderText("Porta")
+        self.menu_selecao_porta.activated[str].connect(self.widget_central.define_porta_alvo)
+
+        self.barra_superior.addWidget(self.menu_selecao_porta)
+
+
+        self.addToolBar(self.barra_superior)
 
     def abrir_serial(self):
         """
