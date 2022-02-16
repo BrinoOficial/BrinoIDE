@@ -34,19 +34,22 @@ email: victor.pacheco@brino.cc
 """
 
 import os
-import time
 from subprocess import Popen, PIPE
-from PyQt5.QtCore import QRunnable
 
 from GerenciadorDeKeywords import traduzir
 
-def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False, porta_alvo:"None"):
+
+def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: "None"):
     """
     usa o arduino cli para compilar
     :param caminho:
         Caminho do codigo a ser compilado
     :param plataforma_alvo:
         Placa arduino para a qual o codigo deve ser compilado
+    :param carregar:
+        Flag que aponta se deve ser carregado o codigo
+    :param porta_alvo:
+        Porta serial para a qual o codigo sera carregado
     :return output:
         resultado do comando de compilacao
     """
@@ -56,7 +59,7 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False, porta_alvo:"N
     if carregar:
         # Compila e carrega o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + porta_alvo + " -u"
+        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + str(porta_alvo) + " -u"
     else:
         # Compila o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
@@ -66,6 +69,7 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar:False, porta_alvo:"N
     output = p.stdout.read()
     output += p.stderr.read()
     return output
+
 
 def listar_todas_placas_compativeis_cli():
     """
@@ -80,6 +84,7 @@ def listar_todas_placas_compativeis_cli():
     lista_de_placas = p.stdout.read()
     lista_de_placas += p.stderr.read()
     return lista_de_placas.decode()
+
 
 def listar_todas_placas_conectadas_cli():
     """
@@ -138,6 +143,7 @@ def adicionar_se_existe(string, opcao, arquivo):
         return string + opcao + '"' + arquivo + '"'
     return string
 
+
 def acompanha_portas_conectadas(objeto_principal):
     """
     Verifica constantemente se um dispositivo USB foi conectado ou desconectado para atualizar a lista.
@@ -155,27 +161,3 @@ def acompanha_portas_conectadas(objeto_principal):
             objeto_principal.widget_central.criar_menu_portas()
             placas_conectadas_anterior = placas_conectadas
             # time.sleep(5)
-
-class acompanha_portas_conectadas(QRunnable):
-
-    def __init__(self, objeto_principal):
-        super().__init__()
-        self.objeto_principal = objeto_principal
-
-    def run(self):
-        """
-            Verifica constantemente se um dispositivo USB foi conectado ou desconectado para atualizar a lista.
-            :return none:
-            """
-        # Pega uma grande string contendo as placas
-        placas_conectadas_anterior = listar_todas_placas_conectadas_cli()
-        print("--------")
-        print(placas_conectadas_anterior)
-        self.objeto_principal.widget_central.criar_menu_portas()
-        while 1:
-            placas_conectadas = listar_todas_placas_conectadas_cli()
-            if placas_conectadas_anterior != placas_conectadas:
-                print("Portas atualizadas")
-                self.objeto_principal.widget_central.criar_menu_portas()
-                placas_conectadas_anterior = placas_conectadas
-                # time.sleep(5)
