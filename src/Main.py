@@ -186,6 +186,8 @@ if __name__ == '__main__':
 
     principal = UI.Principal()
     Rastreador.log_debug("Carregada tela principal")
+    principal.widget_central.criar_menu_portas()
+    Rastreador.log_debug("Menu portas iniciado")
     principal.show()
     Rastreador.log_debug("Aberta tela principal")
     if len(sys.argv) > 1:
@@ -198,7 +200,6 @@ if __name__ == '__main__':
     # Cria e inicia um processo paralelo para acompanhar quando uma porta e conectada ou desconectada
     processo_acompanhar_portas_conectadas = threading.Thread(target=acompanha_portas_conectadas, args=(principal,))
     processo_acompanhar_portas_conectadas.start()
-    principal.widget_central.criar_menu_portas()
 
 
 

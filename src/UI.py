@@ -44,7 +44,7 @@ import os
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QTextCursor, QIcon
+from PyQt5.QtGui import QTextCursor, QIcon, QFont
 from PyQt5.QtWidgets import (QMainWindow, QAction, QMenu, QStatusBar, QMessageBox, QLabel, QWidget, QGridLayout,
                              QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QInputDialog, QComboBox, QToolBar,
                              QToolButton, QHBoxLayout, QApplication)
@@ -817,11 +817,11 @@ class Principal(QMainWindow):
         menu_rascunho.addAction(self.acao_verificar_e_carregar)
 
         self.barra_superior.addWidget(barra_menu)
+        self.barra_superior.addWidget(QLabel("Porta: "))
 
 
         self.menu_selecao_porta = QComboBox()
-        # TODO Resolver placeholder n funcionando
-        self.menu_selecao_porta.setPlaceholderText("Porta")
+
         self.menu_selecao_porta.activated[str].connect(self.widget_central.define_porta_alvo)
 
         self.barra_superior.addWidget(self.menu_selecao_porta)

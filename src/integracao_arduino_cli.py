@@ -151,13 +151,10 @@ def acompanha_portas_conectadas(objeto_principal):
     """
     # Pega uma grande string contendo as placas
     placas_conectadas_anterior = listar_todas_placas_conectadas_cli()
-    print("--------")
-    print(placas_conectadas_anterior)
-    # objeto_principal.widget_central.criar_menu_portas()
     while 1:
         placas_conectadas = listar_todas_placas_conectadas_cli()
         if placas_conectadas_anterior != placas_conectadas:
             print("Portas atualizadas")
             objeto_principal.widget_central.criar_menu_portas()
             placas_conectadas_anterior = placas_conectadas
-            # time.sleep(5)
+            time.sleep(5)
