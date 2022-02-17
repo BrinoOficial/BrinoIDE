@@ -152,7 +152,7 @@ QToolBar QComboBox{
 }
 QToolBar QComboBox::down-arrow{
    border: 0;
-   height: 50px;
+   height: 10px;
    image: url(recursos/setaBaixo.png);
 }
 QToolBar QComboBox QAbstractItemView {

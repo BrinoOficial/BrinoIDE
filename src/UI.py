@@ -807,7 +807,6 @@ class Principal(QMainWindow):
         self.menu_ferramentas = barra_menu.addMenu('Ferramentas')
         # self.menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
         self.menu_ferramentas.addMenu(self.menu_placas)
-        self.menu_ferramentas.addMenu(self.menu_portas)
         self.menu_ferramentas.addAction(self.acao_lingua)
         self.menu_ferramentas.addAction(self.acao_monitor_serial)
         self.menu_ferramentas.addAction(self.acao_instalar_biblioteca)

@@ -34,6 +34,8 @@ email: victor.pacheco@brino.cc
 """
 
 import os
+import re
+from time import sleep
 from subprocess import Popen, PIPE
 
 from GerenciadorDeKeywords import traduzir
@@ -55,11 +57,13 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
     """
     # Traduz o codigo
     traduzir(caminho)
+    caminho_bibliotecas = get_caminho_padrao() + str("/Bibliotecas/")
+    print(caminho_bibliotecas)
     caminho = caminho.replace("brpp", "ino")
     if carregar:
         # Compila e carrega o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + str(porta_alvo) + " -u"
+        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + str(porta_alvo) + " -u " + "--library " + caminho_bibliotecas
     else:
         # Compila o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
@@ -69,6 +73,20 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
     output = p.stdout.read()
     output += p.stderr.read()
     return output
+
+def get_caminho_padrao():
+    """
+    Pega o caminho padrao ate a pasta de RascunhosBrino
+    :return:
+        Caminho padrao
+    """
+    caminho_padrao = os.path.expanduser("~")
+    docu = re.compile("Documen.*")
+    pastas = os.listdir(caminho_padrao)
+    documentos = list(filter(docu.match, pastas))
+    caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
+    caminho_padrao = caminho_padrao.replace('\\', "/")
+    return caminho_padrao
 
 
 def listar_todas_placas_compativeis_cli():
@@ -157,4 +175,4 @@ def acompanha_portas_conectadas(objeto_principal):
             print("Portas atualizadas")
             objeto_principal.widget_central.criar_menu_portas()
             placas_conectadas_anterior = placas_conectadas
-            time.sleep(5)
+            sleep(5)

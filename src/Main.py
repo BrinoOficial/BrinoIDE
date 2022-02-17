@@ -40,38 +40,20 @@ import webbrowser
 from urllib.request import urlopen
 import requests
 import traceback
-import re
 import threading
 
-from PyQt5.QtCore import Qt, QThreadPool
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QSplashScreen, QApplication, QMessageBox
 
 import UI
 from exceptions import UpdateException
 import Rastreador
-from integracao_arduino_cli import acompanha_portas_conectadas
+from integracao_arduino_cli import acompanha_portas_conectadas, get_caminho_padrao
 
 # TODO Duplicado, resolver isso
 versao = '3.0.7'
-caminho_padrao = ''
 s = 3
-
-
-def get_caminho_padrao():
-    """
-    Pega o caminho padrao ate a pasta de RascunhosBrino
-    :return:
-        Caminho padrao
-    """
-    global caminho_padrao
-    caminho_padrao = os.path.expanduser("~")
-    docu = re.compile("Documen.*")
-    pastas = os.listdir(caminho_padrao)
-    documentos = list(filter(docu.match, pastas))
-    if documentos is None:
-        documentos[0] = "Documentos"
-    return os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
 
 
 def atualizar_linguas():
