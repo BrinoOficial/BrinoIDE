@@ -40,14 +40,12 @@ from google_measurement_protocol import event, report
 import functools
 import serial
 import shutil
-import os
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QTextCursor, QIcon, QFont
+from PyQt5.QtGui import QTextCursor, QIcon
 from PyQt5.QtWidgets import (QMainWindow, QAction, QMenu, QStatusBar, QMessageBox, QLabel, QWidget, QGridLayout,
-                             QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QInputDialog, QComboBox, QToolBar,
-                             QToolButton, QHBoxLayout, QApplication)
+                             QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QInputDialog, QComboBox, QToolBar)
 
 import GerenciadorDeCodigo
 import GerenciadorDeLinguas
@@ -575,7 +573,16 @@ class Centro(QWidget):
             return None
         # Transforma o codigo brpp em ino
         traduzir(caminho)
-        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], True, self.porta_alvo[0])
+
+        # Verifica se a porta para upload está selecionada. Caso nao esteja seleciona a primeira da lista
+        try:
+            if self.porta_alvo != None:
+                pass
+        except:
+            print("Selecionando")
+            self.define_porta_alvo(self.parent.menu_selecao_porta.currentText())
+
+        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], True, self.porta_alvo)
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:

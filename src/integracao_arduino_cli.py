@@ -63,11 +63,11 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
     if carregar:
         # Compila e carrega o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + str(porta_alvo) + " -u " + "--library " + caminho_bibliotecas
+        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + str(porta_alvo) + " -u" + " --library " + caminho_bibliotecas
     else:
         # Compila o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-        cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho
+        cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho + " --library " + caminho_bibliotecas
     print(cmd)
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     output = p.stdout.read()

@@ -35,6 +35,7 @@ author: Gabriel Rodrigues Pacheco
 
 from json import loads, load
 import os
+import os.path
 import sys
 import webbrowser
 from urllib.request import urlopen
@@ -138,6 +139,21 @@ def install_excepthook():
 
     sys.excepthook = my_excepthook
 
+def criar_pastas():
+    """
+    Verifica se a pasta de rascunhos brino e de bibliotecas existe, se nao existir elas sao criadas.
+    """
+    caminho_rascunhos = get_caminho_padrao()
+    caminho_bibliotecas = get_caminho_padrao() + str("/Bibliotecas/")
+    if os.path.isdir(caminho_rascunhos) == False:
+        print("Criando as duas pastas")
+        os.mkdir(caminho_rascunhos)
+        os.mkdir(caminho_bibliotecas)
+    elif os.path.isdir(caminho_bibliotecas) == False:
+        print("Criando a pasta de bibliotecas")
+        os.mkdir(caminho_bibliotecas)
+
+
 
 if __name__ == '__main__':
     log = Rastreador.inicializar_log()
@@ -175,7 +191,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         principal.widget_central.abrir(sys.argv[1], False)
         Rastreador.log_info("Aberto arquivo %s" % os.path.basename(sys.argv[1]))
-
+    criar_pastas()
     splash.finish(principal)
     Rastreador.log_info("Fim da inicialização")
 
