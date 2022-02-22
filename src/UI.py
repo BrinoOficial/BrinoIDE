@@ -637,7 +637,30 @@ class Centro(QWidget):
             if menu.title() == title:
                 return menu
 
+
+    def pop_up_instalar_placa(self):
+    # TODO Documentar funcao
+        nome_placa_instalar = QInputDialog.getText(self, 'Instalar placa', 'Qual o nome da placa que você deseja instalar?')
+        placa_instalar = procurar_placas(nome_placa_instalar[0]).split("\n")
+        lista_placa_instalar = list()
+        letra_corte = placa_instalar[0].find("F") - 1
+        for placa in placa_instalar:
+            if placa[:int(letra_corte)].rstrip() != "":
+                lista_placa_instalar.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
+        lista_placa_instalar.pop(0)
+        print(lista_placa_instalar)
+        dialogo_lista_placa = list()
+        for i in range(len(lista_placa_instalar)):
+            dialogo_lista_placa.append(lista_placa_instalar[i][0])
+        if lista_placa_instalar:
+            nome_placa_instalar = QInputDialog.getItem(self, 'Instalar placa', 'Selecione a placa a ser instalada:', dialogo_lista_placa)
+        else:
+            print("erro")
+        print(nome_placa_instalar[0])
+
+
     def instalar_biblioteca(self):
+    # TODO Documentar funcao
         caminho_bibliotecas = os.path.join(get_caminho_padrao(), "bibliotecas")
         dialogo = QFileDialog()
         dialogo.setWindowTitle("Escolher biblioteca")
@@ -693,6 +716,7 @@ class Principal(QMainWindow):
         self.acao_porta = QAction('Porta', self)
         self.acao_lingua = QAction('Lingua', self)
         self.acao_instalar_biblioteca = QAction('Instalar biblioteca', self)
+        self.acao_instalar_placa = QAction('Instalar placa', self)
         self.acao_monitor_serial = QAction('Monitor serial', self)
         self.acao_verificar = QAction('Verificar', self)
         self.acao_verificar_e_carregar = QAction('Verificar e carregar', self)
@@ -779,6 +803,9 @@ class Principal(QMainWindow):
         self.acao_instalar_biblioteca.triggered.connect(self.widget_central.instalar_biblioteca)
         self.acao_instalar_biblioteca.setStatusTip("Instalar bilioteca")
 
+        self.acao_instalar_placa.triggered.connect(self.widget_central.pop_up_instalar_placa)
+        self.acao_instalar_placa.setStatusTip("Instalar placa")
+
         self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
         self.acao_monitor_serial.triggered.connect(self.abrir_serial)
         self.acao_monitor_serial.setStatusTip("Abrir monitor serial")
@@ -825,11 +852,11 @@ class Principal(QMainWindow):
         menu_editar.addAction(self.acao_ir_para_linha)
 
         self.menu_ferramentas = barra_menu.addMenu('Ferramentas')
-        # self.menu_ferramentas.aboutToShow.connect(self.widget_central.criar_menu_portas)
         self.menu_ferramentas.addMenu(self.menu_placas)
         self.menu_ferramentas.addAction(self.acao_lingua)
         self.menu_ferramentas.addAction(self.acao_monitor_serial)
         self.menu_ferramentas.addAction(self.acao_instalar_biblioteca)
+        self.menu_ferramentas.addAction(self.acao_instalar_placa)
 
         menu_rascunho = barra_menu.addMenu('Rascunho')
         menu_rascunho.addAction(self.acao_verificar)
@@ -902,3 +929,4 @@ class Principal(QMainWindow):
         Rastreador.rastrear(Rastreador.FECHAMENTO)
         Rastreador.log_info("Rastreado fechamento")
         close_event.accept()
+

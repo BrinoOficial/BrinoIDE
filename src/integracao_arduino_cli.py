@@ -116,9 +116,7 @@ def listar_todas_placas_conectadas_cli():
     cmd = arn_cli + " board list"
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
-    lista_de_placas_conectadas = p.stdout.read()
-    # lista_de_placas_conectadas += p.stderr.read()
-    return lista_de_placas_conectadas.decode()
+    return p.stdout.read().decode()
 
 
 def adicionar_hardware_se_existe(string, arquivo):
@@ -178,3 +176,14 @@ def acompanha_portas_conectadas(objeto_principal):
             objeto_principal.widget_central.criar_menu_portas()
             placas_conectadas_anterior = placas_conectadas
             sleep(5)
+
+def procurar_placas(nome_placa):
+    """
+    Verifica constantemente se um dispositivo USB foi conectado ou desconectado para atualizar a lista.
+    :return none:
+    """
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    cmd = arn_cli + " board search " + nome_placa
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
+    return p.stdout.read().decode()
