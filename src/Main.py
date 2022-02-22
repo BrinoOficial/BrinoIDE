@@ -197,10 +197,8 @@ if __name__ == '__main__':
 
     # Cria e inicia um processo paralelo para acompanhar quando uma porta e conectada ou desconectada
     processo_acompanhar_portas_conectadas = threading.Thread(target=acompanha_portas_conectadas, args=(principal,))
+    processo_acompanhar_portas_conectadas.daemon = True
     processo_acompanhar_portas_conectadas.start()
-
-
-
 
     if deve_atualizar:
         atual = QMessageBox().warning(None, 'Atualização',
