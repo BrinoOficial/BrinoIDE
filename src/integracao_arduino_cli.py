@@ -70,9 +70,11 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
         cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho + " --library " + caminho_bibliotecas
     print(cmd)
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    # TODO Criar timeout para nao travar o codigo caso de errado
     output = p.stdout.read()
     output += p.stderr.read()
     return output
+
 
 def get_caminho_padrao():
     """

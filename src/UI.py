@@ -446,6 +446,7 @@ class Centro(QWidget):
         :return:
             None
         """
+        print(placa)
         self.placa_alvo = placa
         try:
             self.parent.placa_porta_label.setText(self.placa_alvo[0] + " na " + self.porta_alvo)
@@ -471,7 +472,8 @@ class Centro(QWidget):
         for porta in portas_conectadas:
             if porta[:int(letra_corte)].rstrip() != "":
                 portas_conectadas_nomes.append([porta[:int(letra_corte)].rstrip(), porta[int(letra_corte):].rstrip()])
-        portas_conectadas_nomes.pop(0)
+        if len(portas_conectadas_nomes) > 0:
+            portas_conectadas_nomes.pop(0)
         # Limpa a lista atual de portas e adiciona a nova leitura de portas conectadas
         self.parent.menu_selecao_porta.clear()
         for porta in portas_conectadas_nomes:
@@ -547,7 +549,12 @@ class Centro(QWidget):
             return None
         # Transforma o codigo brpp em ino
         traduzir(caminho)
-        # TODO Adicionar os parametros corretos do compilar_arduino_cli
+        # Verifica se a placa para upload está selecionada. Caso nao esteja seleciona a placa Uno e usada
+        try:
+            if self.placa_alvo == None:
+                self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
+        except:
+            self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
         resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], False, "None")
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
@@ -576,11 +583,17 @@ class Centro(QWidget):
 
         # Verifica se a porta para upload está selecionada. Caso nao esteja seleciona a primeira da lista
         try:
-            if self.porta_alvo != None:
-                pass
+            if self.porta_alvo == None:
+                self.define_porta_alvo(self.parent.menu_selecao_porta.currentText())
         except:
-            print("Selecionando")
             self.define_porta_alvo(self.parent.menu_selecao_porta.currentText())
+
+        # Verifica se a placa para upload está selecionada. Caso nao esteja seleciona a placa Uno e usada
+        try:
+            if self.placa_alvo == None:
+                self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
+        except:
+            self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
 
         resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], True, self.porta_alvo)
         try:
