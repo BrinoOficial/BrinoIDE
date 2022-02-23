@@ -179,7 +179,7 @@ def acompanha_portas_conectadas(objeto_principal):
 
 def procurar_placas(nome_placa):
     """
-    Verifica constantemente se um dispositivo USB foi conectado ou desconectado para atualizar a lista.
+    Procura quais placas podem ser instaladas
     :return none:
     """
     arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
@@ -187,3 +187,16 @@ def procurar_placas(nome_placa):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     return p.stdout.read().decode()
+
+def instalar_placa(nome_placa):
+    """
+    Instala uma nova placa ao core do arduino CLI.
+    :return none:
+    """
+    # arduino-cli core install arduino:avr
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    cmd = arn_cli + " core install " + nome_placa
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
+    return p.stdout.read().decode()
+

@@ -45,7 +45,7 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor, QIcon
 from PyQt5.QtWidgets import (QMainWindow, QAction, QMenu, QStatusBar, QMessageBox, QLabel, QWidget, QGridLayout,
-                             QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QInputDialog, QComboBox, QToolBar)
+                             QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QInputDialog, QErrorMessage, QComboBox, QToolBar)
 
 import GerenciadorDeCodigo
 import GerenciadorDeLinguas
@@ -638,10 +638,17 @@ class Centro(QWidget):
                 return menu
 
 
-    def pop_up_instalar_placa(self):
-    # TODO Documentar funcao
+    def instalar_placa(self):
+        """
+        Instala a placa Arduino a ser inserida em pop_up
+        :returns:
+            None
+        """
+        # Cria o pop-up para escolha da placa a ser instalada
         nome_placa_instalar = QInputDialog.getText(self, 'Instalar placa', 'Qual o nome da placa que você deseja instalar?')
+        # busca placas com o nome inserido
         placa_instalar = procurar_placas(nome_placa_instalar[0]).split("\n")
+        # Cria a lista com a saida
         lista_placa_instalar = list()
         letra_corte = placa_instalar[0].find("F") - 1
         for placa in placa_instalar:
@@ -652,10 +659,20 @@ class Centro(QWidget):
         dialogo_lista_placa = list()
         for i in range(len(lista_placa_instalar)):
             dialogo_lista_placa.append(lista_placa_instalar[i][0])
+        # Se a lista nao for vazia cria um pop-up para escolha da placa
         if lista_placa_instalar:
             nome_placa_instalar = QInputDialog.getItem(self, 'Instalar placa', 'Selecione a placa a ser instalada:', dialogo_lista_placa)
+            if nome_placa_instalar[1]:
+                for i in range(len(lista_placa_instalar)):
+                    if nome_placa_instalar[0] == lista_placa_instalar[i][0]:
+                        print(instalar_placa(lista_placa_instalar[i][1].lstrip()))
+                        self.criar_menu_placas()
+        # Se nao levanta um alerta de erro
         else:
-            print("erro")
+            print("Mostrar erro")
+            error_dialog = QErrorMessage()
+            error_dialog.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
+            error_dialog.exec_()
         print(nome_placa_instalar[0])
 
 
@@ -803,7 +820,7 @@ class Principal(QMainWindow):
         self.acao_instalar_biblioteca.triggered.connect(self.widget_central.instalar_biblioteca)
         self.acao_instalar_biblioteca.setStatusTip("Instalar bilioteca")
 
-        self.acao_instalar_placa.triggered.connect(self.widget_central.pop_up_instalar_placa)
+        self.acao_instalar_placa.triggered.connect(self.widget_central.instalar_placa)
         self.acao_instalar_placa.setStatusTip("Instalar placa")
 
         self.acao_monitor_serial.setShortcut('Ctrl+Shift+M')
