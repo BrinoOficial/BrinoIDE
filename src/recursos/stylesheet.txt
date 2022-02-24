@@ -161,6 +161,29 @@ QToolBar QComboBox QAbstractItemView {
     background:#101010;
     border: 0;
 }
+QInputDialog QComboBox{
+    border : 0;
+    background:#252525;
+    color: #efefef;
+    font-size: 13px;
+    width: 30px;
+}
+QInputDialog QComboBox::down-arrow{
+   border: 0;
+   height: 10px;
+   image: url(recursos/setaBaixo.png);
+}
+QInputDialog QComboBox QAbstractItemView {
+    color: #efefef;
+    selection-background-color: #252525;
+    background:#101010;
+    border: 0;
+}
+QDialog QLabel{
+    background:#101010;
+    color: #efefef;
+    font-color: #efefef;
+}
 QLineEdit{
    color:#efefef;
 }
@@ -265,8 +288,4 @@ QStatusBar QLabel {
 QStatusBar::item {
     border: 0;
 }
-QErrorMessage{
-    background: #252525;
-    background-color: #252525;
-    color: #656565;
-}
+

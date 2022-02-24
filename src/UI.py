@@ -671,6 +671,14 @@ class Centro(QWidget):
         else:
             print("Mostrar erro")
             error_dialog = QErrorMessage()
+            # TODO Arrumar stylesheet QErrorMessage
+            # QErrorMessage
+            # {
+            #     background:  # 252525;
+            #         background - color:  # 252525;
+            # color:  # efefef;
+            # font - color:  # efefef;
+            # }
             error_dialog.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
             error_dialog.exec_()
         print(nome_placa_instalar[0])
