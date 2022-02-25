@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Br.ino Qt botoes com animacao do menu
+Br.ino - BotaoImagem
 
-Interface base da IDE Br.ino
-em PyQt5 (python 3.6)
+Permite o uso de imagens como botoes. Utilizado no menu lateral da esquerda
 
-    IDE do Br.ino  Copyright (C) 2018  Br.ino
+    IDE do Br.ino  Copyright (C) 2022  Br.ino
 
     Este arquivo e parte da IDE do Br.ino.
 
@@ -25,16 +24,12 @@ em PyQt5 (python 3.6)
     Voce deveria ter recebido uma copia da Licenca Publica Geral
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
-    
-    Codigo fonte retirado de:
-    https://stackoverflow.com/questions/44453268/creating-custom-pyqt5-image-button
-    Autor: Atrum
 
-website: brino.cc
-modificado por: Mateus Berardo
-email: mateus.berardo@brino.cc
-modificado por: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
+site: https://brino.cc
+codigo completo disponivel em https://github.com/BrinoOficial/BrinoIDE
+autor: Victor Rodrigues Pacheco
+autor: Gabriel Rodrigues Pacheco
+autor: Mateus Berardo
 """
 
 from PyQt5.QtCore import QSize
