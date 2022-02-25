@@ -154,14 +154,14 @@ class PythonHighlighter(QSyntaxHighlighter):
         :return:
             None
         """
-        for expression, nth, format_ in self.rules:
+        for expression, nth, formato in self.rules:
             indice = expression.indexIn(texto, 0)
 
             while indice >= 0:
                 # We actually want the indice of the nth match
                 indice = expression.pos(nth)
                 length = expression.matchedLength()
-                self.setFormat(indice, length, format_)
+                self.setFormat(indice, length, formato)
                 indice = expression.indexIn(texto, indice + length)
 
         self.setCurrentBlockState(0)

@@ -36,7 +36,7 @@ author: Gabriel Rodrigues Pacheco
 import glob
 import ntpath
 from tempfile import mkdtemp
-from google_measurement_protocol import event, report
+# from google_measurement_protocol import event, report
 import functools
 import serial
 import shutil
@@ -47,7 +47,6 @@ from PyQt5.QtGui import QTextCursor, QIcon
 from PyQt5.QtWidgets import (QMainWindow, QAction, QMenu, QStatusBar, QMessageBox, QLabel, QWidget, QGridLayout,
                              QPlainTextEdit, QTabWidget, QPushButton, QFileDialog, QInputDialog, QErrorMessage, QComboBox, QToolBar)
 
-import GerenciadorDeCodigo
 import GerenciadorDeLinguas
 import MonitorSerial
 import Rastreador
@@ -184,7 +183,7 @@ class Centro(QWidget):
         # Adiciona a aba se o arquivo tiver nome
         if editor.get_nome():
             self.widget_abas.addTab(editor, identificador_aba)
-            Rastreador.log_info("Aberta aba %s"%editor.get_nome())
+            Rastreador.log_info("Aberta aba %s" % editor.get_nome())
         if editor.get_nome() == "":
             self.remover_aba(self.widget_abas.count() - 1)
         else:
@@ -279,7 +278,6 @@ class Centro(QWidget):
         # Testa se a aba eh a de boas vindas
         if caminho == 0:
             return
-        caminho = editor.get_caminho()
         dialogo = self.criar_dialogo_arquivo('Salvar arquivo', 'Salvar')
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedFiles()[0]
@@ -356,7 +354,7 @@ class Centro(QWidget):
         # Testa se a aba eh a de boas vindas
         if caminho == 0:
             return
-        texto, ok = QInputDialog.getText(None, "Buscar", "Achar:")
+        texto, ok = QInputDialog.getText(self, "Buscar", "Achar:")
         if ok and texto != "":
             cursor = editor.textCursor()
             cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
@@ -374,8 +372,8 @@ class Centro(QWidget):
         # Testa se a aba eh a de boas vindas
         if caminho == 0:
             return
-        texto, ok = QInputDialog.getText(None, "Achar", "Achar:")
-        subs, ok = QInputDialog.getText(None, "Substituir", "Substituir:")
+        texto, ok = QInputDialog.getText(self, "Achar", "Achar:")
+        subs, ok = QInputDialog.getText(self, "Substituir", "Substituir:")
         if ok and texto != "":
             cursor = editor.textCursor()
             cursor = self.selecionar_texto(cursor, texto, cursor.position(), len(texto))
@@ -414,8 +412,8 @@ class Centro(QWidget):
         :return:
             None
         """
-        self.parent.abrir_serial()
-
+        pass
+        # self.parent.abrir_serial()
 
     def criar_menu_placas(self):
         """
@@ -436,7 +434,7 @@ class Centro(QWidget):
         self.placas_compativeis_nomes = placas_compativeis_nomes
         self.parent.menu_placas.clear()
         for placa in placas_compativeis_nomes:
-            action = QAction(placa[0], self)
+            action = QAction(str(placa[0]), self)
             action.triggered.connect(lambda chk, placa=placa: self.define_placa_alvo(placa))
             self.parent.menu_placas.addAction(action)
 
@@ -523,7 +521,6 @@ class Centro(QWidget):
         pastas_bibliotecas.append(os.path.join(pasta_plataforma, 'libraries'))
         pastas_bibliotecas.append(os.path.join(get_caminho_padrao(), 'bibliotecas'))
 
-
     def compilar(self):
         """
         Compila o codigo da aba atual
@@ -551,17 +548,17 @@ class Centro(QWidget):
         traduzir(caminho)
         # Verifica se a placa para upload está selecionada. Caso nao esteja seleciona a placa Uno e usada
         try:
-            if self.placa_alvo == None:
+            if self.placa_alvo:
                 self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
         except:
             self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
-        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], False, "None")
+        resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], False, None)
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:
             self.log.insertPlainText(
                 "Não foi possível processar a saída de texto do compilador,"
-                +" é possível que ele tenha compilado corretamente.")
+                + " é possível que ele tenha compilado corretamente.")
 
     def upload(self):
         """
@@ -583,14 +580,14 @@ class Centro(QWidget):
 
         # Verifica se a porta para upload está selecionada. Caso nao esteja seleciona a primeira da lista
         try:
-            if self.porta_alvo == None:
+            if not self.porta_alvo:
                 self.define_porta_alvo(self.parent.menu_selecao_porta.currentText())
         except:
             self.define_porta_alvo(self.parent.menu_selecao_porta.currentText())
 
         # Verifica se a placa para upload está selecionada. Caso nao esteja seleciona a placa Uno e usada
         try:
-            if self.placa_alvo == None:
+            if not self.placa_alvo:
                 self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
         except:
             self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
@@ -625,18 +622,11 @@ class Centro(QWidget):
         result = []
         for port in ports:
             try:
-                s = serial.Serial(port)
-                s.close()
+                serial.Serial(port).close()
                 result.append(port)
             except (OSError, serial.SerialException):
                 pass
         return result
-
-    def get_menu_personalizado_placa(self, title):
-        for menu in self.menus_personalizados:
-            if menu.title() == title:
-                return menu
-
 
     def instalar_placa(self):
         """
@@ -670,22 +660,14 @@ class Centro(QWidget):
         # Se nao levanta um alerta de erro
         else:
             print("Mostrar erro")
+            # TODO Melhorar aparencia da QErrorMessage
             error_dialog = QErrorMessage()
-            # TODO Arrumar stylesheet QErrorMessage
-            # QErrorMessage
-            # {
-            #     background:  # 252525;
-            #         background - color:  # 252525;
-            # color:  # efefef;
-            # font - color:  # efefef;
-            # }
             error_dialog.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
             error_dialog.exec_()
         print(nome_placa_instalar[0])
 
-
     def instalar_biblioteca(self):
-    # TODO Documentar funcao
+        # TODO Documentar funcao
         caminho_bibliotecas = os.path.join(get_caminho_padrao(), "bibliotecas")
         dialogo = QFileDialog()
         dialogo.setWindowTitle("Escolher biblioteca")
@@ -698,7 +680,7 @@ class Centro(QWidget):
         dialogo.setDirectory(get_caminho_padrao())
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedUrls()[0].path()
-            if (caminho.startswith("/") and os.name == 'nt'):
+            if caminho.startswith("/") and os.name == 'nt':
                 caminho = caminho[1:]
             # Testa se o arquivo existe
             if os.path.exists(caminho):
@@ -770,7 +752,6 @@ class Principal(QMainWindow):
 
         self.show()
 
-
     def criar_acoes(self):
         """
         Define as funcoes de resposta as acoes e conecta elas. Define atalhos de teclado
@@ -819,7 +800,7 @@ class Principal(QMainWindow):
         self.acao_achar_e_substituir.setStatusTip("Achar e substituir...")
 
         self.acao_ir_para_linha.setShortcut('Ctrl+L')
-        self.acao_ir_para_linha.triggered.connect(GerenciadorDeCodigo.ir_para_linha)
+        self.acao_ir_para_linha.triggered.connect(EditorDeTexto.ir_para_linha)
         self.acao_ir_para_linha.setStatusTip("Ir para linha...")
 
         self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
@@ -856,7 +837,6 @@ class Principal(QMainWindow):
         self.barra_superior.setMovable(False)
         self.barra_superior.setContentsMargins(0, 0, 0, 0)
 
-
         # Cria a barra de menu que ira ser adicionada a barra_superior
         barra_menu = self.menuBar()
         barra_menu.setNativeMenuBar(False)
@@ -890,13 +870,11 @@ class Principal(QMainWindow):
         self.barra_superior.addWidget(barra_menu)
         self.barra_superior.addWidget(QLabel("Porta: "))
 
-
         self.menu_selecao_porta = QComboBox()
 
         self.menu_selecao_porta.activated[str].connect(self.widget_central.define_porta_alvo)
 
         self.barra_superior.addWidget(self.menu_selecao_porta)
-
 
         self.addToolBar(self.barra_superior)
 
@@ -954,4 +932,3 @@ class Principal(QMainWindow):
         Rastreador.rastrear(Rastreador.FECHAMENTO)
         Rastreador.log_info("Rastreado fechamento")
         close_event.accept()
-

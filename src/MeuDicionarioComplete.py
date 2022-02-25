@@ -20,9 +20,9 @@ class MeuDicionarioComplete(QCompleter):
         minhas_palavras_chaves = sorted(minhas_palavras_chaves)
         minhas_palavras_chaves = list(set(minhas_palavras_chaves))
         QCompleter.__init__(self, minhas_palavras_chaves, parent)
-        self.activated.connect(self.changeCompletion)
+        self.activated.connect(self.change_completion)
 
-    def changeCompletion(self, completion):
+    def change_completion(self, completion):
         if completion.find("(") != -1:
             completion = completion[:completion.find("(")]
         self.insertText.emit(completion)

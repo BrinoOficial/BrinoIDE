@@ -177,6 +177,7 @@ def acompanha_portas_conectadas(objeto_principal):
             placas_conectadas_anterior = placas_conectadas
             sleep(5)
 
+
 def procurar_placas(nome_placa):
     """
     Procura quais placas podem ser instaladas
@@ -187,6 +188,7 @@ def procurar_placas(nome_placa):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     return p.stdout.read().decode()
+
 
 def instalar_placa(nome_placa):
     """
@@ -199,4 +201,3 @@ def instalar_placa(nome_placa):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     return p.stdout.read().decode()
-

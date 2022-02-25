@@ -108,7 +108,7 @@ class CodeEditor(QPlainTextEdit):
                         self.caminho = os.path.join(Main.get_caminho_padrao(), self.nome, self.nome + ".brpp")
                         if os.path.exists(self.caminho):
                             arq_existe = QMessageBox().warning(None, 'Arquivo existe',
-                                                               "Ao abrir esse arquivo, você apagará um arquivo "+
+                                                               "Ao abrir esse arquivo, você apagará um arquivo " +
                                                                "existente. Gostaria de continuar?",
                                                                QMessageBox.Ok | QMessageBox.No)
                             if arq_existe == QMessageBox.Ok:
@@ -142,7 +142,7 @@ class CodeEditor(QPlainTextEdit):
             background: #101010;
             color: #efefef;
         """)
-        self.setCompleter(self.completer)
+        self.set_completer(self.completer)
 
     def atualizar_largura_contador(self):
         """
@@ -196,7 +196,7 @@ class CodeEditor(QPlainTextEdit):
             selecoes_extras.append(selecao)
         self.setExtraSelections(selecoes_extras)
 
-    def lineNumberAreaPaintEvent(self, QPaintEvent):
+    def line_number_area_paint_event(self, QPaintEvent):
         """
         Pinta o contador de linhas
         :param QPaintEvent:
@@ -225,7 +225,7 @@ class CodeEditor(QPlainTextEdit):
             bottom = top + int(self.blockBoundingRect(bloco).height())
             numero_bloco += 1
 
-    def AcharEventoDePintura(self, QPaintEvent):
+    def achar_evento_de_pintura(self, QPaintEvent):
         """
         Pinta da funcao achar
         :param QPaintEvent:
@@ -288,7 +288,7 @@ class CodeEditor(QPlainTextEdit):
         regex = re.compile('[A-Za-z_-]+[0-9A-Za-z_-]*')
         return re.match(regex, nome)
 
-    def setCompleter(self, completer):
+    def set_completer(self, completer):
         #        if self.completer:
         #            self.disconnect(self.completer, 0, self, 0)
         #        if not completer:
@@ -297,9 +297,9 @@ class CodeEditor(QPlainTextEdit):
         completer.setCompletionMode(QCompleter.PopupCompletion)
         completer.setCaseSensitivity(Qt.CaseSensitive)
         self.completer = completer
-        self.completer.insertText.connect(self.insertCompletion)
+        self.completer.insertText.connect(self.insert_completion)
 
-    def insertCompletion(self, completion):
+    def insert_completion(self, completion):
         tc = self.textCursor()
         extra = (len(completion) -
                  len(self.completer.completionPrefix()))
@@ -308,7 +308,7 @@ class CodeEditor(QPlainTextEdit):
         tc.insertText(completion[-extra:])
         self.setTextCursor(tc)
 
-    def textUnderCursor(self):
+    def text_under_cursor(self):
         tc = self.textCursor()
         tc.select(QTextCursor.WordUnderCursor)
         return tc.selectedText()
@@ -336,8 +336,8 @@ class CodeEditor(QPlainTextEdit):
         if inline:
             # set completion mode as inline
             self.completer.setCompletionMode(QCompleter.InlineCompletion)
-            prefixo_a_completar = self.textUnderCursor()
-            if (prefixo_a_completar != self.completer.completionPrefix()):
+            prefixo_a_completar = self.text_under_cursor()
+            if prefixo_a_completar != self.completer.completionPrefix():
                 self.completer.setCompletionPrefix(prefixo_a_completar)
             self.completer.complete()
             #            self.completer.setCurrentRow(0)
@@ -347,7 +347,7 @@ class CodeEditor(QPlainTextEdit):
             # reset the completion mode
             self.completer.setCompletionMode(QCompleter.PopupCompletion)
             return
-        if (not self.completer or not e_atalho):
+        if not self.completer or not e_atalho:
             pass
             QPlainTextEdit.keyPressEvent(self, event)
         # debug
@@ -355,8 +355,8 @@ class CodeEditor(QPlainTextEdit):
         #        print("e_atalho is: {}".format(e_atalho))
         # debug over
         # ctrl or shift key on it's own??
-        ctrlOrShift = event.modifiers() in (Qt.ControlModifier, Qt.ShiftModifier)
-        if ctrlOrShift and event.text() == '':
+        ctrl_or_shift = event.modifiers() in (Qt.ControlModifier, Qt.ShiftModifier)
+        if ctrl_or_shift and event.text() == '':
             #             ctrl or shift key on it's own
             return
         # debug
@@ -364,11 +364,11 @@ class CodeEditor(QPlainTextEdit):
         #        print("e_atalho is: {}".format(e_atalho))
         # debug over
         #        eow = "~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=" #fim da palavra
-        eow = "~!@#$%^&*+{}|:\"<>?,./;'[]\\-="  # fim da palavra
+        # eow = "~!@#$%^&*+{}|:\"<>?,./;'[]\\-="  # fim da palavra
 
-        hasModifier = ((event.modifiers() != Qt.NoModifier) and not ctrlOrShift)
+        # hasModifier = ((event.modifiers() != Qt.NoModifier) and not ctrlOrShift)
 
-        prefixo_a_completar = self.textUnderCursor()
+        prefixo_a_completar = self.text_under_cursor()
         #         print('event . text = {}'.format(event.text().right(1)))
         #         if (not e_atalho and (hasModifier or event.text()=='' or\
         #                                 len(prefixo_a_completar) < 3 or \
@@ -390,6 +390,9 @@ class CodeEditor(QPlainTextEdit):
                     + self.completer.popup().verticalScrollBar().sizeHint().width())
         self.completer.complete(cr)  # popup it up!
 
+def ir_para_linha():
+    # TODO ir para linha
+    pass
 
 class ContadorDeLinhas(QWidget):
 
@@ -413,16 +416,13 @@ class ContadorDeLinhas(QWidget):
         :return:
             None
         """
-        self.editor_de_codigo.lineNumberAreaPaintEvent(event)
+        self.editor_de_codigo.line_number_area_paint_event(event)
 
 
 class Achar(QWidget):
     def __init__(self, editor):
         super(Achar, self).__init__(editor)
         self.editor_de_codigo = editor
-
-    def initUI(self):
-        pass
 
     def sizeHint(self):
         """
@@ -440,4 +440,4 @@ class Achar(QWidget):
         :return:
             None
         """
-        self.editor_de_codigo.AcharEventoDePintura(QPaintEvent)
+        self.editor_de_codigo.achar_evento_de_pintura(QPaintEvent)

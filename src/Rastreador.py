@@ -55,6 +55,7 @@ def rastrear(evento):
     except:
         pass
 
+
 def gerar_id_cliente():
     """
     Verifica se no arquivo de preferências há um id único para o cliente. Caso contrário, gera um.
@@ -68,6 +69,7 @@ def gerar_id_cliente():
     #     idc = uuid.uuid4()
     #     Preferencias.set("id_cliente", str(idc))
     #     log_info("id definido como:", Preferencias.get("id_cliente"))
+
 
 def log_info(m):
     log.info(m)

@@ -107,37 +107,42 @@ def verificar_versao():
         Rastreador.log_error("Houve um erro ao verificar se há uma atualização online\n"+str(e))
     return ha_atualizacao
 
+
 def install_excepthook():
     def my_excepthook(exctype, value, tb):
-        s = ''.join(traceback.format_exception(exctype, value, tb))
+        erro_my_excepthook = ''.join(traceback.format_exception(exctype, value, tb))
         Rastreador.log_error("O Br.ino parou!")
-        Rastreador.log_error(s)
+        Rastreador.log_error(erro_my_excepthook)
         dialog = QMessageBox.question(None,
                                       'Isto é embaraçoso',
                                       "Infelizmente o Brino teve um problema e parou de funcionar. Você pode"
                                       + " nos enviar o relatório de erros?",
                                       QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if dialog == QMessageBox.Yes:
-            with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
-                try:
-                    r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
-                except requests.exceptions.RequestException as e:
-                    print(e)
-                Rastreador.log_info(r.text)
-                if "LOG enviado" in r.text:
-                    QMessageBox.question(None,
-                                         "Obrigado",
-                                         "O relatório foi enviado! Trabalharemos o mais rápido possível"
-                                         + " para resolver este problema!", QMessageBox.Ok, QMessageBox.Ok)
-                else:
-                    QMessageBox.question(None,
-                                         "Poxa...",
-                                         "O relatório não pode ser enviado! Se puder, nos envie o arquivo por email."
-                                         + " O arquivo está dentro da pasta resources do diretório de instalação e se"
-                                         + " chama completo.log", QMessageBox.Ok, QMessageBox.Ok)
+            # TODO Melhorar relatorio de erros do site
+            # with open(os.path.join('recursos', 'completo.log'), 'rb') as f:
+            #     try:
+            #         # TODO Resolver problema de referencia
+            #         r = requests.post('https://brino.cc/brino/receber_log.php', files={nome_arquivo: f})
+            #     except requests.exceptions.RequestException as e:
+            #         print(e)
+            #     Rastreador.log_info(r.text)
+            #     if "LOG enviado" in r.text:
+            #         QMessageBox.question(None,
+            #                              "Obrigado",
+            #                              "O relatório foi enviado! Trabalharemos o mais rápido possível"
+            #                              + " para resolver este problema!", QMessageBox.Ok, QMessageBox.Ok)
+            #     else:
+            #         QMessageBox.question(None,
+            #                              "Poxa...",
+            #                              "O relatório não pode ser enviado! Se puder, nos envie o arquivo por email."
+            #                              + " O arquivo está dentro da pasta resources do diretório de instalação e se"
+            #                              + " chama completo.log", QMessageBox.Ok, QMessageBox.Ok)
+            pass
         sys.exit(-1)
 
     sys.excepthook = my_excepthook
+
 
 def criar_pastas():
     """
@@ -145,14 +150,13 @@ def criar_pastas():
     """
     caminho_rascunhos = get_caminho_padrao()
     caminho_bibliotecas = get_caminho_padrao() + str("/Bibliotecas/")
-    if os.path.isdir(caminho_rascunhos) == False:
+    if not os.path.isdir(caminho_rascunhos):
         print("Criando as duas pastas")
         os.mkdir(caminho_rascunhos)
         os.mkdir(caminho_bibliotecas)
-    elif os.path.isdir(caminho_bibliotecas) == False:
+    elif not os.path.isdir(caminho_bibliotecas):
         print("Criando a pasta de bibliotecas")
         os.mkdir(caminho_bibliotecas)
-
 
 
 if __name__ == '__main__':
@@ -212,4 +216,3 @@ if __name__ == '__main__':
             Rastreador.log_info("Atualização Recusada")
 
     sys.exit(app.exec_())
-

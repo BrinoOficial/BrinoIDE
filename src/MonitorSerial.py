@@ -160,7 +160,7 @@ class MonitorSerial(QWidget):
         :return:
             None
         """
-        if self.parar == False:
+        if not self.parar:
             self.parar = True
             self.thread_monitor.join()
             self.thread_monitor = threading.Thread(target=self.serial_listener, args=(id, lambda: self.parar))

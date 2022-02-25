@@ -100,4 +100,3 @@ class Menu(QWidget):
         layout.addWidget(btn_monitor_serial)
         layout.addItem(espacador_vertical)
         self.show()
-

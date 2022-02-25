@@ -179,11 +179,6 @@ QInputDialog QComboBox QAbstractItemView {
     background:#101010;
     border: 0;
 }
-QDialog QLabel{
-    background:#101010;
-    color: #efefef;
-    font-color: #efefef;
-}
 QLineEdit{
    color:#efefef;
 }
@@ -288,4 +283,3 @@ QStatusBar QLabel {
 QStatusBar::item {
     border: 0;
 }
-
