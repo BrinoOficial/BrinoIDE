@@ -406,15 +406,6 @@ class Centro(QWidget):
         dialogo.setDirectory(get_caminho_padrao())
         return dialogo
 
-    def abrir_serial(self):
-        """
-        Abre o monitor serial
-        :return:
-            None
-        """
-        pass
-        # self.parent.abrir_serial()
-
     def criar_menu_placas(self):
         """
         Cria o menu das placas
@@ -667,7 +658,11 @@ class Centro(QWidget):
         print(nome_placa_instalar[0])
 
     def instalar_biblioteca(self):
-        # TODO Documentar funcao
+        """
+        Instala a biblioteca Arduino a ser selecionada em pop_up
+        :returns:
+            None
+        """
         caminho_bibliotecas = os.path.join(get_caminho_padrao(), "bibliotecas")
         dialogo = QFileDialog()
         dialogo.setWindowTitle("Escolher biblioteca")
@@ -884,12 +879,12 @@ class Principal(QMainWindow):
         :return:
             None
         """
-
         # Verifica se jah hah um monitor aberto e o fecha
         if self.monitor.isVisible():
             self.monitor.close()
         # TODO Resolver porta serial
-        if self.monitor.conectar("COM1"):
+        print("Chamando monitor serial")
+        if self.monitor.conectar("COM4"):
             self.monitor.show()
             Rastreador.log_info("Monitor Serial aberto")
         else:

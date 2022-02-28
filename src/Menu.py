@@ -85,7 +85,7 @@ class Menu(QWidget):
         btn_monitor_serial = BotaoImagem(QPixmap(os.path.join('recursos', 'monitorSerial.png')),
                                          QPixmap(os.path.join('recursos', 'monitorSerialFoco.png')), self)
         btn_monitor_serial.setFixedSize(50, 50)
-        btn_monitor_serial.clicked.connect(self.parent.abrir_serial)
+        btn_monitor_serial.clicked.connect(self.parent.parent.abrir_serial)
         btn_monitor_serial.setStatusTip("Abrir monitor serial")
 
         # Layout do menu

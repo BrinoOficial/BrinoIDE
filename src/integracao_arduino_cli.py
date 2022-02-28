@@ -175,7 +175,7 @@ def acompanha_portas_conectadas(objeto_principal):
             print("Portas atualizadas")
             objeto_principal.widget_central.criar_menu_portas()
             placas_conectadas_anterior = placas_conectadas
-            sleep(5)
+            sleep(1)
 
 
 def procurar_placas(nome_placa):
