@@ -2,20 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-The original code is licensed under a modified BSD License
-and is available at: https://wiki.python.org/moin/PyQt/Python%20syntax%20highlighting
+Br.ino - BotaoImagem
 
-Copyright (C) 2017  DavidBoddie
+Reaiza o destaque dos termos brino e arduino
 
-modified by: Mateus Berardo, 2018
-email: mateus.berardo@brino.cc
-
-Br.ino Qt DestaqueSintaxe
-
-Codigo de destaque da sintaxe do BRpp da IDE Br.ino
-em PyQt5 (python 3.6)
-
-    IDE do Br.ino  Copyright (C) 2018  Br.ino
+    IDE do Br.ino  Copyright (C) 2022  Br.ino
 
     Este arquivo e parte da IDE do Br.ino.
 
@@ -34,11 +25,11 @@ em PyQt5 (python 3.6)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-website: brino.cc
-author: Mateus Berardo
-email: mateus.berardo@brino.cc
-contributor: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
+site: https://brino.cc
+codigo completo disponivel em https://github.com/BrinoOficial/BrinoIDE
+autor: Victor Rodrigues Pacheco
+autor: Gabriel Rodrigues Pacheco
+autor: Mateus Berardo
 """
 
 from PyQt5.QtCore import QRegExp, Qt
@@ -49,7 +40,7 @@ import GerenciadorDeKeywords
 
 def format_(color, style=''):
     """
-    Retorna a formatacao da palavra
+    Retorna a formatacao da palavra a ser destacada
     :param color:
         Cor da palavra
     :param style:
@@ -87,7 +78,7 @@ STYLES = {
 
 class PythonHighlighter(QSyntaxHighlighter):
     """
-    Define os devidos hightlightes de cada uma das categorias de keyword
+    Define os devidos hightlightes de cada uma das categorias de keyword do arduino e do brino
     """
     # Br.ino keywords tipo 1
     keywords_1 = GerenciadorDeKeywords.get_highlights('1')

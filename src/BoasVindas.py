@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Br.ino Qt BoasVindas
+Br.ino - BoasVindas
 
-Codigo da aba de boas vindas da IDE Br.ino
-em PyQt5 (python 3.6)
+Aba de boas vindas da IDE Br.ino (pagina inicial)
 
-    IDE do Br.ino  Copyright (C) 2018  Br.ino
+    IDE do Br.ino  Copyright (C) 2022  Br.ino
 
     Este arquivo e parte da IDE do Br.ino.
 
@@ -26,11 +25,11 @@ em PyQt5 (python 3.6)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-website: brino.cc
-author: Mateus Berardo
-email: mateus.berardo@brino.cc
-contributor: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
+site: https://brino.cc
+codigo completo disponivel em https://github.com/BrinoOficial/BrinoIDE
+autor: Victor Rodrigues Pacheco
+autor: Gabriel Rodrigues Pacheco
+autor: Mateus Berardo
 """
 
 import os
@@ -63,7 +62,7 @@ class BoasVindas(QWidget):
 
     def popular_itens(self):
         """
-        Caixas do boas vindas
+        Cria as caixas iniciais da pagina de boas vindas
         :return:
             None
         """
@@ -81,9 +80,9 @@ class BoasVindas(QWidget):
     @staticmethod
     def abrir_site():
         """
-               Direciona para o nosso site brino.cc/tutoriais.php
-               :return:
-                   None
+        Direciona para o nosso site brino.cc/tutoriais.php
+        :return:
+           None
         """
         webbrowser.open("http://brino.cc/tutoriais.php", 1, True)
 
@@ -120,7 +119,7 @@ class Item(QWidget):
 
     def mousePressEvent(self, evento_mouse):
         """
-        Chama a funcao func
+        Chama a funcao func ao clicarem no box inicial
         :param evento_mouse:
             evento
         :return:

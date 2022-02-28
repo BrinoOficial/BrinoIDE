@@ -4,10 +4,9 @@
 """
 Br.ino Qt editor de texto
 
-Interface base da IDE Br.ino
-em PyQt5 (python 3.6)
+Funcoes do editor de texto (autocomplete, contador de linhas, etc)
 
-    IDE do Br.ino  Copyright (C) 2018  Br.ino
+    IDE do Br.ino  Copyright (C) 2022  Br.ino
 
     Este arquivo e parte da IDE do Br.ino.
 
@@ -18,7 +17,7 @@ em PyQt5 (python 3.6)
     versao posterior.
 
     A IDE do Br.ino e distribuida na esperanca de que seja util,
-    mas SEM QUALQUER GARANTIA sem a garantia implicita de
+    mas SEM QUALQUER GARANTIA; sem a garantia implicita de
     COMERCIALIZACAO ou ADEQUACAO A UM DETERMINADO PROPOSITO.
     Consulte a Licenca Publica Geral GNU para obter mais detalhes.
 
@@ -26,41 +25,11 @@ em PyQt5 (python 3.6)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-    Codigo fonte retirado de:
-    https: http://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
-    **  Copyright (C) 2016 The Qt Company Ltd.
-    **
-    **  "Redistribution and use in source and binary forms, with or without
-    ** modification, are permitted provided that the following conditions are
-    ** met:
-    **   * Redistributions of source code must retain the above copyright
-    **     notice, this list of conditions and the following disclaimer.
-    **   * Redistributions in binary form must reproduce the above copyright
-    **     notice, this list of conditions and the following disclaimer in
-    **     the documentation and/or other materials provided with the
-    **     distribution.
-    **   * Neither the name of The Qt Company Ltd nor the names of its
-    **     contributors may be used to endorse or promote products derived
-    **     from this software without specific prior written permission.
-    **
-    **
-    ** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-    ** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-    ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-    ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-    ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-    ** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-    ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES LOSS OF USE,
-    ** DATA, OR PROFITS OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-    ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-    ** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-    ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
-
-website: brino.cc
-modificado por: Mateus Berardo
-email: mateus.berardo@brino.cc
-modificado por: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
+site: https://brino.cc
+codigo completo disponivel em https://github.com/BrinoOficial/BrinoIDE
+autor: Victor Rodrigues Pacheco
+autor: Gabriel Rodrigues Pacheco
+autor: Mateus Berardo
 
 auto-complete modificado a partir do codigo de smitkpatel
 disponivel em https://stackoverflow.com/questions/28956693/pyqt5-qtextedit-auto-completion
@@ -146,14 +115,14 @@ class CodeEditor(QPlainTextEdit):
 
     def atualizar_largura_contador(self):
         """
-        Atualiza a largura e a altura do contador
+        Atualiza a largura e a altura do contador de linhas
         :return: None
         """
         self.contador_de_linhas.setGeometry(QRect(0, 0, self.largura_contador, self.height()))
 
     def atualizar_area_contador(self, rect, dy):
         """
-        Realiza o scroll do contador
+        Realiza o scroll do contador de linhas
         :param rect:
             Retangulo de conteudos
         :param dy:
@@ -181,7 +150,7 @@ class CodeEditor(QPlainTextEdit):
 
     def marcar_linha_atual(self):
         """
-        Da hightlight na linha do cursor
+        Da hightlight na linha atual do cursor
         :return:
             None
         """
@@ -225,7 +194,7 @@ class CodeEditor(QPlainTextEdit):
             bottom = top + int(self.blockBoundingRect(bloco).height())
             numero_bloco += 1
 
-    def achar_evento_de_pintura(self, QPaintEvent):
+    def AcharEventoDePintura(self, QPaintEvent):
         """
         Pinta da funcao achar
         :param QPaintEvent:
@@ -253,7 +222,7 @@ class CodeEditor(QPlainTextEdit):
         """
         Pega o texto do QPlainText
         :return:
-            None
+            string(Texto do plainText)
         """
         return self.toPlainText()
 
@@ -261,15 +230,15 @@ class CodeEditor(QPlainTextEdit):
         """
         Pega o nome
         :return:
-            None
+            string(nome do arquivo)
         """
         return self.nome
 
     def get_caminho(self):
         """
-        Pega o caminho
+        Pega o caminho do arquivo
         :return:
-            None
+            caminho
         """
         return self.caminho
 
@@ -285,9 +254,22 @@ class CodeEditor(QPlainTextEdit):
 
     @staticmethod
     def validar(nome):
+        """
+        Seta o caminho
+        :param caminho:
+            Caminho a ser setado
+        :return:
+            None
+        """
         regex = re.compile('[A-Za-z_-]+[0-9A-Za-z_-]*')
         return re.match(regex, nome)
 
+    def set_completer(self, completer):
+        """
+        Seta o auto-complete
+        :param cpmpleter:
+
+        """
     def set_completer(self, completer):
         #        if self.completer:
         #            self.disconnect(self.completer, 0, self, 0)
@@ -336,8 +318,8 @@ class CodeEditor(QPlainTextEdit):
         if inline:
             # set completion mode as inline
             self.completer.setCompletionMode(QCompleter.InlineCompletion)
-            prefixo_a_completar = self.text_under_cursor()
-            if prefixo_a_completar != self.completer.completionPrefix():
+            prefixo_a_completar = self.textUnderCursor()
+            if (prefixo_a_completar != self.completer.completionPrefix()):
                 self.completer.setCompletionPrefix(prefixo_a_completar)
             self.completer.complete()
             #            self.completer.setCurrentRow(0)
