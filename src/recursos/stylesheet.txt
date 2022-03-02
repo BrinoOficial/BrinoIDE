@@ -161,6 +161,12 @@ QToolBar QComboBox QAbstractItemView {
     background:#101010;
     border: 0;
 }
+QComboBox QAbstractItemView {
+    color: #efefef;
+    selection-background-color: #252525;
+    background:#101010;
+    border: 0;
+}
 QInputDialog QComboBox{
     border : 0;
     background:#252525;

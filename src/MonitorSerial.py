@@ -49,8 +49,14 @@ class MonitorSerial(QWidget):
         super(MonitorSerial, self).__init__(parent)
         # Define widgets
         self.linha_envio = QLineEdit(self)
+        self.linha_envio.setPlaceholderText("Mensagem a ser enviada...")
         self.log_monitor = QPlainTextEdit(self)
         self.velocidade = QComboBox(self)
+        self.velocidade.setObjectName("combo_box_velocidade_tag")
+        # TODO Resolver seta para baixo ao lado do ComboBox
+        self.velocidade.setStyleSheet("""#combo_box_velocidade_tag{color: #efefef};
+                                        #combo_box_velocidade_tag::drop-down{color: #efefef}
+                                        #combo_box_velocidade_tag::down-arrow{border: 0; height: 20px; image: url(recursos/setaBaixo.png);}""")
         self.velocidade.addItems(
             ("300", "600", "1200", "2400", "4800", "9600", "14400", "19200", "28800", "38400", "57600", "115200"))
         self.velocidade.setCurrentText("9600")
@@ -103,7 +109,7 @@ class MonitorSerial(QWidget):
         btn_enviar.clicked.connect(self.enviar)
 
         btn_limpar = QPushButton("Limpar")
-        btn_limpar.setObjectName("btn_limpar")
+        btn_limpar.setObjectName("btn_limpar_tag")
         btn_limpar.setStyleSheet("""#btn_limpar_tag{border-radius:2px;color:#252525;background:#5cb50d;margin:2px;}
                                     #btn_limpar_tag:hover{border:1px solid #5cb50d;color:#5cb50d;background:#252525}""")
         btn_limpar.clicked.connect(self.limpar)
@@ -111,6 +117,8 @@ class MonitorSerial(QWidget):
         self.rolagem_check = QCheckBox(self)
         self.rolagem_check.setChecked(True)
         self.rolagem_check.setText("Rolagem-automática")
+        self.rolagem_check.setObjectName("rolagem_tag")
+        self.rolagem_check.setStyleSheet("""#rolagem_tag{color:#efefef;}""")
 
         layout.addWidget(self.linha_envio, 0, 0)
         layout.addWidget(self.log_monitor, 1, 0, 1, 0)
@@ -121,7 +129,7 @@ class MonitorSerial(QWidget):
 
     def mudar_velocidade(self):
         self.desconectar()
-        self.conectar(9600, baud=int(self.velocidade.currentText()))
+        self.conectar(self.porta, baud=int(self.velocidade.currentText()))
 
     def conectar(self, porta, baud=9600):
         """
@@ -133,6 +141,7 @@ class MonitorSerial(QWidget):
         :return:
         """
         try:
+            self.porta = porta
             self.conexao = serial.Serial(porta, baud)
             time.sleep(0.1)
             self.parar = False

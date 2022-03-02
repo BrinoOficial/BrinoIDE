@@ -591,34 +591,6 @@ class Centro(QWidget):
                 "Não foi possível processar a saída de texto do compilador,"
                 + " é possível que ele tenha compilado corretamente.")
 
-    @staticmethod
-    def serial_ports():
-        """
-        Lista as portas seriais disponiveis
-        :raises EnvironmentError:
-            Plataforma desconhecida ou nao suportada
-        :returns:
-            Lista das portas seriais disponiveis
-        """
-        if sys.platform.startswith('win'):
-            ports = ['COM%s' % (i + 1) for i in range(256)]
-        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            # this excludes your current terminal "/dev/tty"
-            ports = glob.glob('/dev/tty[A-Za-z]*')
-        elif sys.platform.startswith('darwin'):
-            ports = glob.glob('/dev/tty.*')
-        else:
-            raise EnvironmentError('Unsupported platform')
-
-        result = []
-        for port in ports:
-            try:
-                serial.Serial(port).close()
-                result.append(port)
-            except (OSError, serial.SerialException):
-                pass
-        return result
-
     def instalar_placa(self):
         """
         Instala a placa Arduino a ser inserida em pop_up
@@ -650,11 +622,11 @@ class Centro(QWidget):
                         self.criar_menu_placas()
         # Se nao levanta um alerta de erro
         else:
-            print("Mostrar erro")
             # TODO Melhorar aparencia da QErrorMessage
-            error_dialog = QErrorMessage()
-            error_dialog.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
-            error_dialog.exec_()
+            error_dialog_placa = QErrorMessage()
+            error_dialog_placa.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
+            error_dialog_placa.exec_()
+            Rastreador.log_error("Placa solicitada não disponível")
         print(nome_placa_instalar[0])
 
     def instalar_biblioteca(self):
@@ -694,7 +666,6 @@ class Centro(QWidget):
 
 
 class Principal(QMainWindow):
-
     def __init__(self):
         super(Principal, self).__init__()
 
@@ -882,14 +853,23 @@ class Principal(QMainWindow):
         # Verifica se jah hah um monitor aberto e o fecha
         if self.monitor.isVisible():
             self.monitor.close()
-        # TODO Resolver porta serial
+
         print("Chamando monitor serial")
-        if self.monitor.conectar("COM4"):
+        # Verifica se a porta para upload está selecionada. Caso nao esteja seleciona a primeira da lista
+        try:
+            if not self.widget_central.porta_alvo:
+                self.widget_central.define_porta_alvo(self.menu_selecao_porta.currentText())
+        except:
+            self.widget_central.define_porta_alvo(self.menu_selecao_porta.currentText())
+            
+        if self.monitor.conectar(self.widget_central.porta_alvo):
             self.monitor.show()
             Rastreador.log_info("Monitor Serial aberto")
         else:
-            QMessageBox("Erro", QMessageBox.Warning, "A porta selecionada não está disponível",
-                        QMessageBox.NoButton, self).show()
+            # TODO Melhorar aparencia da QErrorMessage
+            error_dialog_porta = QErrorMessage()
+            error_dialog_porta.showMessage('A porta serial selecionada não está disponível.')
+            error_dialog_porta.exec_()
             Rastreador.log_error("Porta Serial solicitada não disponível")
 
     def enviar_codigo(self):
