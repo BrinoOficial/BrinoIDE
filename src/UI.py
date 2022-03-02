@@ -40,6 +40,7 @@ import functools
 import serial
 import shutil
 import sys
+from zipfile import ZipFile
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor, QIcon
@@ -621,9 +622,51 @@ class Centro(QWidget):
             Rastreador.log_error("Placa solicitada não disponível")
         print(nome_placa_instalar[0])
 
-    def instalar_biblioteca(self):
+
+    def instalar_biblioteca_arduino_cli(self):
         """
-        Instala a biblioteca Arduino a ser selecionada em pop_up
+        Instala a biblioteca Arduino pelo arduino cli a ser selecionada em pop_up
+        :returns:
+            None
+        """
+        # TODO adaptar de placa para biblioteca
+        # Cria o pop-up para escolha da placa a ser instalada
+        nome_placa_instalar = QInputDialog.getText(self, 'Instalar placa',
+                                                   'Qual o nome da placa que você deseja instalar?')
+        # busca placas com o nome inserido
+        placa_instalar = procurar_placas(nome_placa_instalar[0]).split("\n")
+        # Cria a lista com a saida
+        lista_placa_instalar = list()
+        letra_corte = placa_instalar[0].find("F") - 1
+        for placa in placa_instalar:
+            if placa[:int(letra_corte)].rstrip() != "":
+                lista_placa_instalar.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
+        lista_placa_instalar.pop(0)
+        print(lista_placa_instalar)
+        dialogo_lista_placa = list()
+        for i in range(len(lista_placa_instalar)):
+            dialogo_lista_placa.append(lista_placa_instalar[i][0])
+        # Se a lista nao for vazia cria um pop-up para escolha da placa
+        if lista_placa_instalar:
+            nome_placa_instalar = QInputDialog.getItem(self, 'Instalar placa', 'Selecione a placa a ser instalada:',
+                                                       dialogo_lista_placa)
+            if nome_placa_instalar[1]:
+                for i in range(len(lista_placa_instalar)):
+                    if nome_placa_instalar[0] == lista_placa_instalar[i][0]:
+                        print(instalar_placa(lista_placa_instalar[i][1].lstrip()))
+                        self.criar_menu_placas()
+        # Se nao levanta um alerta de erro
+        else:
+            # TODO Melhorar aparencia da QErrorMessage
+            error_dialog_placa = QErrorMessage()
+            error_dialog_placa.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
+            error_dialog_placa.exec_()
+            Rastreador.log_error("Placa solicitada não disponível")
+        print(nome_placa_instalar[0])
+
+    def instalar_biblioteca_por_arquivo(self):
+        """
+        Instala a biblioteca Arduino .zip a ser selecionada em pop_up
         :returns:
             None
         """
@@ -635,7 +678,8 @@ class Centro(QWidget):
         dialogo.setLabelText(QFileDialog.FileType, "Tipo de arquivo:")
         dialogo.setLabelText(QFileDialog.Accept, "Escolher")
         dialogo.setLabelText(QFileDialog.Reject, "Cancelar")
-        dialogo.setFileMode(QFileDialog.DirectoryOnly)
+        dialogo.setNameFilters(["Arquivo zip (*.zip)", "Todos arquivos (*)"])
+        dialogo.selectNameFilter("Arquivo zip (*.zip)")
         dialogo.setDirectory(get_caminho_padrao())
         if dialogo.exec_() == QFileDialog.Accepted:
             caminho = dialogo.selectedUrls()[0].path()
@@ -644,13 +688,18 @@ class Centro(QWidget):
             # Testa se o arquivo existe
             if os.path.exists(caminho):
                 try:
-                    shutil.copytree(caminho, os.path.join(caminho_bibliotecas, os.path.basename(caminho)))
+                    # shutil.copy(caminho, os.path.join(caminho_bibliotecas, os.path.basename(caminho)))
+                    # Create a ZipFile Object and load sample.zip in it
+                    # TODO Adicionar os exemplos na IDE
+                    with ZipFile(caminho, 'r') as zipObj:
+                        # Extract all the contents of zip file in current directory
+                        zipObj.extractall(caminho_bibliotecas)
                     # Directories are the same
                 except shutil.Error as e:
-                    print('Directory not copied. Error: %s' % e)
+                    print('Arquivo nao copiado. Erro: %s' % e)
                     # Any error saying that the directory doesn't exist
                 except OSError as e:
-                    print('Directory not copied. Error: %s' % e)
+                    print('Arquivo nao copiado. Erro: %s' % e)
             else:
                 QMessageBox(QMessageBox.Warning, "Erro", "O arquivo não existe", QMessageBox.NoButton, self).show()
         else:
@@ -682,7 +731,8 @@ class Principal(QMainWindow):
         self.acao_placa = QAction('Placa', self)
         self.acao_porta = QAction('Porta', self)
         self.acao_lingua = QAction('Lingua', self)
-        self.acao_instalar_biblioteca = QAction('Instalar biblioteca', self)
+        self.acao_instalar_biblioteca_por_arquivo = QAction('Instalar biblioteca por arquivo', self)
+        self.acao_instalar_biblioteca_arduino_cli = QAction('Instalar biblioteca por nome', self)
         self.acao_instalar_placa = QAction('Instalar placa', self)
         self.acao_monitor_serial = QAction('Monitor serial', self)
         self.acao_verificar = QAction('Verificar', self)
@@ -766,8 +816,11 @@ class Principal(QMainWindow):
         self.acao_lingua.triggered.connect(GerenciadorDeLinguas.lingua)
         self.acao_lingua.setStatusTip("Opções de língua")
 
-        self.acao_instalar_biblioteca.triggered.connect(self.widget_central.instalar_biblioteca)
-        self.acao_instalar_biblioteca.setStatusTip("Instalar bilioteca")
+        self.acao_instalar_biblioteca_por_arquivo.triggered.connect(self.widget_central.instalar_biblioteca_por_arquivo)
+        self.acao_instalar_biblioteca_por_arquivo.setStatusTip("Instalar bilioteca por aquivo zip")
+
+        self.acao_instalar_biblioteca_arduino_cli.triggered.connect(self.widget_central.instalar_biblioteca_arduino_cli)
+        self.acao_instalar_biblioteca_arduino_cli.setStatusTip("Instalar bilioteca por nome")
 
         self.acao_instalar_placa.triggered.connect(self.widget_central.instalar_placa)
         self.acao_instalar_placa.setStatusTip("Instalar placa")
@@ -820,7 +873,8 @@ class Principal(QMainWindow):
         self.menu_ferramentas.addMenu(self.menu_placas)
         self.menu_ferramentas.addAction(self.acao_lingua)
         self.menu_ferramentas.addAction(self.acao_monitor_serial)
-        self.menu_ferramentas.addAction(self.acao_instalar_biblioteca)
+        self.menu_ferramentas.addAction(self.acao_instalar_biblioteca_por_arquivo)
+        self.menu_ferramentas.addAction(self.acao_instalar_biblioteca_arduino_cli)
         self.menu_ferramentas.addAction(self.acao_instalar_placa)
 
         menu_rascunho = barra_menu.addMenu('Rascunho')
