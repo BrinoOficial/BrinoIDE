@@ -33,7 +33,6 @@ author: Victor Rodrigues Pacheco
 author: Gabriel Rodrigues Pacheco
 """
 
-import glob
 import ntpath
 from tempfile import mkdtemp
 # from google_measurement_protocol import event, report
@@ -56,13 +55,6 @@ from BoasVindas import BoasVindas
 from integracao_arduino_cli import *
 from GerenciadorDeKeywords import traduzir
 from Main import get_caminho_padrao
-
-
-# TODO Duplicado, resolver isso
-versao = '3.0.7'
-caminho_padrao = ''
-s = 3
-
 
 class Centro(QWidget):
     def __init__(self, parent=None):
@@ -669,6 +661,8 @@ class Principal(QMainWindow):
     def __init__(self):
         super(Principal, self).__init__()
 
+        self.versao = '3.0.7'
+
         # Cria o objeto monitor serial
         self.monitor = MonitorSerial.MonitorSerial()
 
@@ -713,7 +707,7 @@ class Principal(QMainWindow):
 
         self.setGeometry(100, 50, 500, 550)
         self.setMinimumSize(500, 520)
-        self.setWindowTitle('Br.ino ' + versao)
+        self.setWindowTitle('Br.ino ' + self.versao)
         self.setWindowIcon(QIcon(os.path.join('recursos', 'logo.png')))
 
         self.show()
@@ -867,9 +861,9 @@ class Principal(QMainWindow):
             Rastreador.log_info("Monitor Serial aberto")
         else:
             # TODO Melhorar aparencia da QErrorMessage
-            error_dialog_porta = QErrorMessage()
-            error_dialog_porta.showMessage('A porta serial selecionada não está disponível.')
-            error_dialog_porta.exec_()
+            error_dialog = QErrorMessage()
+            error_dialog.showMessage('A porta serial selecionada não está disponível.')
+            error_dialog.exec_()
             Rastreador.log_error("Porta Serial solicitada não disponível")
 
     def enviar_codigo(self):

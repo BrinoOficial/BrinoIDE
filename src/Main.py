@@ -52,10 +52,6 @@ from exceptions import UpdateException
 import Rastreador
 from integracao_arduino_cli import acompanha_portas_conectadas, get_caminho_padrao
 
-# TODO Duplicado, resolver isso
-versao = '3.0.7'
-s = 3
-
 
 def atualizar_linguas():
     versao_json = ""
@@ -84,7 +80,7 @@ def atualizar_linguas():
     return atualizadas if resultado == "" else resultado
 
 
-def verificar_versao():
+def verificar_versao(versao):
     """
     Verifica se ha uma nova versao disponivel no site.
     :return ha_atualizacao:
@@ -183,10 +179,10 @@ if __name__ == '__main__':
         Rastreador.log_info(atualizar_linguas())
     except UpdateException as e:
         Rastreador.log_error(e)
-    deve_atualizar = verificar_versao()
-    Rastreador.log_debug("Verifacado se há atualizações. %s" % deve_atualizar)
 
     principal = UI.Principal()
+    deve_atualizar = verificar_versao(principal.versao)
+    Rastreador.log_debug("Verifacado se há atualizações. %s" % deve_atualizar)
     Rastreador.log_debug("Carregada tela principal")
     principal.widget_central.criar_menu_portas()
     Rastreador.log_debug("Menu portas iniciado")

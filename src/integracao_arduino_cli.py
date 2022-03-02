@@ -115,7 +115,6 @@ def listar_todas_placas_conectadas_cli():
     arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " board list"
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
-    print(cmd)
     return p.stdout.read().decode()
 
 
@@ -200,4 +199,5 @@ def instalar_placa(nome_placa):
     cmd = arn_cli + " core install " + nome_placa
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
+    # TODO avisar que a placa foi instalada com sucesso
     return p.stdout.read().decode()
