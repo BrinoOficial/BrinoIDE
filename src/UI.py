@@ -58,6 +58,10 @@ from GerenciadorDeKeywords import traduzir
 from Main import get_caminho_padrao
 
 class Centro(QWidget):
+    '''
+    Classe da IDE que compoe o editor de textos, o centro dela. Nessa parte onde ficam os codigos que estao sendo
+    editados e as abas.
+    '''
     def __init__(self, parent=None):
         super(Centro, self).__init__()
         self.widget_abas = None
@@ -149,7 +153,6 @@ class Centro(QWidget):
                 self.widget_abas.removeTab(index)
         if self.widget_abas.count() == 1:
             self.widget_abas.setTabsClosable(False)
-
         return True
 
     def nova_aba(self, path="", salvar_caminho=True):
@@ -187,7 +190,6 @@ class Centro(QWidget):
     def abrir_traducao(self):
         """
         Abrir a traducao auto gerada em uma nova aba
-
         :return:
             None
         """
@@ -491,20 +493,6 @@ class Centro(QWidget):
                 menu.addAction(exemplo_acao)
                 exemplo_acao.triggered.connect(functools.partial(self.abrir, caminho_exemplo, True))
 
-    def on_troca_placa_ou_porta(self):
-        """
-        Troca a placa
-        :return:
-            None
-        """
-        plataforma = self.get_plataforma_alvo()
-        pastas_bibliotecas = list()
-        # if plataforma:
-        # core = self.get_preferencias_placa()
-        pasta_plataforma = plataforma.get_pasta()
-        pastas_bibliotecas.append(os.path.join(pasta_plataforma, 'libraries'))
-        pastas_bibliotecas.append(os.path.join(get_caminho_padrao(), 'bibliotecas'))
-
     def compilar(self):
         """
         Compila o codigo da aba atual
@@ -625,7 +613,7 @@ class Centro(QWidget):
 
     def instalar_biblioteca_arduino_cli(self):
         """
-        Instala a biblioteca Arduino pelo arduino cli a ser selecionada em pop_up
+        Instala a biblioteca Arduino pelo arduino cli a ser selecionada em um pop_up
         :returns:
             None
         """
@@ -666,7 +654,8 @@ class Centro(QWidget):
 
     def instalar_biblioteca_por_arquivo(self):
         """
-        Instala a biblioteca Arduino .zip a ser selecionada em pop_up
+        Instala a biblioteca Arduino .zip a ser selecionada em pop_up. Essa fucao permite vc escolher o arquivo que
+         será extraido e copiado para a pasta correta.
         :returns:
             None
         """

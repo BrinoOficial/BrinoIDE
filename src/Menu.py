@@ -42,6 +42,10 @@ from BotaoImagem import BotaoImagem
 
 
 class Menu(QWidget):
+    '''
+    Classe responsavel pela barra verde de menu lateral. Nela temos as opcoes de compilar, compilar e carregar, novo,
+     abrir, salvar e monitor serial
+    '''
 
     def __init__(self, parent=None):
         super(Menu, self).__init__()
