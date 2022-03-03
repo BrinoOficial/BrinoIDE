@@ -617,40 +617,40 @@ class Centro(QWidget):
         :returns:
             None
         """
-        # TODO adaptar de placa para biblioteca
         # Cria o pop-up para escolha da placa a ser instalada
-        nome_placa_instalar = QInputDialog.getText(self, 'Instalar placa',
-                                                   'Qual o nome da placa que você deseja instalar?')
+        nome_biblioteca_instalar = QInputDialog.getText(self, 'Instalar biblioteca por nome',
+                                                   'Qual o nome da biblioteca que você deseja instalar?')
         # busca placas com o nome inserido
-        placa_instalar = procurar_placas(nome_placa_instalar[0]).split("\n")
+        biblioteca_instalar = procurar_bibliotecas(nome_biblioteca_instalar[0]).split("\n")
         # Cria a lista com a saida
-        lista_placa_instalar = list()
-        letra_corte = placa_instalar[0].find("F") - 1
-        for placa in placa_instalar:
+        lista_biblioteca_instalar = list()
+        # TODO Resolver formato de apresentacao das bibliotecas disponiveis
+        letra_corte = biblioteca_instalar[0].find("F") - 1
+        for placa in biblioteca_instalar:
             if placa[:int(letra_corte)].rstrip() != "":
-                lista_placa_instalar.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
-        lista_placa_instalar.pop(0)
-        print(lista_placa_instalar)
+                lista_biblioteca_instalar.append([placa[:int(letra_corte)].rstrip(), placa[int(letra_corte):].rstrip()])
+        lista_biblioteca_instalar.pop(0)
+        print(lista_biblioteca_instalar)
         dialogo_lista_placa = list()
-        for i in range(len(lista_placa_instalar)):
-            dialogo_lista_placa.append(lista_placa_instalar[i][0])
+        for i in range(len(lista_biblioteca_instalar)):
+            dialogo_lista_placa.append(lista_biblioteca_instalar[i][0])
         # Se a lista nao for vazia cria um pop-up para escolha da placa
-        if lista_placa_instalar:
-            nome_placa_instalar = QInputDialog.getItem(self, 'Instalar placa', 'Selecione a placa a ser instalada:',
+        if lista_biblioteca_instalar:
+            nome_biblioteca_instalar = QInputDialog.getItem(self, 'Instalar biblioteca', 'Selecione a biblioteca a ser instalada:',
                                                        dialogo_lista_placa)
-            if nome_placa_instalar[1]:
-                for i in range(len(lista_placa_instalar)):
-                    if nome_placa_instalar[0] == lista_placa_instalar[i][0]:
-                        print(instalar_placa(lista_placa_instalar[i][1].lstrip()))
+            if nome_biblioteca_instalar[1]:
+                for i in range(len(lista_biblioteca_instalar)):
+                    if nome_biblioteca_instalar[0] == lista_biblioteca_instalar[i][0]:
+                        print(instalar_biblioteca(lista_biblioteca_instalar[i][1].lstrip()))
                         self.criar_menu_placas()
         # Se nao levanta um alerta de erro
         else:
             # TODO Melhorar aparencia da QErrorMessage
             error_dialog_placa = QErrorMessage()
-            error_dialog_placa.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
+            error_dialog_placa.showMessage('Biblioteca não encontrada. Verifique o nome e tente novamente.')
             error_dialog_placa.exec_()
-            Rastreador.log_error("Placa solicitada não disponível")
-        print(nome_placa_instalar[0])
+            Rastreador.log_error("Biblioteca solicitada não disponível")
+        print(nome_biblioteca_instalar[0])
 
     def instalar_biblioteca_por_arquivo(self):
         """

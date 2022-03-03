@@ -201,3 +201,29 @@ def instalar_placa(nome_placa):
     print(cmd)
     # TODO avisar que a placa foi instalada com sucesso
     return p.stdout.read().decode()
+
+
+def procurar_bibliotecas(nome_biblioteca):
+    """
+    Procura quais bibliotecas podem ser instaladas
+    :return none:
+    """
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    cmd = arn_cli + " lib search " + nome_biblioteca
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
+    return p.stdout.read().decode()
+
+
+def instalar_biblioteca(nome_biblioteca):
+    """
+    Instala uma nova biblioteca ao core do arduino CLI.
+    :return none:
+    """
+    # arduino-cli core install arduino:avr
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    cmd = arn_cli + " lib install " + nome_biblioteca
+    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+    print(cmd)
+    # TODO avisar que a biblioteca foi instalada com sucesso
+    return p.stdout.read().decode()
