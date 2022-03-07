@@ -69,9 +69,6 @@ class Centro(QWidget):
         self.indexer = None
         self.parent = parent
         self.pacotes = dict()
-        # TODO Remover arquivos temporarios
-        self.temp_build = mkdtemp('build')
-        self.temp_cache = mkdtemp('cache')
         self.log = None
         self.init_ui()
 
@@ -605,6 +602,7 @@ class Centro(QWidget):
         else:
             # TODO Melhorar aparencia da QErrorMessage
             error_dialog_placa = QErrorMessage()
+            error_dialog_placa.setWindowTitle('Placa solicitada indisponível.')
             error_dialog_placa.showMessage('Placa não encontrada. Verifique o nome e tente novamente.')
             error_dialog_placa.exec_()
             Rastreador.log_error("Placa solicitada não disponível")
@@ -623,12 +621,13 @@ class Centro(QWidget):
         # busca biblioteca com o nome inserido
         biblioteca_instalar = procurar_bibliotecas(nome_biblioteca_instalar[0]).split("\n")
         print(biblioteca_instalar)
-        # TODO Resolver formato de apresentacao das bibliotecas disponiveis
+        # TODO Resolver formato de apresentacao das bibliotecas disponiveis, mostrar mais dados
         dialogo_lista_biblioteca = list()
         # Verifica se foi encontrada alguma biblioteca com o nome inserido
         if "No libraries matching your search." in biblioteca_instalar:
             # TODO Melhorar aparencia da QErrorMessage
             error_dialog_biblioteca = QErrorMessage()
+            error_dialog_biblioteca.setWindowTitle('Biblioteca solicitada indisponível')
             error_dialog_biblioteca.showMessage('Biblioteca não encontrada. Verifique o nome e tente novamente.')
             error_dialog_biblioteca.exec_()
             Rastreador.log_error("Biblioteca solicitada não disponível")
@@ -669,7 +668,7 @@ class Centro(QWidget):
                 try:
                     # shutil.copy(caminho, os.path.join(caminho_bibliotecas, os.path.basename(caminho)))
                     # Create a ZipFile Object and load sample.zip in it
-                    # TODO Adicionar os exemplos na IDE
+                    # TODO Adicionar os exemplos das bibliotecas na IDE
                     with ZipFile(caminho, 'r') as zipObj:
                         # Extract all the contents of zip file in current directory
                         zipObj.extractall(caminho_bibliotecas)
@@ -895,6 +894,7 @@ class Principal(QMainWindow):
         else:
             # TODO Melhorar aparencia da QErrorMessage
             error_dialog = QErrorMessage()
+            error_dialog.setWindowTitle('Porta serial indisponível')
             error_dialog.showMessage('A porta serial selecionada não está disponível.')
             error_dialog.exec_()
             Rastreador.log_error("Porta Serial solicitada não disponível")
