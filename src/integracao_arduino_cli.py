@@ -200,7 +200,9 @@ def instalar_placa(nome_placa):
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     # TODO avisar que a placa foi instalada com sucesso
-    return p.stdout.read().decode()
+    output = p.stdout.read()
+    output += p.stderr.read()
+    return output.decode()
 
 
 def procurar_bibliotecas(nome_biblioteca):
@@ -225,5 +227,6 @@ def instalar_biblioteca(nome_biblioteca):
     cmd = arn_cli + " lib install " + nome_biblioteca
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
-    # TODO avisar que a biblioteca foi instalada com sucesso
-    return p.stdout.read().decode()
+    output = p.stdout.read()
+    output += p.stderr.read()
+    return output.decode()

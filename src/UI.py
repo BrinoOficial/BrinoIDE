@@ -34,10 +34,8 @@ author: Gabriel Rodrigues Pacheco
 """
 
 import ntpath
-from tempfile import mkdtemp
 # from google_measurement_protocol import event, report
 import functools
-import serial
 import shutil
 import sys
 from zipfile import ZipFile
@@ -577,6 +575,8 @@ class Centro(QWidget):
         """
         # Cria o pop-up para escolha da placa a ser instalada
         nome_placa_instalar = QInputDialog.getText(self, 'Instalar placa', 'Qual o nome da placa que você deseja instalar?')
+        self.log.clear()
+        self.log.insertPlainText("Carregando placas disponíveis....\n")
         # busca placas com o nome inserido
         placa_instalar = procurar_placas(nome_placa_instalar[0]).split("\n")
         # Cria a lista com a saida
@@ -596,7 +596,11 @@ class Centro(QWidget):
             if nome_placa_instalar[1]:
                 for i in range(len(lista_placa_instalar)):
                     if nome_placa_instalar[0] == lista_placa_instalar[i][0]:
-                        print(instalar_placa(lista_placa_instalar[i][1].lstrip()))
+                        placa_lista = lista_placa_instalar[i][1].split()
+                        placa = placa_lista[-1]
+                        self.log.clear()
+                        self.log.insertPlainText(f"Instalando a placa {nome_placa_instalar[0]}")
+                        self.log.insertPlainText(str(instalar_placa(placa)))
                         self.criar_menu_placas()
         # Se nao levanta um alerta de erro
         else:
@@ -618,6 +622,8 @@ class Centro(QWidget):
         # Cria o pop-up para escolha da biblioteca a ser instalada
         nome_biblioteca_instalar = QInputDialog.getText(self, 'Instalar biblioteca por nome',
                                                    'Qual o nome da biblioteca que você deseja instalar?')
+        self.log.clear()
+        self.log.insertPlainText("Carregando bibliotecas disponíveis....\n")
         # busca biblioteca com o nome inserido
         biblioteca_instalar = procurar_bibliotecas(nome_biblioteca_instalar[0]).split("\n")
         print(biblioteca_instalar)
@@ -639,7 +645,10 @@ class Centro(QWidget):
                                                        dialogo_lista_biblioteca)
             if nome_biblioteca_instalar[1]:
                 Rastreador.log_info("Instalando biblioteca CLI")
-                instalar_biblioteca('"' + nome_biblioteca_instalar[0] + '"')
+                self.log.clear()
+                self.log.insertPlainText(f"Instalando biblioteca {nome_biblioteca_instalar[0]}...\n\n")
+                self.log.insertPlainText(str(instalar_biblioteca('"' + nome_biblioteca_instalar[0] + '"')))
+
 
     def instalar_biblioteca_por_arquivo(self):
         """
