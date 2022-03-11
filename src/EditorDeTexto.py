@@ -42,8 +42,9 @@ import re
 
 from PyQt5.QtCore import QRect, Qt, QSize
 from PyQt5.QtGui import QColor, QTextFormat, QPainter, QTextCursor
-from PyQt5.QtWidgets import QPlainTextEdit, QCompleter, QTextEdit, QWidget, QInputDialog, QMessageBox
+from PyQt5.QtWidgets import QPlainTextEdit, QCompleter, QTextEdit, QWidget, QInputDialog, QMessageBox, QErrorMessage
 
+import Rastreador
 import DestaqueSintaxe
 import Main
 import MeuDicionarioComplete
@@ -374,7 +375,11 @@ class CodeEditor(QPlainTextEdit):
 
 def ir_para_linha():
     # TODO ir para linha
-    pass
+    error_dialog_placa = QErrorMessage()
+    error_dialog_placa.setWindowTitle('Funcionalidade indisponível')
+    error_dialog_placa.showMessage('Infelizmente esta funcionalidade ainda não está disponível. ')
+    error_dialog_placa.exec_()
+    Rastreador.log_error("Funcionalidade indisponível - ir para linha")
 
 class ContadorDeLinhas(QWidget):
 
