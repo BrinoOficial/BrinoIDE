@@ -50,7 +50,7 @@ from PyQt5.QtWidgets import QSplashScreen, QApplication, QMessageBox
 import UI
 from exceptions import UpdateException
 import Rastreador
-from integracao_arduino_cli import acompanha_portas_conectadas, get_caminho_padrao
+from Integracao_arduino_cli import acompanha_portas_conectadas, get_caminho_padrao
 
 
 def atualizar_linguas():

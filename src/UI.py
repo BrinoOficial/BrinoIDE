@@ -51,7 +51,7 @@ import Rastreador
 import EditorDeTexto
 import Menu
 from BoasVindas import BoasVindas
-from integracao_arduino_cli import *
+from Integracao_arduino_cli import *
 from GerenciadorDeKeywords import traduzir
 from Main import get_caminho_padrao
 
@@ -104,7 +104,10 @@ class Centro(QWidget):
         layout.addWidget(self.log, 1, 1, 1, 2)
 
         # Cria menu de placas
-        self.criar_menu_placas()
+        if self.criar_menu_placas():
+            QMessageBox(QMessageBox.Warning, "Nenhuma placa disponivel", "Percebemos que você não tem nenhuma placa instalada, iremos instalar algumas para você. Para instalar mais placas acesse 'Ferramentas>Instalar Placa' e insira o nome da placa que deseja instalar.", QMessageBox.NoButton, self).show()
+            instalar_placa("arduino:avr")
+            self.criar_menu_placas()
         self.criar_menu_exemplos()
 
         # Adiciona a aba de boas vindas
@@ -404,6 +407,7 @@ class Centro(QWidget):
         """
         # Pega uma grande string contendo as placas
         placas_compativeis = listar_todas_placas_compativeis_cli()
+        print(placas_compativeis)
         # Divide a string para criar uma lista
         placas_compativeis = placas_compativeis.split("\n")
         placas_compativeis_nomes = list()
@@ -414,10 +418,17 @@ class Centro(QWidget):
         placas_compativeis_nomes.pop(0)
         self.placas_compativeis_nomes = placas_compativeis_nomes
         self.parent.menu_placas.clear()
-        for placa in placas_compativeis_nomes:
-            action = QAction(str(placa[0]), self)
-            action.triggered.connect(lambda chk, placa=placa: self.define_placa_alvo(placa))
-            self.parent.menu_placas.addAction(action)
+        print(placas_compativeis_nomes)
+        # Verifica se ha placas disponiveis
+        if not placas_compativeis_nomes:
+            # Se n houver placas disponiveis retorna 0
+            return 1
+        else:
+            for placa in placas_compativeis_nomes:
+                action = QAction(str(placa[0]), self)
+                action.triggered.connect(lambda chk, placa=placa: self.define_placa_alvo(placa))
+                self.parent.menu_placas.addAction(action)
+            return 0
 
     def define_placa_alvo(self, placa):
         """
@@ -440,12 +451,10 @@ class Centro(QWidget):
         """
         print("Atualizando as portas no menu")
         # TODO Lidar com o resto da string, pegamos apenas o numero da serial para criar a lista
-
         # Pega uma grande string contendo as placas conectadas
         portas_conectadas = listar_todas_placas_conectadas_cli()
         # Divide a string para criar uma lista
         portas_conectadas = portas_conectadas.split("\n")
-
         portas_conectadas_nomes = list()
         letra_corte = portas_conectadas[0].find(" ")
         for porta in portas_conectadas:
@@ -542,6 +551,7 @@ class Centro(QWidget):
         # Testa se a aba eh a de boas vindas
         if caminho == 0 or caminho == '':
             return None
+
         # Transforma o codigo brpp em ino
         traduzir(caminho)
 
@@ -602,6 +612,8 @@ class Centro(QWidget):
                         self.log.insertPlainText(f"Instalando a placa {nome_placa_instalar[0]}")
                         self.log.insertPlainText(str(instalar_placa(placa)))
                         self.criar_menu_placas()
+
+
         # Se nao levanta um alerta de erro
         else:
             # TODO Melhorar aparencia da QErrorMessage
@@ -697,7 +709,7 @@ class Principal(QMainWindow):
     def __init__(self):
         super(Principal, self).__init__()
 
-        self.versao = '3.0.7'
+        self.versao = '3.0.8'
 
         # Cria o objeto monitor serial
         self.monitor = MonitorSerial.MonitorSerial()

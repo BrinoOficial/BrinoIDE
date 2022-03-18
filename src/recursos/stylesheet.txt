@@ -148,7 +148,7 @@ QToolBar QComboBox{
     background:#252525;
     color: #efefef;
     font-size: 13px;
-    width: 30px;
+    width: 60px;
 }
 QToolBar QComboBox::down-arrow{
    border: 0;
