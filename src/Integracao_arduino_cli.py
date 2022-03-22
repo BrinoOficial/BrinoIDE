@@ -40,6 +40,12 @@ from subprocess import Popen, PIPE
 
 from GerenciadorDeKeywords import traduzir
 
+if os.path.exists(os.path.abspath(os.path.join('.', 'arduino-cli.exe'))):
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    print("1")
+else:
+    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
+    print(2)
 
 def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: "None"):
     """
@@ -62,11 +68,9 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
     caminho = caminho.replace("brpp", "ino")
     if carregar:
         # Compila e carrega o codigo
-        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
         cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + str(porta_alvo) + " -u" + "--library " + caminho_bibliotecas
     else:
         # Compila o codigo
-        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
         cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho + " --library " + caminho_bibliotecas
     print(cmd)
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
@@ -97,7 +101,6 @@ def listar_todas_placas_compativeis_cli():
     :return output:
         resultado do comando de listar palcas (Uma lista de strings com as placas (nome e codigo FQBN dela)
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " board listall"
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
@@ -112,7 +115,6 @@ def listar_todas_placas_conectadas_cli():
     :return output:
         resultado do comando de listar palcas conectadas (Uma lista de strings com as placas (nome e codigo FQBN dela)
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " board list"
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     return p.stdout.read().decode()
@@ -182,7 +184,6 @@ def procurar_placas(nome_placa):
     Procura quais placas podem ser instaladas
     :return none:
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " board search " + nome_placa
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
@@ -195,7 +196,6 @@ def instalar_placa(nome_placa):
     :return none:
     """
     # arduino-cli core install arduino:avr
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " core install " + nome_placa
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
@@ -210,7 +210,6 @@ def procurar_bibliotecas(nome_biblioteca):
     Procura quais bibliotecas podem ser instaladas
     :return none:
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " lib search " + nome_biblioteca
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
@@ -223,7 +222,6 @@ def instalar_biblioteca(nome_biblioteca):
     :return none:
     """
     # arduino-cli core install arduino:avr
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     cmd = arn_cli + " lib install " + nome_biblioteca
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
