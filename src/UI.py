@@ -503,14 +503,14 @@ class Centro(QWidget):
         :return:
             None
         """
-        try:
-            pass
-            # Rastreio compilar
-            # TODO Arrumar variavel rastreio
-            # compilar = event('IDE', 'compilou')
-            # report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
-        except:
-            pass
+        # try:
+        #     pass
+        #     # Rastreio compilar
+        #     # TODO Arrumar variavel rastreio
+        #     # compilar = event('IDE', 'compilou')
+        #     # report('UA-89373473-3', Preferencias.get("id_cliente"), compilar)
+        # except:
+        #     pass
 
         self.log.clear()
         self.log.insertPlainText("Compilando...")
