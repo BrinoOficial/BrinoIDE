@@ -26,11 +26,10 @@ em PyQt5 (python 3.6)
     GNU junto com este programa. Caso contrario, veja
     <https://www.gnu.org/licenses/>
 
-website: brino.cc
-author: Mateus Berardo
-email: mateus.berardo@brino.cc
-contributor: Victor Rodrigues Pacheco
-email: victor.pacheco@brino.cc
+website: https://brino.cc
+github: https://github.com/BrinoOficial/BrinoIDE
+author: Victor Rodrigues Pacheco
+author: Gabriel Rodrigues Pacheco
 """
 
 import os
@@ -38,6 +37,7 @@ import re
 from time import sleep
 from subprocess import Popen, PIPE
 
+import Rastreador
 from GerenciadorDeKeywords import traduzir
 
 
@@ -63,12 +63,14 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
     if carregar:
         # Compila e carrega o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-        cmd = arn_cli + " compile -b" + plataforma_alvo + " " + caminho + " -p " + str(porta_alvo) + " -u" + "--library " + caminho_bibliotecas
+        cmd = '"' + arn_cli + '"' + " compile -b" + plataforma_alvo + " " + '"' + caminho + '"' + " -p " + str(porta_alvo) + " -u" + " --library " + '"' + caminho_bibliotecas + '"'
     else:
         # Compila o codigo
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-        cmd = arn_cli + " compile --fqbn " + plataforma_alvo + " " + caminho + " --library " + caminho_bibliotecas
+        cmd = '"' + arn_cli + '"' + " compile --fqbn " + plataforma_alvo + " " + '"' + caminho + '"' + " --library " + '"' + caminho_bibliotecas + '"'
     print(cmd)
+    Rastreador.log_info("Processo compilar - > CMD:")
+    Rastreador.log_info(cmd)
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     # TODO Criar timeout para nao travar o codigo caso de errado
     output = p.stdout.read()
@@ -97,13 +99,18 @@ def listar_todas_placas_compativeis_cli():
     :return output:
         resultado do comando de listar palcas (Uma lista de strings com as placas (nome e codigo FQBN dela)
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-    cmd = arn_cli + " board listall"
-    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
-    print(cmd)
-    lista_de_placas = p.stdout.read()
-    lista_de_placas += p.stderr.read()
-    return lista_de_placas.decode()
+    try:
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        cmd = '"' + arn_cli + '"' + " board listall"
+        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+        print(cmd)
+        lista_de_placas = p.stdout.read()
+        lista_de_placas += p.stderr.read()
+        return lista_de_placas.decode()
+    except Exception as e:
+        Rastreador.log_error("Erro ao listar todas placas compativeis cli: ")
+        Rastreador.log_error(e)
+        Rastreador.log_error("Lista de placas obtidas na operação:")
 
 
 def listar_todas_placas_conectadas_cli():
@@ -112,10 +119,14 @@ def listar_todas_placas_conectadas_cli():
     :return output:
         resultado do comando de listar palcas conectadas (Uma lista de strings com as placas (nome e codigo FQBN dela)
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-    cmd = arn_cli + " board list"
-    p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
-    return p.stdout.read().decode()
+    try:
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        cmd = '"' + arn_cli + '"' + " board list"
+        p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
+        return p.stdout.read().decode()
+    except Exception as e:
+        Rastreador.log_error("Erro ao listar todas placas conectadas cli: ")
+        Rastreador.log_error(e)
 
 
 def adicionar_hardware_se_existe(string, arquivo):
@@ -183,7 +194,7 @@ def procurar_placas(nome_placa):
     :return none:
     """
     arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-    cmd = arn_cli + " board search " + nome_placa
+    cmd = '"' + arn_cli + '"' + " board search " + nome_placa
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     return p.stdout.read().decode()
@@ -196,7 +207,7 @@ def instalar_placa(nome_placa):
     """
     # arduino-cli core install arduino:avr
     arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-    cmd = arn_cli + " core install " + nome_placa
+    cmd = '"' + arn_cli + '"' + " core install " + nome_placa
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     # TODO avisar que a placa foi instalada com sucesso
@@ -211,7 +222,7 @@ def procurar_bibliotecas(nome_biblioteca):
     :return none:
     """
     arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-    cmd = arn_cli + " lib search " + nome_biblioteca
+    cmd = '"' + arn_cli + '"' + " lib search " + nome_biblioteca
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     return p.stdout.read().decode()
@@ -224,7 +235,7 @@ def instalar_biblioteca(nome_biblioteca):
     """
     # arduino-cli core install arduino:avr
     arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
-    cmd = arn_cli + " lib install " + nome_biblioteca
+    cmd = '"' + arn_cli + '"' + " lib install " + nome_biblioteca
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
     output = p.stdout.read()
