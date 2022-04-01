@@ -60,13 +60,20 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
     caminho_bibliotecas = get_caminho_padrao() + str("/Bibliotecas/")
     print(caminho_bibliotecas)
     caminho = caminho.replace("brpp", "ino")
+
+    # Seleciona o Arduino CLI correto pro sistema operacional
+    if os.path.isfile('arduino-cli.exe'):
+        print("WINDOWSSSSS")
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    else:
+        print("LINUXXXXXX")
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
+
     if carregar:
         # Compila e carrega o codigo
-        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
         cmd = '"' + arn_cli + '"' + " compile -b" + plataforma_alvo + " " + '"' + caminho + '"' + " -p " + str(porta_alvo) + " -u" + " --library " + '"' + caminho_bibliotecas + '"'
     else:
         # Compila o codigo
-        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
         cmd = '"' + arn_cli + '"' + " compile --fqbn " + plataforma_alvo + " " + '"' + caminho + '"' + " --library " + '"' + caminho_bibliotecas + '"'
     print(cmd)
     Rastreador.log_info("Processo compilar - > CMD:")
@@ -100,7 +107,11 @@ def listar_todas_placas_compativeis_cli():
         resultado do comando de listar palcas (Uma lista de strings com as placas (nome e codigo FQBN dela)
     """
     try:
-        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        # Seleciona o Arduino CLI correto pro sistema operacional
+        if os.path.isfile('arduino-cli.exe'):
+            arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        else:
+            arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
         cmd = '"' + arn_cli + '"' + " board listall"
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         print(cmd)
@@ -120,7 +131,11 @@ def listar_todas_placas_conectadas_cli():
         resultado do comando de listar palcas conectadas (Uma lista de strings com as placas (nome e codigo FQBN dela)
     """
     try:
-        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        # Seleciona o Arduino CLI correto pro sistema operacional
+        if os.path.isfile('arduino-cli.exe'):
+            arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+        else:
+            arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
         cmd = '"' + arn_cli + '"' + " board list"
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
         return p.stdout.read().decode()
@@ -177,10 +192,12 @@ def acompanha_portas_conectadas(objeto_principal):
     Verifica constantemente se um dispositivo USB foi conectado ou desconectado para atualizar a lista.
     :return none:
     """
+    # TODO Arrumar para linux
     # Pega uma grande string contendo as placas
     placas_conectadas_anterior = listar_todas_placas_conectadas_cli()
     while 1:
         placas_conectadas = listar_todas_placas_conectadas_cli()
+        print(f"Placas conectadas: {placas_conectadas}")
         if placas_conectadas_anterior != placas_conectadas:
             print("Portas atualizadas")
             objeto_principal.widget_central.criar_menu_portas()
@@ -193,7 +210,13 @@ def procurar_placas(nome_placa):
     Procura quais placas podem ser instaladas
     :return none:
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+
+    # Seleciona o Arduino CLI correto pro sistema operacional
+    if os.path.isfile('arduino-cli.exe'):
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    else:
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
+
     cmd = '"' + arn_cli + '"' + " board search " + nome_placa
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
@@ -206,7 +229,12 @@ def instalar_placa(nome_placa):
     :return none:
     """
     # arduino-cli core install arduino:avr
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    # Seleciona o Arduino CLI correto pro sistema operacional
+    if os.path.isfile('arduino-cli.exe'):
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    else:
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
+
     cmd = '"' + arn_cli + '"' + " core install " + nome_placa
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
@@ -221,7 +249,12 @@ def procurar_bibliotecas(nome_biblioteca):
     Procura quais bibliotecas podem ser instaladas
     :return none:
     """
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    # Seleciona o Arduino CLI correto pro sistema operacional
+    if os.path.isfile('arduino-cli.exe'):
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    else:
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
+
     cmd = '"' + arn_cli + '"' + " lib search " + nome_biblioteca
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
@@ -234,7 +267,12 @@ def instalar_biblioteca(nome_biblioteca):
     :return none:
     """
     # arduino-cli core install arduino:avr
-    arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    # Seleciona o Arduino CLI correto pro sistema operacional
+    if os.path.isfile('arduino-cli.exe'):
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
+    else:
+        arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
+
     cmd = '"' + arn_cli + '"' + " lib install " + nome_biblioteca
     p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
     print(cmd)
