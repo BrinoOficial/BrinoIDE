@@ -63,10 +63,8 @@ def compilar_arduino_cli(caminho, plataforma_alvo, carregar: False, porta_alvo: 
 
     # Seleciona o Arduino CLI correto pro sistema operacional
     if os.path.isfile('arduino-cli.exe'):
-        print("WINDOWSSSSS")
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli.exe'))
     else:
-        print("LINUXXXXXX")
         arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
 
     if carregar:
@@ -138,7 +136,15 @@ def listar_todas_placas_conectadas_cli():
             arn_cli = os.path.abspath(os.path.join('.', 'arduino-cli'))
         cmd = '"' + arn_cli + '"' + " board list"
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=PIPE, shell=True)
-        return p.stdout.read().decode()
+        lista_portas = list()
+        lista_portas_lidas = p.stdout.read().decode().split('\n')
+        lista_portas_lidas.pop(0)
+        while '' in lista_portas_lidas:
+            lista_portas_lidas.remove('')
+        for porta in lista_portas_lidas:
+            temp = porta.split()
+            lista_portas.append(temp[0])
+        return lista_portas
     except Exception as e:
         Rastreador.log_error("Erro ao listar todas placas conectadas cli: ")
         Rastreador.log_error(e)

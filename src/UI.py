@@ -105,7 +105,7 @@ class Centro(QWidget):
 
         # Cria menu de placas
         if self.criar_menu_placas():
-            QMessageBox(QMessageBox.Warning, "Nenhuma placa disponivel", "Percebemos que você não tem nenhuma placa instalada, iremos instalar algumas para você. Para instalar mais placas acesse 'Ferramentas>Instalar Placa' e insira o nome da placa que deseja instalar.", QMessageBox.NoButton, self).show()
+            # QMessageBox(QMessageBox.Warning, "Nenhuma placa disponivel", "Percebemos que você não tem nenhuma placa instalada, iremos instalar algumas para você. Para instalar mais placas acesse 'Ferramentas>Instalar Placa' e insira o nome da placa que deseja instalar.", QMessageBox.NoButton, self).show()
             instalar_placa("arduino:avr")
             self.criar_menu_placas()
         self.criar_menu_exemplos()
@@ -453,19 +453,11 @@ class Centro(QWidget):
         # TODO Lidar com o resto da string, pegamos apenas o numero da serial para criar a lista
         # Pega uma grande string contendo as placas conectadas
         portas_conectadas = listar_todas_placas_conectadas_cli()
-        # Divide a string para criar uma lista
-        portas_conectadas = portas_conectadas.split("\n")
-        portas_conectadas_nomes = list()
-        letra_corte = portas_conectadas[0].find(" ")
-        for porta in portas_conectadas:
-            if porta[:int(letra_corte)].rstrip() != "":
-                portas_conectadas_nomes.append([porta[:int(letra_corte)].rstrip(), porta[int(letra_corte):].rstrip()])
-        if len(portas_conectadas_nomes) > 0:
-            portas_conectadas_nomes.pop(0)
+
         # Limpa a lista atual de portas e adiciona a nova leitura de portas conectadas
         self.parent.menu_selecao_porta.clear()
-        for porta in portas_conectadas_nomes:
-            self.parent.menu_selecao_porta.addItem(porta[0])
+        for porta in portas_conectadas:
+            self.parent.menu_selecao_porta.addItem(porta)
 
     def define_porta_alvo(self, porta):
         """
