@@ -95,6 +95,7 @@ def get_caminho_padrao():
     documentos = list(filter(docu.match, pastas))
     caminho_padrao = os.path.join(caminho_padrao, documentos[0], "RascunhosBrino")
     caminho_padrao = caminho_padrao.replace('\\', "/")
+
     return caminho_padrao
 
 

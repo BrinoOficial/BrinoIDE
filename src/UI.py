@@ -507,6 +507,7 @@ class Centro(QWidget):
         self.log.clear()
         self.log.insertPlainText("Compilando...")
         self.salvar()
+        self.salvar()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
         # Testa se a aba eh a de boas vindas
@@ -540,12 +541,14 @@ class Centro(QWidget):
         self.salvar()
         editor = self.widget_abas.widget(self.widget_abas.currentIndex())
         caminho = editor.get_caminho()
+        print(f"caminho: {caminho}")
         # Testa se a aba eh a de boas vindas
         if caminho == 0 or caminho == '':
             return None
 
         # Transforma o codigo brpp em ino
         traduzir(caminho)
+        print(f"Caminho: {caminho}")
 
         # Verifica se a porta para upload está selecionada. Caso nao esteja seleciona a primeira da lista
         try:
@@ -562,6 +565,10 @@ class Centro(QWidget):
             self.define_placa_alvo(['Arduino Uno', ' arduino:avr:uno'])
 
         resultado = compilar_arduino_cli(caminho, self.placa_alvo[1], True, self.porta_alvo)
+
+        # Verifica se houve erro de autorizacao na porta linux
+        # TODO Autorizacao de porta linux
+
         try:
             self.log.insertPlainText(str(resultado, sys.stdout.encoding))
         except UnicodeDecodeError:
